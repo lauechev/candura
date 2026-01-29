@@ -1,0 +1,25 @@
+{
+  "name": "enflujo-plantilla-astro",
+  "packageManager": "yarn@4.5.1",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "lint": "prettier --check .",
+    "lint:fix": "prettier --write --list-different ."
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "astro": "4.16.6",
+    "typescript": "^5.6.3"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3",
+    "prettier-plugin-astro": "^0.14.1",
+    "sass": "^1.80.3"
+  }
+}
