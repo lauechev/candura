@@ -1,5 +1,6 @@
 ---
 const { pathname } = Astro.url;
+const isHome = pathname === '/';
 const isAbout = pathname.startsWith('/about');
 const isServices = pathname.startsWith('/services');
 const isWork = pathname.startsWith('/work');
@@ -18,31 +19,38 @@ const isContact = pathname.startsWith('/contact');
   <ul class="nav-links">
     <li>
       <a
+        href="/"
+        class:list={['nav-link', { 'is-active': isHome }]}
+        style="--color: var(--green); --text: var(--white)">Home</a
+      >
+    </li>
+    <li>
+      <a
         href="/about"
         class:list={['nav-link', { 'is-active': isAbout }]}
-        style="--color: var(--blue); --text: var(--white)"
-      >About</a>
+        style="--color: var(--blue); --text: var(--white)">About</a
+      >
     </li>
     <li>
       <a
         href="/services"
         class:list={['nav-link', { 'is-active': isServices }]}
-        style="--color: var(--purple); --text: var(--white)"
-      >Services</a>
+        style="--color: var(--purple); --text: var(--white)">Services</a
+      >
     </li>
     <li>
       <a
         href="/work"
         class:list={['nav-link', { 'is-active': isWork }]}
-        style="--color: var(--yellow); --text: var(--black)"
-      >Work</a>
+        style="--color: var(--yellow); --text: var(--black)">Work</a
+      >
     </li>
     <li>
       <a
         href="/contact"
         class:list={['nav-link', { 'is-active': isContact }]}
-        style="--color: var(--red); --text: var(--white)"
-      >Contact</a>
+        style="--color: var(--red); --text: var(--white)">Contact</a
+      >
     </li>
   </ul>
 </nav>
@@ -92,7 +100,7 @@ const isContact = pathname.startsWith('/contact');
     display: inline-block;
     padding: 0.4rem 1rem;
     border: 2px solid var(--color);
-    border-radius: 999px;
+    border-radius: 10px;
     color: var(--black);
     background-color: transparent;
     font-family: var(--font-body);

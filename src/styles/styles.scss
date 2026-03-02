@@ -25,3 +25,10 @@
   --font-display: 'Your Display Font Name', sans-serif;
   --font-body: 'Your Body Font Name', sans-serif;
 }
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
