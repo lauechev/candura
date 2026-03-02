@@ -1,14 +1,14 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  publicDir: './estaticos',
+  publicDir: './public',
   compressHTML: true,
-  outDir: './publico',
-  srcDir: './fuente',
-  site: 'https://enflujo.com',
+  outDir: './dist',
+  srcDir: './src',
+  site: 'https://candura.com',
   base: '/',
   build: {
-    assets: 'estaticos',
+    assets: 'assets',
   },
   vite: {
     css: {
