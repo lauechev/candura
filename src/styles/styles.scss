@@ -1,5 +1,27 @@
 @use 'normalize';
+@use 'fonts';
 
 :root {
-  --colorFuente: #252424;
+  // Brand colors
+  --blue: #00A1DE;
+  --purple: #B152C9;
+  --yellow: #FFD55D;
+  --orange: #FF712D;
+  --pink: #ED5E99;
+  --green: #34C059;
+  --red: #A90C23;
+
+  // Base
+  --black: #000000;
+  --white: #FFFFFF;
+
+  // Nav border colors per page
+  --nav-border-about: var(--blue);
+  --nav-border-services: var(--purple);
+  --nav-border-work: var(--yellow);
+  --nav-border-contact: var(--red);
+
+  // Typography
+  --font-display: 'Your Display Font Name', sans-serif;
+  --font-body: 'Your Body Font Name', sans-serif;
 }
