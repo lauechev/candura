@@ -1,4 +1,6 @@
 ---
+import Nav from '@/components/Nav.astro';
+
 interface Props {
   title?: string;
   description?: string;
@@ -52,6 +54,7 @@ const imgAlt = image ? image.alt : projectName;
   </head>
 
   <body>
+    <Nav />
     <slot />
   </body>
 </html>
