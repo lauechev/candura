@@ -5,7 +5,7 @@ export default defineConfig({
   compressHTML: true,
   outDir: './dist',
   srcDir: './src',
-  site: 'https://candura.com',
+  site: 'https://candura.studio',
   base: '/',
   build: {
     assets: 'assets',
