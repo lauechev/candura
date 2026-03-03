@@ -1,6 +1,5 @@
 ---
 const { pathname } = Astro.url;
-const isHome = pathname === '/';
 const isAbout = pathname.startsWith('/about');
 const isServices = pathname.startsWith('/services');
 const isWork = pathname.startsWith('/work');
@@ -17,11 +16,6 @@ const isContact = pathname.startsWith('/contact');
   </button>
 
   <ul class="nav-links">
-    <li>
-      <a href="/" class:list={['nav-link', { 'is-active': isHome }]} style="--color: var(--green); --text: var(--white)"
-        >Home</a
-      >
-    </li>
     <li>
       <a
         href="/about"
@@ -54,8 +48,13 @@ const isContact = pathname.startsWith('/contact');
 </nav>
 
 <script>
+  const nav = document.querySelector('nav') as HTMLElement;
   const btn = document.querySelector('.hamburger') as HTMLButtonElement;
   const links = document.querySelector('.nav-links') as HTMLElement;
+
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('is-scrolled', window.scrollY > 0);
+  }, { passive: true });
 
   btn.addEventListener('click', () => {
     const expanded = btn.getAttribute('aria-expanded') === 'true';
@@ -77,6 +76,12 @@ const isContact = pathname.startsWith('/contact');
     align-items: center;
     justify-content: space-between;
     padding: 1.5rem 2rem;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0), 0 2px 8px rgba(0, 0, 0, 0);
+    transition: box-shadow 200ms ease;
+
+    &.is-scrolled {
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
   }
 
   .wordmark {
@@ -84,6 +89,11 @@ const isContact = pathname.startsWith('/contact');
     color: var(--black);
     font-size: 1.6rem;
     font-weight: 500;
+    transition: opacity 150ms ease;
+
+    &:hover {
+      opacity: 0.7;
+    }
   }
 
   .nav-links {
