@@ -7,9 +7,7 @@ interface Node {
   color: string;
 }
 
-const NODE_COUNT = 80;
-const CONNECTION_THRESHOLD = 160;
-const MAX_SPEED = 0.4;
+const MAX_SPEED = 0.3;
 
 export class NodeNetwork {
   private canvas: HTMLCanvasElement;
@@ -17,6 +15,8 @@ export class NodeNetwork {
   private nodes: Node[] = [];
   private colors: string[] = [];
   private raf: number | null = null;
+  private width: number = 0;
+  private height: number = 0;
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
@@ -35,21 +35,35 @@ export class NodeNetwork {
 
     this.resize();
     this.nodes = this.createNodes();
-    window.addEventListener('resize', () => this.resize());
+    window.addEventListener('resize', () => {
+      this.resize();
+      this.nodes = this.createNodes();
+    });
   }
 
   private resize(): void {
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
+    const dpr = window.devicePixelRatio ?? 1;
+    this.width = this.canvas.offsetWidth;
+    this.height = this.canvas.offsetHeight;
+    this.canvas.width = this.width * dpr;
+    this.canvas.height = this.height * dpr;
+    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  private nodeCount(): number {
+    if (this.width < 480) return 15;
+    if (this.width < 768) return 30;
+    if (this.width < 1024) return 40;
+    return 50;
   }
 
   private createNodes(): Node[] {
-    return Array.from({ length: NODE_COUNT }, () => ({
-      x: Math.random() * this.canvas.width,
-      y: Math.random() * this.canvas.height,
+    return Array.from({ length: this.nodeCount() }, () => ({
+      x: Math.random() * this.width,
+      y: Math.random() * this.height,
       vx: (Math.random() - 0.5) * MAX_SPEED,
       vy: (Math.random() - 0.5) * MAX_SPEED,
-      radius: Math.random() * 3 + 2,
+      radius: Math.random() * 3.5 + 3,
       color: this.colors[Math.floor(Math.random() * this.colors.length)],
     }));
   }
@@ -57,8 +71,8 @@ export class NodeNetwork {
   private update(): void {
     for (const node of this.nodes) {
       // Slight organic drift
-      node.vx += (Math.random() - 0.5) * 0.02;
-      node.vy += (Math.random() - 0.5) * 0.02;
+      node.vx += (Math.random() - 0.5) * 0.008;
+      node.vy += (Math.random() - 0.5) * 0.008;
 
       // Clamp speed
       const speed = Math.sqrt(node.vx * node.vx + node.vy * node.vy);
@@ -75,33 +89,34 @@ export class NodeNetwork {
         node.x = node.radius;
         node.vx *= -1;
       }
-      if (node.x > this.canvas.width - node.radius) {
-        node.x = this.canvas.width - node.radius;
+      if (node.x > this.width - node.radius) {
+        node.x = this.width - node.radius;
         node.vx *= -1;
       }
       if (node.y < node.radius) {
         node.y = node.radius;
         node.vy *= -1;
       }
-      if (node.y > this.canvas.height - node.radius) {
-        node.y = this.canvas.height - node.radius;
+      if (node.y > this.height - node.radius) {
+        node.y = this.height - node.radius;
         node.vy *= -1;
       }
     }
   }
 
   private draw(): void {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.clearRect(0, 0, this.width, this.height);
 
     // Draw connections
+    const threshold = Math.min(this.width, this.height) * 0.22;
     for (let i = 0; i < this.nodes.length; i++) {
       for (let j = i + 1; j < this.nodes.length; j++) {
         const dx = this.nodes[i].x - this.nodes[j].x;
         const dy = this.nodes[i].y - this.nodes[j].y;
         const dist = Math.sqrt(dx * dx + dy * dy);
 
-        if (dist < CONNECTION_THRESHOLD) {
-          const opacity = (1 - dist / CONNECTION_THRESHOLD) * 0.25;
+        if (dist < threshold) {
+          const opacity = (1 - dist / threshold) * 0.25;
           this.ctx.strokeStyle = `rgba(0, 0, 0, ${opacity})`;
           this.ctx.lineWidth = 1;
           this.ctx.beginPath();
