@@ -1,7 +1,7 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  publicDir: './public',
+  publicDir: './assets',
   compressHTML: true,
   outDir: './dist',
   srcDir: './src',
