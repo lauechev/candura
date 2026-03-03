@@ -3,17 +3,17 @@
 
 :root {
   // Brand colors
-  --blue: #00A1DE;
-  --purple: #B152C9;
-  --yellow: #FFD55D;
-  --orange: #FF712D;
-  --pink: #ED5E99;
-  --green: #34C059;
-  --red: #A90C23;
+  --blue: #00a1de;
+  --purple: #b152c9;
+  --yellow: #ffd55d;
+  --orange: #ff712d;
+  --pink: #ed5e99;
+  --green: #34c059;
+  --red: #a90c23;
 
   // Base
   --black: #000000;
-  --white: #FFFFFF;
+  --white: #ffffff;
 
   // Nav border colors per page
   --nav-border-about: var(--blue);
@@ -31,4 +31,13 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
+}
+
+h1 {
+  font-size: 3em;
+}
+
+h2 {
+  font-size: 2.5em;
+  font-weight: 300;
 }
