@@ -54,7 +54,7 @@ export class NodeNetwork {
     if (this.width < 480) return 15;
     if (this.width < 768) return 30;
     if (this.width < 1024) return 40;
-    return 50;
+    return 55;
   }
 
   private createNodes(): Node[] {
