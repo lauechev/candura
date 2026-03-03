@@ -52,9 +52,13 @@ const isContact = pathname.startsWith('/contact');
   const btn = document.querySelector('.hamburger') as HTMLButtonElement;
   const links = document.querySelector('.nav-links') as HTMLElement;
 
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('is-scrolled', window.scrollY > 0);
-  }, { passive: true });
+  window.addEventListener(
+    'scroll',
+    () => {
+      nav.classList.toggle('is-scrolled', window.scrollY > 0);
+    },
+    { passive: true }
+  );
 
   btn.addEventListener('click', () => {
     const expanded = btn.getAttribute('aria-expanded') === 'true';
@@ -76,11 +80,15 @@ const isContact = pathname.startsWith('/contact');
     align-items: center;
     justify-content: space-between;
     padding: 1.5rem 2rem;
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0), 0 2px 8px rgba(0, 0, 0, 0);
+    box-shadow:
+      0 1px 0 rgba(0, 0, 0, 0),
+      0 2px 8px rgba(0, 0, 0, 0);
     transition: box-shadow 200ms ease;
 
     &.is-scrolled {
-      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+      box-shadow:
+        0 1px 0 rgba(0, 0, 0, 0.08),
+        0 2px 8px rgba(0, 0, 0, 0.04);
     }
   }
 
