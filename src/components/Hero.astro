@@ -13,7 +13,7 @@ const { tagline } = Astro.props;
   </div>
 </section>
 
-<script>
+<!-- <script>
   import { NodeNetwork } from '@/scripts/NodeNetwork';
 
   const canvas = document.getElementById('node-canvas') as HTMLCanvasElement;
@@ -21,13 +21,56 @@ const { tagline } = Astro.props;
   network.start();
 
   window.addEventListener('pagehide', () => network.destroy());
+</script> -->
+
+<!-- <script>
+  import { FloatingImages } from '@/scripts/FloatingImages';
+  import computerSrc from '../../assets/computer.png';
+
+  const canvas = document.getElementById('node-canvas') as HTMLCanvasElement;
+  const floater = new FloatingImages(canvas, computerSrc.src);
+  floater.start();
+
+  window.addEventListener('pagehide', () => floater.destroy());
+</script> -->
+
+<!-- <script>
+  import { BouncingImages } from '@/scripts/BouncingImages';
+  import computerSrc from '../../assets/computer.png';
+
+  const canvas = document.getElementById('node-canvas') as HTMLCanvasElement;
+  const bouncer = new BouncingImages(canvas, computerSrc.src);
+  bouncer.start();
+
+  window.addEventListener('pagehide', () => bouncer.destroy());
+</script> -->
+
+<!-- <script>
+  import { MouseFollowImages } from '@/scripts/MouseFollowImages';
+  import computerSrc from '../../assets/computer.png';
+
+  const canvas = document.getElementById('node-canvas') as HTMLCanvasElement;
+  const follower = new MouseFollowImages(canvas, computerSrc.src);
+  follower.start();
+
+  window.addEventListener('pagehide', () => follower.destroy());
+</script> -->
+
+<script>
+  import { GravitySpheres } from '@/scripts/GravitySpheres';
+
+  const canvas = document.getElementById('node-canvas') as HTMLCanvasElement;
+  const sim = new GravitySpheres(canvas);
+  sim.start();
+
+  window.addEventListener('pagehide', () => sim.destroy());
 </script>
 
 <style lang="scss">
   .hero {
     position: relative;
     width: 100%;
-    height: 60vh;
+    height: 86vh;
     overflow: hidden;
   }
 
@@ -48,13 +91,14 @@ const { tagline } = Astro.props;
     justify-content: center;
     text-align: center;
     pointer-events: none;
+    padding-bottom: 10%;
   }
 
   .tagline {
-    font-family: var(--font-body);
-    font-size: 3em;
+    font-family: var(--font-display);
+    font-size: 3.5em;
     color: var(--black);
-    font-weight: 600;
+    font-weight: 500;
     margin: 0;
   }
 </style>
