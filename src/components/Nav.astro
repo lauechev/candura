@@ -6,46 +6,48 @@ const isWork = pathname.startsWith('/work');
 const isContact = pathname.startsWith('/contact');
 ---
 
-<nav>
-  <a href="/" class="wordmark">Candura</a>
+<div class="nav-wrapper">
+  <nav>
+    <a href="/" class="wordmark">Candura</a>
 
-  <button class="hamburger" aria-expanded="false" aria-label="Toggle navigation">
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
+    <button class="hamburger" aria-expanded="false" aria-label="Toggle navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
 
-  <ul class="nav-links">
-    <li>
-      <a
-        href="/about"
-        class:list={['nav-link', { 'is-active': isAbout }]}
-        style="--color: var(--blue); --text: var(--white)">About</a
-      >
-    </li>
-    <li>
-      <a
-        href="/services"
-        class:list={['nav-link', { 'is-active': isServices }]}
-        style="--color: var(--purple); --text: var(--white)">Services</a
-      >
-    </li>
-    <li>
-      <a
-        href="/work"
-        class:list={['nav-link', { 'is-active': isWork }]}
-        style="--color: var(--yellow); --text: var(--black)">Work</a
-      >
-    </li>
-    <li>
-      <a
-        href="/contact"
-        class:list={['nav-link', { 'is-active': isContact }]}
-        style="--color: var(--red); --text: var(--white)">Contact</a
-      >
-    </li>
-  </ul>
-</nav>
+    <ul class="nav-links">
+      <li>
+        <a
+          href="/about"
+          class:list={['nav-link', { 'is-active': isAbout }]}
+          style="--color: var(--blue); --text: var(--white)">About</a
+        >
+      </li>
+      <li>
+        <a
+          href="/services"
+          class:list={['nav-link', { 'is-active': isServices }]}
+          style="--color: var(--purple); --text: var(--white)">Services</a
+        >
+      </li>
+      <li>
+        <a
+          href="/work"
+          class:list={['nav-link', { 'is-active': isWork }]}
+          style="--color: var(--yellow); --text: var(--black)">Work</a
+        >
+      </li>
+      <li>
+        <a
+          href="/contact"
+          class:list={['nav-link', { 'is-active': isContact }]}
+          style="--color: var(--red); --text: var(--white)">Contact</a
+        >
+      </li>
+    </ul>
+  </nav>
+</div>
 
 <script>
   const nav = document.querySelector('nav') as HTMLElement;
@@ -68,22 +70,32 @@ const isContact = pathname.startsWith('/contact');
 </script>
 
 <style lang="scss">
-  nav {
+  .nav-wrapper {
     position: sticky;
-    top: 0;
+    top: 1.6%;
     z-index: 100;
-    width: 100%;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  nav {
+    width: 70%;
+    pointer-events: auto;
     background-color: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1.5rem 2rem;
+    padding: 0.8rem 2rem;
+    opacity: 0.8;
     box-shadow:
       0 1px 0 rgba(0, 0, 0, 0),
       0 2px 8px rgba(0, 0, 0, 0);
     transition: box-shadow 200ms ease;
+    border: 2px solid var(--black);
+    border-radius: 15px;
 
     &.is-scrolled {
       box-shadow:
@@ -140,6 +152,7 @@ const isContact = pathname.startsWith('/contact');
     nav {
       flex-wrap: wrap;
       padding: 1rem;
+      width: 100%;
     }
 
     .hamburger {
