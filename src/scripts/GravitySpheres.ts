@@ -14,7 +14,7 @@ const GRAVITY = 0.28;
 const RESTITUTION = 0.38;
 const DAMPING = 0.88;
 const FLOOR_FRICTION = 0.65;
-const SLEEP_SPEED = 0.08;
+const SLEEP_SPEED = 0.001;
 const MOUSE_ATTRACT_RADIUS = 500;
 const MOUSE_ATTRACT_FORCE = 6;
 
@@ -74,7 +74,7 @@ export class GravitySpheres {
       for (const { var: v, radius: baseRadius } of isMobile ? mobilePalette : palette) {
         const color = style.getPropertyValue(v).trim();
         const radius = baseRadius * radiusScale * (0.75 + Math.random() * 0.5);
-        const gravity = 0.15 + Math.random() * 0.35;
+        const gravity = 0.35 + Math.random() * 0.65;
         const startAbove = 400 + Math.random() * 100;
         const y = -radius - startAbove;
         // initial velocity as if already falling from that height
