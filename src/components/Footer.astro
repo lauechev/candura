@@ -1,0 +1,59 @@
+<footer>
+  <div class="left">
+    <span class="wordmark">Candura</span>
+    <span class="descriptor">Creative technology studio & consultancy</span>
+  </div>
+  <div class="right">
+    <a href="https://instagram.com/candura__" target="_blank" rel="noopener noreferrer">@candura__</a>
+    <div class="copy">&copy; 2026 Candura</div>
+  </div>
+</footer>
+
+<style lang="scss">
+  footer {
+    background-color: var(--black);
+    color: var(--white);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 1rem 4rem;
+  }
+
+  .left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .wordmark {
+    font-family: var(--font-logo);
+    font-size: 1.3rem;
+    font-weight: 500;
+  }
+
+  .descriptor {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    opacity: 0.6;
+  }
+
+  .copy {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    opacity: 0.4;
+    margin-top: 0.5rem;
+    padding-top: 0.3rem;
+  }
+
+  .right a {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--white);
+    opacity: 0.7;
+    transition: opacity 150ms ease;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+</style>

@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" shape-rendering="crispEdges">
+  <!-- Transparent background (no rect covering full canvas) -->
+
+  <!-- Palette -->
+  <!-- case1: #e7dfd2, case2: #d7cfc3, case3: #c4bbae, shadow: #8f877d
+       screen: #1c2326, screenHi: #2a3438, glass: #0f1416
+       key1: #e9e2d7, key2: #cfc6bb, keyShadow: #a59c92
+       accent: red #a90c23 orange #ff712d yellow #ffd55d green #34c059 blue #00a1de -->
+
+  <!-- === COMPUTER BODY === -->
+  <!-- Outer body -->
+  <rect x="14" y="12" width="36" height="34" fill="#e7dfd2"/>
+  <!-- Left depth/back -->
+  <rect x="10" y="16" width="6" height="26" fill="#d7cfc3"/>
+  <rect x="10" y="42" width="8" height="4" fill="#c4bbae"/>
+
+  <!-- Top vents -->
+  <rect x="28" y="13" width="18" height="1" fill="#c4bbae"/>
+  <rect x="28" y="15" width="18" height="1" fill="#c4bbae"/>
+  <rect x="28" y="17" width="18" height="1" fill="#c4bbae"/>
+
+  <!-- Front bezel inset -->
+  <rect x="17" y="15" width="30" height="25" fill="#d7cfc3"/>
+  <rect x="18" y="16" width="28" height="23" fill="#e7dfd2"/>
+
+  <!-- Screen frame -->
+  <rect x="20" y="18" width="24" height="18" fill="#c4bbae"/>
+  <rect x="21" y="19" width="22" height="16" fill="#1c2326"/>
+
+  <!-- Screen highlight / glass -->
+  <rect x="22" y="20" width="20" height="6" fill="#2a3438" opacity="0.75"/>
+  <rect x="36" y="22" width="4" height="10" fill="#0f1416" opacity="0.35"/>
+
+  <!-- Floppy slot area -->
+  <rect x="18" y="39" width="28" height="4" fill="#d7cfc3"/>
+  <rect x="19" y="40" width="26" height="1" fill="#8f877d"/>
+  <rect x="19" y="41" width="26" height="1" fill="#c4bbae"/>
+
+  <!-- Small logo stripes (bottom left) -->
+  <rect x="19" y="43" width="1" height="2" fill="#a90c23"/>
+  <rect x="20" y="43" width="1" height="2" fill="#ff712d"/>
+  <rect x="21" y="43" width="1" height="2" fill="#ffd55d"/>
+  <rect x="22" y="43" width="1" height="2" fill="#34c059"/>
+  <rect x="23" y="43" width="1" height="2" fill="#00a1de"/>
+
+  <!-- Side vents on depth -->
+  <rect x="11" y="24" width="1" height="14" fill="#c4bbae"/>
+  <rect x="13" y="24" width="1" height="14" fill="#c4bbae"/>
+  <rect x="15" y="24" width="1" height="14" fill="#c4bbae"/>
+
+  <!-- Bottom shadow under computer -->
+  <rect x="13" y="46" width="38" height="2" fill="#8f877d" opacity="0.35"/>
+
+  <!-- === KEYBOARD === -->
+  <!-- Base -->
+  <rect x="12" y="52" width="40" height="8" fill="#e9e2d7"/>
+  <rect x="12" y="59" width="40" height="1" fill="#a59c92"/>
+
+  <!-- Key field -->
+  <rect x="14" y="54" width="36" height="4" fill="#cfc6bb"/>
+
+  <!-- Keys (simple pixel blocks) -->
+  <!-- Row 1 -->
+  <rect x="15" y="55" width="2" height="1" fill="#e9e2d7"/>
+  <rect x="18" y="55" width="2" height="1" fill="#e9e2d7"/>
+  <rect x="21" y="55" width="2" height="1" fill="#e9e2d7"/>
+  <rect x="24" y="55" width="2" height="1" fill="#e9e2d7"/>
+  <rect x="27" y="55" width="2" height="1" fill="#e9e2d7"/>
+  <rect x="30" y="55" width="2" height="1" fill="#e9e2d7"/>
+  <rect x="33" y="55" width="2" height="1" fill="#e9e2d7"/>
+  <rect x="36" y="55" width="2" height="1" fill="#e9e2d7"/>
+  <rect x="39" y="55" width="2" height="1" fill="#e9e2d7"/>
+  <rect x="42" y="55" width="2" height="1" fill="#e9e2d7"/>
+  <rect x="45" y="55" width="2" height="1" fill="#e9e2d7"/>
+  <rect x="48" y="55" width="2" height="1" fill="#e9e2d7"/>
+
+  <!-- Row 2 -->
+  <rect x="15" y="56" width="3" height="1" fill="#e9e2d7"/>
+  <rect x="19" y="56" width="3" height="1" fill="#e9e2d7"/>
+  <rect x="23" y="56" width="3" height="1" fill="#e9e2d7"/>
+  <rect x="27" y="56" width="3" height="1" fill="#e9e2d7"/>
+  <rect x="31" y="56" width="3" height="1" fill="#e9e2d7"/>
+  <rect x="35" y="56" width="3" height="1" fill="#e9e2d7"/>
+  <rect x="39" y="56" width="3" height="1" fill="#e9e2d7"/>
+  <rect x="43" y="56" width="3" height="1" fill="#e9e2d7"/>
+  <rect x="47" y="56" width="3" height="1" fill="#e9e2d7"/>
+
+  <!-- Spacebar -->
+  <rect x="24" y="57" width="16" height="1" fill="#e9e2d7"/>
+  <rect x="24" y="58" width="16" height="1" fill="#a59c92" opacity="0.5"/>
+
+  <!-- Keyboard top shadow -->
+  <rect x="12" y="52" width="40" height="1" fill="#a59c92" opacity="0.35"/>
+
+  <!-- (Optional) tiny cable hint, still no background -->
+  <rect x="6" y="44" width="6" height="1" fill="#8f877d" opacity="0.5"/>
+  <rect x="4" y="45" width="4" height="1" fill="#8f877d" opacity="0.35"/>
+</svg>
