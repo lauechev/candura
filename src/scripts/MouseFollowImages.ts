@@ -60,8 +60,12 @@ export class MouseFollowImages {
     this.mouseY = e.clientY - rect.top;
   };
 
-  private onMouseEnter = () => { this.isHovering = true; };
-  private onMouseLeave = () => { this.isHovering = false; };
+  private onMouseEnter = () => {
+    this.isHovering = true;
+  };
+  private onMouseLeave = () => {
+    this.isHovering = false;
+  };
 
   private initItems() {
     this.items = [];
@@ -72,7 +76,9 @@ export class MouseFollowImages {
       const angle = (i / COUNT) * Math.PI * 2 + Math.random() * 0.6;
       const radius = 60 + Math.random() * 120;
 
-      let bx = 0, by = 0, attempts = 0;
+      let bx = 0,
+        by = 0,
+        attempts = 0;
       do {
         bx = size / 2 + Math.random() * (this.width - size);
         by = size / 2 + Math.random() * (this.height - size);
@@ -80,7 +86,8 @@ export class MouseFollowImages {
       } while (
         attempts < 40 &&
         placed.some((p) => {
-          const dx = p.baseX - bx, dy = p.baseY - by;
+          const dx = p.baseX - bx,
+            dy = p.baseY - by;
           return dx * dx + dy * dy < (p.size + size) * (p.size + size) * 0.5;
         })
       );
@@ -96,7 +103,7 @@ export class MouseFollowImages {
         offsetX: Math.cos(angle) * radius,
         offsetY: Math.sin(angle) * radius,
         stiffness: 0.012 + Math.random() * 0.018, // low = floaty/slow
-        damping: 0.82 + Math.random() * 0.1,      // high = smooth deceleration
+        damping: 0.82 + Math.random() * 0.1, // high = smooth deceleration
         opacity: 0.75 + Math.random() * 0.25,
       };
 
@@ -107,12 +114,8 @@ export class MouseFollowImages {
 
   private update() {
     for (const item of this.items) {
-      const tx = this.isHovering
-        ? this.mouseX + item.offsetX
-        : item.baseX;
-      const ty = this.isHovering
-        ? this.mouseY + item.offsetY
-        : item.baseY;
+      const tx = this.isHovering ? this.mouseX + item.offsetX : item.baseX;
+      const ty = this.isHovering ? this.mouseY + item.offsetY : item.baseY;
 
       // spring force toward target
       item.vx += (tx - item.x) * item.stiffness;
