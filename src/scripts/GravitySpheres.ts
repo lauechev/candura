@@ -11,12 +11,12 @@ interface Sphere {
 }
 
 const GRAVITY = 0.28;
-const RESTITUTION = 0.12;
+const RESTITUTION = 0.38;
 const DAMPING = 0.88;
 const FLOOR_FRICTION = 0.65;
 const SLEEP_SPEED = 0.08;
-const MOUSE_ATTRACT_RADIUS = 350;
-const MOUSE_ATTRACT_FORCE = 10;
+const MOUSE_ATTRACT_RADIUS = 500;
+const MOUSE_ATTRACT_FORCE = 6;
 
 export class GravitySpheres {
   private canvas: HTMLCanvasElement;
@@ -56,6 +56,7 @@ export class GravitySpheres {
 
   private initSpheres() {
     const style = getComputedStyle(document.documentElement);
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
     const palette = [
       { var: '--blue', radius: 85 },
       { var: '--purple', radius: 65 },
@@ -65,14 +66,16 @@ export class GravitySpheres {
       { var: '--green', radius: 60 },
       { var: '--red', radius: 80 },
     ];
+    const mobilePalette = palette.slice(0, 6);
+    const radiusScale = isMobile ? 0.55 : 1;
 
     this.spheres = [];
     for (let rep = 0; rep < 2; rep++) {
-      for (const { var: v, radius: baseRadius } of palette) {
+      for (const { var: v, radius: baseRadius } of isMobile ? mobilePalette : palette) {
         const color = style.getPropertyValue(v).trim();
-        const radius = baseRadius * (0.75 + Math.random() * 0.5);
+        const radius = baseRadius * radiusScale * (0.75 + Math.random() * 0.5);
         const gravity = 0.15 + Math.random() * 0.35;
-        const startAbove = 100 + Math.random() * 2000;
+        const startAbove = 400 + Math.random() * 100;
         const y = -radius - startAbove;
         // initial velocity as if already falling from that height
         const vy = Math.sqrt(2 * gravity * startAbove);
@@ -244,11 +247,7 @@ export class GravitySpheres {
         s.y = this.height - s.radius;
         s.vy *= -RESTITUTION;
         s.vx *= FLOOR_FRICTION;
-        if (Math.abs(s.vy) < 1.2) s.vy = 0;
-      }
-      if (s.y - s.radius < 0) {
-        s.y = s.radius;
-        s.vy *= -RESTITUTION;
+        if (Math.abs(s.vy) < 5) s.vy = 0;
       }
       if (s.x - s.radius < 0) {
         s.x = s.radius;
