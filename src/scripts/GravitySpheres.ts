@@ -5,6 +5,7 @@ interface Sphere {
   vy: number;
   radius: number;
   color: string;
+  colorVar: string;
   mass: number;
   gravity: number;
 }
@@ -86,6 +87,7 @@ export class GravitySpheres {
           vy,
           radius,
           color,
+          colorVar: v,
           mass: radius * radius,
           gravity,
         });
@@ -238,6 +240,9 @@ export class GravitySpheres {
   }
 
   private drawSphere(s: Sphere) {
+    if (!s.color) {
+      s.color = getComputedStyle(document.documentElement).getPropertyValue(s.colorVar).trim();
+    }
     const { ctx } = this;
     ctx.beginPath();
     ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
