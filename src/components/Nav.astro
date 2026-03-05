@@ -231,6 +231,7 @@ const isContact = pathname.startsWith('/contact');
     nav {
       width: 85%;
       padding: 0.8rem 1.5rem;
+      border: 1.5px solid var(--black);
     }
 
     .nav-links {
@@ -279,6 +280,11 @@ const isContact = pathname.startsWith('/contact');
 
     .mobile-overlay {
       width: 70vw;
+      border: 1.5px solid var(--black);
+    }
+
+    .overlay-link {
+      border: 1.5px solid var(--color);
     }
   }
 
@@ -302,6 +308,9 @@ const isContact = pathname.startsWith('/contact');
     }
 
     .mobile-overlay {
+      left: 0;
+      right: 0;
+      width: auto;
       padding: 0.8rem 1rem;
       gap: 0.4rem;
     }
