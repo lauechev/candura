@@ -69,7 +69,7 @@ export class GravitySpheres {
       { var: '--green', radius: 60 },
       { var: '--red', radius: 80 },
     ];
-    const radiusScale = isMobile ? 0.63 : 1.1;
+    const radiusScale = isMobile ? 0.58 : 1.1;
 
     this.spheres = [];
     for (let rep = 0; rep < 2; rep++) {
