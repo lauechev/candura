@@ -17,7 +17,7 @@ const seoTitle = title ? `${title} | ${projectName}` : projectName;
 const seoDescription = description || defaultDescription;
 const baseUrl = new URL(import.meta.env.BASE_URL, Astro.site);
 const pageUrl = new URL(pathname, Astro.site);
-const imgSrc = image ? new URL(image.src, baseUrl) : new URL('imagenOG.PNG', baseUrl);
+const imgSrc = image ? new URL(image.src, baseUrl) : new URL('imagen_OG.png', baseUrl);
 const imgAlt = image ? image.alt : projectName;
 ---
 
