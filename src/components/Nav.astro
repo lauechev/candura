@@ -65,8 +65,10 @@ const isContact = pathname.startsWith('/contact');
 
 <style lang="scss">
   .nav-wrapper {
-    position: sticky;
+    position: fixed;
     top: 1.6%;
+    left: 0;
+    right: 0;
     z-index: 100;
     display: flex;
     justify-content: center;
@@ -76,26 +78,12 @@ const isContact = pathname.startsWith('/contact');
   nav {
     width: 60%;
     pointer-events: auto;
-    background-color: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0.8rem 2rem;
-    opacity: 0.8;
-    box-shadow:
-      0 1px 0 rgba(0, 0, 0, 0),
-      0 2px 8px rgba(0, 0, 0, 0);
-    transition: box-shadow 200ms ease;
     border: 2px solid var(--black);
     border-radius: 15px;
-
-    &.is-scrolled {
-      box-shadow:
-        0 1px 0 rgba(0, 0, 0, 0.08),
-        0 2px 8px rgba(0, 0, 0, 0.04);
-    }
   }
 
   .wordmark {

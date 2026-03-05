@@ -74,7 +74,7 @@ export class GravitySpheres {
       for (const { var: v, radius: baseRadius } of isMobile ? mobilePalette : palette) {
         const color = style.getPropertyValue(v).trim();
         const radius = baseRadius * radiusScale * (0.75 + Math.random() * 0.5);
-        const gravity = 0.58 + Math.random() * 0.65;
+        const gravity = 0.4 + Math.random() * 0.65;
         const startAbove = 400 + Math.random() * 100;
         const y = -radius - startAbove;
         // initial velocity as if already falling from that height
