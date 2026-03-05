@@ -4,11 +4,12 @@ import Footer from '@/components/Footer.astro';
 
 interface Props {
   title?: string;
+  pageHeading?: string;
   description?: string;
   image?: { src: string; alt: string };
 }
 
-const { title, description, image } = Astro.props;
+const { title, pageHeading, description, image } = Astro.props;
 
 const projectName = 'Candura';
 const defaultDescription = 'Candura';
@@ -28,7 +29,7 @@ const imgAlt = image ? image.alt : projectName;
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.svg`} sizes="32x32" />
     <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.svg`} type="image/png" />
-    <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}favicon.png`} />
+    <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}favicon.svg`} />
     <meta name="generator" content={Astro.generator} />
     <link rel="canonical" href={pageUrl} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -63,6 +64,12 @@ const imgAlt = image ? image.alt : projectName;
 
   <body>
     <Nav />
+    {pageHeading && (
+      <div class="page-header-global">
+        <h1 class="page-title">{pageHeading}</h1>
+        <div class="page-rule"></div>
+      </div>
+    )}
     <slot />
     <Footer />
   </body>
@@ -70,4 +77,40 @@ const imgAlt = image ? image.alt : projectName;
 
 <style lang="scss" is:global>
   @use '@/styles/styles.scss';
+
+  .page-header-global {
+    padding: 10rem 5vw 3rem;
+  }
+
+  .page-title {
+    font-family: var(--font-logo) !important;
+    font-size: 7.5rem;
+    font-weight: 400 !important;
+    color: var(--black);
+    margin: 0 0 0.15em !important;
+    line-height: 1 !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  .page-rule {
+    height: 3px;
+    width: clamp(6rem, 18vw, 14rem);
+    background: linear-gradient(
+      to right,
+      var(--blue) 0%,
+      var(--blue) 14.28%,
+      var(--purple) 14.28%,
+      var(--purple) 28.57%,
+      var(--yellow) 28.57%,
+      var(--yellow) 42.85%,
+      var(--orange) 42.85%,
+      var(--orange) 57.14%,
+      var(--pink) 57.14%,
+      var(--pink) 71.42%,
+      var(--green) 71.42%,
+      var(--green) 85.71%,
+      var(--red) 85.71%,
+      var(--red) 100%
+    );
+  }
 </style>

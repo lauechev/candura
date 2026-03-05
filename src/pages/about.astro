@@ -2,118 +2,130 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Divider1 from '@/components/Divider1.astro';
 import Divider2 from '@/components/Divider2.astro';
-import Hero from '@/components/Hero.astro';
 import Intro from '@/components/Intro.astro';
-import TextBlock from '@/components/TextBlock.astro';
+import computer from '../../assets/pixel-computer.svg?url';
 ---
 
-<BaseLayout title="About" description="Learn about Candura — who we are and how we work.">
-  <Intro />
-  <Divider2 />
-  <TextBlock
-    title="Who we are"
-    body=" We are a creative technology studio & consultancy. We work at the intersection of interface design, custom code,
-        and strategic thinking — treating each as inseparable from the others. Data isn't just databases; it's the brand
-        DNA, the user behavior, the reasoning behind every design decision. Code is our creative medium. Design is how
-        it becomes real."
-  />
-  <main class="container">
-    <header class="page-header">
-      <div class="accent-rule"></div>
-      <h1>About</h1>
-    </header>
-
-    <section class="section">
-      <h2>How we work</h2>
-      <h3>We start with questions, not solutions.</h3>
-      <p>
-        Before we design anything, we look at the data — behavioral patterns, user flows, conversion signals. The design
-        brief emerges from that. Not the other way around.
-      </p>
-      <h3>We treat code as a creative material.</h3>
-      <p>
-        Every interaction, transition, and component is considered. Nothing is templated. The technical decisions are
-        aesthetic decisions — and the aesthetic decisions are always intentional.
-      </p>
-      <h3>We start with questions, not solutions.</h3>
-      <p>
-        A website is a design system expressed publicly. We think in components, tokens, and logic — so everything we
-        make is coherent and extensible.
-      </p>
-    </section>
-
-    <section class="section">
-      <h2>Who We Work With</h2>
-      <p>
-        We work with brands and founders who understand that the quality of their digital presence is a business
-        decision — and who are ready to invest in something built specifically for them. No templates. No shortcuts.
-      </p>
-    </section>
-  </main>
-
+<BaseLayout title="About" pageHeading="About" description="Learn about Candura — who we are and how we work.">
   <Divider1 />
+  <Intro />
+
+  <div class="about-page">
+    <div class="about-content">
+      <div class="about-row about-row--full">
+        <div class="about-intro">
+          <img src={computer} alt="Computer illustration" />
+          <p>
+            We help brands get where they're going through boundless design and technology sharp enough to execute it.
+          </p>
+        </div>
+      </div>
+
+      <div class="about-divider"></div>
+
+      <div class="about-row">
+        <h2 class="about-section-title">Who We Are</h2>
+        <p class="about-body">
+          We are a creative technology studio &amp; consultancy. We work at the intersection of interface design, custom
+          code, and strategic thinking treating each as inseparable from the others. Data isn't just databases; it's the
+          brand DNA, the user behavior, the reasoning behind every design decision. Code is our creative medium. Design
+          is how it becomes real.
+        </p>
+      </div>
+
+      <div class="about-divider"></div>
+
+      <div class="about-row about-row--right">
+        <h2 class="about-section-title">How We Work</h2>
+
+        <p class="about-body">
+          Every interaction, transition, and component is considered. Nothing is templated. The technical decisions are
+          aesthetic decisions and the aesthetic decisions are always intentional.
+        </p>
+      </div>
+
+      <div class="about-divider"></div>
+
+      <div class="about-row">
+        <h2 class="about-section-title">Who We Work With</h2>
+        <p class="about-body">
+          We work with brands and founders who understand that the quality of their digital presence is a business
+          decision and who are ready to invest in something built specifically for them. No templates. No shortcuts.
+        </p>
+      </div>
+    </div>
+  </div>
 
   <Divider2 />
 </BaseLayout>
 
-<style lang="scss">
-  main {
-    padding-top: 5rem;
+<style>
+  .about-page {
+    padding: 0 18vw 8rem;
   }
 
-  .page-header {
-    margin-bottom: 4rem;
+  .about-divider {
+    border-top: 2px solid var(--black);
   }
 
-  .accent-rule {
-    width: 3rem;
-    height: 4px;
-    background-color: var(--blue);
-    margin-bottom: 1.5rem;
-    border-radius: 2px;
+  .about-row {
+    padding: 6rem 0rem 6rem 2rem;
+    width: 100%;
+    max-width: 780px;
   }
 
-  h1 {
-    font-family: var(--font-display);
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    font-weight: 700;
+  .about-row--right {
+    padding: 6rem 2rem 6rem 0rem;
+    margin-left: auto;
+    text-align: right;
+  }
+
+  .about-row--full {
+    max-width: 100%;
+  }
+
+  .about-section-title {
+    font-family: var(--font-display) !important;
+    font-size: 4rem;
+    font-weight: 500 !important;
     color: var(--black);
-    margin: 0;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
+    margin: 0 0 1.25rem !important;
+    letter-spacing: 0 !important;
   }
 
-  .section {
-    max-width: 680px;
-    margin-bottom: 3.5rem;
+  .about-intro {
+    font-family: var(--font-body);
+    font-size: 2rem;
+    line-height: 1.65;
+    color: var(--black);
+    width: 100%;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
 
-    h2 {
-      font-family: var(--font-display);
-      font-size: 3rem;
-      font-weight: 700;
-      color: var(--black);
-      margin: 0 0 1rem;
-    }
+  .about-intro p {
+    max-width: 55%;
+    text-align: left;
+  }
 
-    h3 {
-      font-family: var(--font-display);
-      font-size: 1.8rem;
-      font-weight: 600;
-      color: var(--black);
-      margin: 0 0 1rem;
-    }
+  .about-body {
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--black);
+    margin: 0 0 1rem;
+  }
 
-    p {
-      font-family: var(--font-body);
-      font-size: 1.1rem;
-      line-height: 1.75;
-      color: var(--black);
-      opacity: 0.75;
-      margin: 0 0 1rem;
+  .about-body:last-child {
+    margin-bottom: 0;
+  }
 
-      &:last-child {
-        margin-bottom: 0;
-      }
-    }
+  img {
+    width: 30%;
+    margin-left: auto;
+    animation: nudge 4s ease-in-out infinite;
   }
 </style>

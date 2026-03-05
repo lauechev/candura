@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 128" shape-rendering="crispEdges">
+  <!-- Transparent background -->
+
+  <!-- Palette -->
+  <!-- red: #b01818  redDark:#7f0f12  redHi:#e13a3a
+       black:#0b0b0c  charcoal:#151518  gray:#2a2a2f  hi:#4a4a52
+       beige:#d8c79a  beige2:#b8aa84  white:#f2f2f2 -->
+
+  <!-- Antenna -->
+  <rect x="31" y="2" width="2" height="22" fill="#151518"/>
+  <rect x="30" y="24" width="4" height="8" fill="#2a2a2f"/>
+  <rect x="31" y="24" width="1" height="8" fill="#4a4a52"/>
+
+  <!-- Phone body (outer red) -->
+  <rect x="18" y="26" width="28" height="92" fill="#b01818"/>
+  <!-- Side shading -->
+  <rect x="18" y="26" width="3" height="92" fill="#7f0f12"/>
+  <rect x="43" y="26" width="3" height="92" fill="#e13a3a" opacity="0.9"/>
+
+  <!-- Top bevel -->
+  <rect x="20" y="26" width="24" height="3" fill="#e13a3a" opacity="0.7"/>
+
+  <!-- Inner front panel -->
+  <rect x="22" y="30" width="20" height="84" fill="#0b0b0c"/>
+  <rect x="22" y="30" width="1" height="84" fill="#151518"/>
+  <rect x="41" y="30" width="1" height="84" fill="#151518"/>
+
+  <!-- Speaker cavity -->
+  <rect x="24" y="34" width="16" height="18" fill="#151518"/>
+  <rect x="26" y="38" width="12" height="12" rx="0" ry="0" fill="#2a2a2f"/>
+  <!-- Speaker holes -->
+  <g fill="#0b0b0c" opacity="0.85">
+    <rect x="28" y="41" width="1" height="1"/>
+    <rect x="30" y="41" width="1" height="1"/>
+    <rect x="32" y="41" width="1" height="1"/>
+    <rect x="34" y="41" width="1" height="1"/>
+
+    <rect x="28" y="43" width="1" height="1"/>
+    <rect x="30" y="43" width="1" height="1"/>
+    <rect x="32" y="43" width="1" height="1"/>
+    <rect x="34" y="43" width="1" height="1"/>
+
+    <rect x="29" y="45" width="1" height="1"/>
+    <rect x="31" y="45" width="1" height="1"/>
+    <rect x="33" y="45" width="1" height="1"/>
+
+    <rect x="29" y="47" width="1" height="1"/>
+    <rect x="31" y="47" width="1" height="1"/>
+    <rect x="33" y="47" width="1" height="1"/>
+  </g>
+
+  <!-- Keypad area backdrop -->
+  <rect x="24" y="56" width="16" height="40" fill="#151518"/>
+
+  <!-- Numeric keys (3x4) -->
+  <!-- key size 4x4 with 1px gaps -->
+  <g>
+    <!-- row 1 -->
+    <rect x="25" y="58" width="4" height="4" fill="#d8c79a"/>
+    <rect x="30" y="58" width="4" height="4" fill="#d8c79a"/>
+    <rect x="35" y="58" width="4" height="4" fill="#d8c79a"/>
+    <!-- row 2 -->
+    <rect x="25" y="63" width="4" height="4" fill="#d8c79a"/>
+    <rect x="30" y="63" width="4" height="4" fill="#d8c79a"/>
+    <rect x="35" y="63" width="4" height="4" fill="#d8c79a"/>
+    <!-- row 3 -->
+    <rect x="25" y="68" width="4" height="4" fill="#d8c79a"/>
+    <rect x="30" y="68" width="4" height="4" fill="#d8c79a"/>
+    <rect x="35" y="68" width="4" height="4" fill="#d8c79a"/>
+    <!-- row 4 -->
+    <rect x="25" y="73" width="4" height="4" fill="#d8c79a"/>
+    <rect x="30" y="73" width="4" height="4" fill="#d8c79a"/>
+    <rect x="35" y="73" width="4" height="4" fill="#d8c79a"/>
+
+    <!-- subtle shadows on keys -->
+    <g fill="#b8aa84" opacity="0.9">
+      <rect x="25" y="61" width="4" height="1"/>
+      <rect x="30" y="61" width="4" height="1"/>
+      <rect x="35" y="61" width="4" height="1"/>
+
+      <rect x="25" y="66" width="4" height="1"/>
+      <rect x="30" y="66" width="4" height="1"/>
+      <rect x="35" y="66" width="4" height="1"/>
+
+      <rect x="25" y="71" width="4" height="1"/>
+      <rect x="30" y="71" width="4" height="1"/>
+      <rect x="35" y="71" width="4" height="1"/>
+
+      <rect x="25" y="76" width="4" height="1"/>
+      <rect x="30" y="76" width="4" height="1"/>
+      <rect x="35" y="76" width="4" height="1"/>
+    </g>
+  </g>
+
+  <!-- Function keys (2 rows) -->
+  <rect x="25" y="80" width="4" height="4" fill="#2a2a2f"/>
+  <rect x="30" y="80" width="4" height="4" fill="#b01818"/>
+  <rect x="35" y="80" width="4" height="4" fill="#b01818"/>
+
+  <rect x="25" y="85" width="4" height="4" fill="#2a2a2f"/>
+  <rect x="30" y="85" width="4" height="4" fill="#2a2a2f"/>
+  <rect x="35" y="85" width="4" height="4" fill="#2a2a2f"/>
+
+  <!-- Little icon-ish dots -->
+  <g fill="#f2f2f2" opacity="0.8">
+    <rect x="26" y="81" width="1" height="1"/>
+    <rect x="31" y="81" width="1" height="1"/>
+    <rect x="36" y="81" width="1" height="1"/>
+    <rect x="26" y="86" width="1" height="1"/>
+    <rect x="31" y="86" width="1" height="1"/>
+    <rect x="36" y="86" width="1" height="1"/>
+  </g>
+
+  <!-- Bottom label plate -->
+  <rect x="24" y="98" width="16" height="12" fill="#0b0b0c"/>
+  <rect x="24" y="98" width="16" height="1" fill="#151518"/>
+  <rect x="24" y="109" width="16" height="1" fill="#151518"/>
+  <rect x="26" y="104" width="12" height="1" fill="#f2f2f2" opacity="0.65"/>
+
+  <!-- Base lip -->
+  <rect x="20" y="118" width="24" height="4" fill="#7f0f12"/>
+  <rect x="20" y="118" width="24" height="1" fill="#e13a3a" opacity="0.5"/>
+
+  <!-- Small front highlight -->
+  <rect x="23" y="31" width="1" height="82" fill="#4a4a52" opacity="0.35"/>
+</svg>
