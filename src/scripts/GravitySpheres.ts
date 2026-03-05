@@ -7,19 +7,16 @@ interface Sphere {
   color: string;
   mass: number;
   gravity: number;
-  sleepFrames: number;
-  sleeping: boolean;
 }
 
 const RESTITUTION = 0.9;
 const DAMPING = 0.9;
 const FLOOR_FRICTION = 0.65;
 const SLEEP_SPEED = 0.1;
-const SLEEP_FRAMES = 20;
 const MOUSE_ATTRACT_RADIUS = 500;
 const MOUSE_ATTRACT_FORCE = 6;
 const MOUSE_REPEL_RADIUS = 170;
-const MOUSE_REPEL_FORCE = 40;
+const MOUSE_REPEL_FORCE = 50;
 
 export class GravitySpheres {
   private canvas: HTMLCanvasElement;
@@ -89,8 +86,6 @@ export class GravitySpheres {
           color,
           mass: radius * radius,
           gravity,
-          sleepFrames: 0,
-          sleeping: false,
         });
       }
     }
@@ -151,11 +146,6 @@ export class GravitySpheres {
     this.isMouseDown = false;
   };
 
-  private wake(s: Sphere) {
-    s.sleeping = false;
-    s.sleepFrames = 0;
-  }
-
   private resolveCollision(a: Sphere, b: Sphere) {
     const dx = b.x - a.x,
       dy = b.y - a.y;
@@ -168,25 +158,18 @@ export class GravitySpheres {
     const overlap = minDist - dist;
     const total = a.mass + b.mass;
 
-    if (!a.sleeping) {
-      a.x -= nx * overlap * (b.mass / total);
-      a.y -= ny * overlap * (b.mass / total);
-    }
-    if (!b.sleeping) {
-      b.x += nx * overlap * (a.mass / total);
-      b.y += ny * overlap * (a.mass / total);
-    }
+    a.x -= nx * overlap * (b.mass / total);
+    a.y -= ny * overlap * (b.mass / total);
+    b.x += nx * overlap * (a.mass / total);
+    b.y += ny * overlap * (a.mass / total);
 
     const dvx = a.vx - b.vx,
       dvy = a.vy - b.vy;
     const dvn = dvx * nx + dvy * ny;
     if (dvn > 0) return;
 
-    const impulse = (-(1 + RESTITUTION * 0.5) * dvn) / (1 / a.mass + 1 / b.mass);
-    if (impulse === 0) return;
-
-    this.wake(a);
-    this.wake(b);
+    const e = Math.abs(dvn) < 3 ? 0 : RESTITUTION * 0.5;
+    const impulse = (-(1 + e) * dvn) / (1 / a.mass + 1 / b.mass);
     a.vx += (impulse / a.mass) * nx;
     a.vy += (impulse / a.mass) * ny;
     b.vx -= (impulse / b.mass) * nx;
@@ -195,9 +178,8 @@ export class GravitySpheres {
 
   private update() {
     for (const s of this.spheres) {
-      if (s.sleeping) continue;
-
-      s.vy += s.gravity;
+      const onFloor = s.y + s.radius >= this.height - 1;
+      if (!onFloor || Math.abs(s.vy) > 0.5) s.vy += s.gravity;
 
       // Desktop hover → repel spheres near cursor
       if (this.isDesktop && this.isMouseInCanvas && !this.isMouseDown) {
@@ -205,7 +187,6 @@ export class GravitySpheres {
           dy = s.y - this.mouseY;
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < MOUSE_REPEL_RADIUS && dist > 1) {
-          this.wake(s);
           const force = MOUSE_REPEL_FORCE * (1 - dist / MOUSE_REPEL_RADIUS);
           s.vx += (dx / dist) * force;
           s.vy += (dy / dist) * force;
@@ -218,7 +199,6 @@ export class GravitySpheres {
           dy = this.mouseY - s.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < MOUSE_ATTRACT_RADIUS && dist > 1) {
-          this.wake(s);
           const force = MOUSE_ATTRACT_FORCE * (1 - dist / MOUSE_ATTRACT_RADIUS);
           s.vx += (dx / dist) * force;
           s.vy += (dy / dist) * force;
@@ -248,13 +228,6 @@ export class GravitySpheres {
       if (Math.abs(s.vx) < SLEEP_SPEED && Math.abs(s.vy) < SLEEP_SPEED) {
         s.vx = 0;
         s.vy = 0;
-        s.sleepFrames++;
-        if (s.sleepFrames >= SLEEP_FRAMES) {
-          s.sleeping = true;
-          s.y = Math.min(s.y, this.height - s.radius);
-        }
-      } else {
-        s.sleepFrames = 0;
       }
     }
 
