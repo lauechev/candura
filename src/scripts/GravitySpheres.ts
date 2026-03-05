@@ -56,7 +56,7 @@ export class GravitySpheres {
 
   private initSpheres() {
     const style = getComputedStyle(document.documentElement);
-    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const isMobile = window.matchMedia('(max-width: 760px)').matches;
     const palette = [
       { var: '--blue', radius: 85 },
       { var: '--purple', radius: 65 },
@@ -66,12 +66,11 @@ export class GravitySpheres {
       { var: '--green', radius: 60 },
       { var: '--red', radius: 80 },
     ];
-    const mobilePalette = palette.slice(0, 6);
-    const radiusScale = isMobile ? 0.55 : 1;
+    const radiusScale = isMobile ? 0.73 : 1;
 
     this.spheres = [];
     for (let rep = 0; rep < 2; rep++) {
-      for (const { var: v, radius: baseRadius } of isMobile ? mobilePalette : palette) {
+      for (const { var: v, radius: baseRadius } of palette) {
         const color = style.getPropertyValue(v).trim();
         const radius = baseRadius * radiusScale * (0.75 + Math.random() * 0.5);
         const gravity = 0.4 + Math.random() * 0.65;

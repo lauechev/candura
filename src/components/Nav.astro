@@ -31,7 +31,6 @@ const isContact = pathname.startsWith('/contact');
           style="--color: var(--purple); --text: var(--white)">services</a
         >
       </li>
-
       <li>
         <a
           href="/contact"
@@ -40,13 +39,46 @@ const isContact = pathname.startsWith('/contact');
         >
       </li>
     </ul>
+
+    <!-- Dropdown mobile menu -->
+    <div class="mobile-overlay" id="mobile-overlay" aria-hidden="true">
+      <ul class="overlay-links">
+        <li>
+          <a href="/about" class:list={['overlay-link', { 'is-active': isAbout }]} style="--color: var(--blue)">about</a
+          >
+        </li>
+        <li>
+          <a href="/services" class:list={['overlay-link', { 'is-active': isServices }]} style="--color: var(--purple)"
+            >services</a
+          >
+        </li>
+        <li>
+          <a href="/contact" class:list={['overlay-link', { 'is-active': isContact }]} style="--color: var(--orange)"
+            >contact</a
+          >
+        </li>
+      </ul>
+    </div>
   </nav>
 </div>
 
 <script>
   const nav = document.querySelector('nav') as HTMLElement;
   const btn = document.querySelector('.hamburger') as HTMLButtonElement;
-  const links = document.querySelector('.nav-links') as HTMLElement;
+  const overlay = document.getElementById('mobile-overlay') as HTMLElement;
+  const overlayLinks = document.querySelectorAll('.overlay-link');
+
+  function openMenu() {
+    btn.setAttribute('aria-expanded', 'true');
+    overlay.classList.add('is-open');
+    overlay.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeMenu() {
+    btn.setAttribute('aria-expanded', 'false');
+    overlay.classList.remove('is-open');
+    overlay.setAttribute('aria-hidden', 'true');
+  }
 
   window.addEventListener(
     'scroll',
@@ -58,9 +90,10 @@ const isContact = pathname.startsWith('/contact');
 
   btn.addEventListener('click', () => {
     const expanded = btn.getAttribute('aria-expanded') === 'true';
-    btn.setAttribute('aria-expanded', String(!expanded));
-    links.classList.toggle('is-open');
+    expanded ? closeMenu() : openMenu();
   });
+
+  overlayLinks.forEach((link) => link.addEventListener('click', closeMenu));
 </script>
 
 <style lang="scss">
@@ -76,6 +109,7 @@ const isContact = pathname.startsWith('/contact');
   }
 
   nav {
+    position: relative;
     width: 60%;
     pointer-events: auto;
     display: flex;
@@ -111,29 +145,20 @@ const isContact = pathname.startsWith('/contact');
     padding: 0.6rem 1.3rem;
     border-radius: 10px;
     color: var(--black);
-    // background-color: var(--color);
     border: 2px solid var(--color);
     font-family: var(--font-body);
     font-weight: 500;
     font-size: 1.2rem;
-    // box-shadow:
-    //   inset 2px 2px 0 color-mix(in srgb, var(--color), white 50%),
-    //   inset -2px -2px 0 color-mix(in srgb, var(--color), black 40%);
 
     &:hover {
       background-color: var(--color);
-      color: (var(--white));
-      // opacity: 0.9;
+      color: var(--white);
     }
 
     &:active,
     &.is-active {
-      //   box-shadow:
-      //     inset 2px 2px 0 color-mix(in srgb, var(--color), black 40%),
-      //     inset -2px -2px 0 color-mix(in srgb, var(--color), white 50%);
-      //   color: var(--text);
       background-color: var(--color);
-      color: (var(--white));
+      color: var(--white);
     }
   }
 
@@ -141,11 +166,70 @@ const isContact = pathname.startsWith('/contact');
     display: none;
   }
 
-  @media (max-width: 640px) {
+  // ── Dropdown mobile menu ────────────────────────────────────────────────────
+  .mobile-overlay {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 90vw;
+    height: 10vh;
+    z-index: 200;
+    background: var(--white);
+    border: 2px solid var(--black);
+    border-radius: 15px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 1.2rem 1.5rem;
+
+    &.is-open {
+      display: flex;
+    }
+  }
+
+  .overlay-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .overlay-link {
+    font-family: var(--font-body);
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--black);
+    padding: 0.4rem 1.2rem;
+    border-radius: 8px;
+    border: 2px solid var(--color);
+    transition: background-color 150ms ease;
+
+    &:hover,
+    &.is-active {
+      background-color: var(--color);
+    }
+  }
+
+  // ── Tablet ─────────────────────────────────────────────────────────────────
+  @media (max-width: 1024px) {
     nav {
-      flex-wrap: wrap;
-      padding: 1rem;
-      width: 100%;
+      width: 75%;
+    }
+  }
+
+  // ── Mobile (hamburger kicks in) ────────────────────────────────────────────
+  @media (max-width: 760px) {
+    nav {
+      width: 85%;
+      padding: 0.8rem 1.5rem;
+    }
+
+    .nav-links {
+      display: none;
     }
 
     .hamburger {
@@ -156,15 +240,25 @@ const isContact = pathname.startsWith('/contact');
       border: none;
       cursor: pointer;
       padding: 0.25rem;
+      pointer-events: auto;
 
       span {
         display: block;
         width: 24px;
         height: 2px;
-        background: var(--black);
         transition:
           transform 200ms ease,
           opacity 200ms ease;
+      }
+
+      span:nth-child(1) {
+        background: var(--red);
+      }
+      span:nth-child(2) {
+        background: var(--green);
+      }
+      span:nth-child(3) {
+        background: var(--orange);
       }
 
       &[aria-expanded='true'] span:nth-child(1) {
@@ -178,16 +272,20 @@ const isContact = pathname.startsWith('/contact');
       }
     }
 
-    .nav-links {
-      display: none;
-      flex-direction: column;
-      width: 100%;
-      padding: 0.5rem 0 0.5rem;
-      gap: 0.5rem;
+    .mobile-overlay {
+      width: 70vw;
+    }
+  }
 
-      &.is-open {
-        display: flex;
-      }
+  // ── Small mobile ───────────────────────────────────────────────────────────
+  @media (max-width: 500px) {
+    nav {
+      width: 90%;
+      padding: 0.7rem 1.2rem;
+    }
+
+    .mobile-overlay {
+      width: 90vw;
     }
   }
 </style>

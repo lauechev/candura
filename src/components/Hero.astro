@@ -104,4 +104,46 @@ const { tagline } = Astro.props;
     padding: 0em 0.1em 1em;
     // border-radius: 8px;
   }
+
+  // ── Tablet ────────────────────────────────────────────────────────────────
+  @media (max-width: 1024px) {
+    .hero {
+      height: 98vh;
+    }
+
+    .tagline {
+      font-size: 3em;
+      line-height: 1.1;
+      width: 50%;
+      // padding: 0rem 1.8rem 2rem 1.8rem;
+    }
+  }
+
+  // ── Mobile landscape / small tablet ───────────────────────────────────────
+  @media (max-width: 768px) {
+    .hero {
+      height: 92vh;
+    }
+
+    .tagline {
+      font-size: 3rem;
+      line-height: 1.05;
+      width: 80%;
+      padding-bottom: 4rem;
+    }
+  }
+
+  // ── Mobile portrait ───────────────────────────────────────────────────────
+  @media (max-width: 480px) {
+    .hero {
+      height: 94vh;
+    }
+
+    .tagline {
+      font-size: 2.5rem;
+      line-height: 1;
+      width: 85%;
+      padding-bottom: 12rem;
+    }
+  }
 </style>
