@@ -48,10 +48,12 @@ export class GravitySpheres {
   }
 
   private resize() {
+    const dpr = window.devicePixelRatio || 1;
     this.width = this.canvas.offsetWidth;
     this.height = this.canvas.offsetHeight;
-    this.canvas.width = this.width;
-    this.canvas.height = this.height;
+    this.canvas.width = this.width * dpr;
+    this.canvas.height = this.height * dpr;
+    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
   private initSpheres() {
