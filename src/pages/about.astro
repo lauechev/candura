@@ -3,6 +3,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Divider1 from '@/components/Divider1.astro';
 import Divider2 from '@/components/Divider2.astro';
 import Intro from '@/components/Intro.astro';
+import ImageText from '@/components/ImageText.astro';
 import computer from '../../assets/pixel-computer.svg?url';
 import phone from '../../assets/phone.svg?url';
 import cd from '../../assets/cd.png?url';
@@ -15,204 +16,24 @@ import gameboy from '../../assets/gameboy.png?url';
   <Intro />
 
   <div class="about-sections">
-    <!-- Section 1: text LEFT | image RIGHT -->
-    <div class="about-split">
-      <div class="split-text">
-        <h2>Who We Are</h2>
-        <p>
-          We are a creative technology studio &amp; consultancy. We work at the intersection of interface design, custom
-          code, and strategic thinking treating each as inseparable from the others. Data isn't just databases; it's the
-          brand DNA, the user behavior, the reasoning behind every design decision. Code is our creative medium. Design
-          is how it becomes real.
-        </p>
-      </div>
-      <div class="split-image img1">
-        <img src={vinyl} alt="Computer illustration" />
-      </div>
-    </div>
-
-    <!-- Section 2: image LEFT | text RIGHT -->
-    <div class="about-split about-split--reverse">
-      <div class="split-image img2">
-        <img src={phone} alt="Computer illustration" />
-      </div>
-      <div class="split-text">
-        <h2>How We Work</h2>
-        <p>
-          Every interaction, transition, and component is considered. Nothing is templated. The technical decisions are
-          aesthetic decisions and the aesthetic decisions are always intentional.
-        </p>
-      </div>
-    </div>
-
-    <!-- Section 3: text LEFT | image RIGHT -->
-    <div class="about-split">
-      <div class="split-text">
-        <h2>Who We Work With</h2>
-        <p>
-          We work with brands and founders who understand that the quality of their digital presence is a business
-          decision and who are ready to invest in something built specifically for them. No templates. No shortcuts.
-        </p>
-      </div>
-      <div class="split-image img3">
-        <img src={heart} alt="Computer illustration" />
-      </div>
-    </div>
+    <ImageText
+      title="Who We Are"
+      description="We are a creative technology studio & consultancy. We work at the intersection of interface design, custom code, and strategic thinking treating each as inseparable from the others. Data isn't just databases; it's the brand DNA, the user behavior, the reasoning behind every design decision. Code is our creative medium. Design is how it becomes real."
+      image={vinyl}
+      color="var(--blue)"
+    />
+    <ImageText
+      title="How We Work"
+      description="Every interaction, transition, and component is considered. Nothing is templated. The technical decisions are aesthetic decisions and the aesthetic decisions are always intentional."
+      image={phone}
+      color="var(--pink)"
+      reverse
+    />
+    <ImageText
+      title="Who We Work With"
+      description="We work with brands and founders who understand that the quality of their digital presence is a business decision and who are ready to invest in something built specifically for them. No templates. No shortcuts."
+      image={heart}
+      color="var(--yellow)"
+    />
   </div>
 </BaseLayout>
-
-<style is:global>
-  .about-sections {
-  }
-
-  .about-split {
-    display: grid;
-    grid-template-columns: 1fr 38%;
-    border-bottom: 2px solid var(--black);
-    min-height: 40vh;
-  }
-
-  .about-split--reverse {
-    grid-template-columns: 38% 1fr;
-  }
-
-  .split-text {
-    background: var(--white);
-    padding: 3.5rem 4rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    border-right: 2px solid var(--black);
-  }
-
-  .about-split--reverse .split-text {
-    border-right: none;
-    border-left: 2px solid var(--black);
-    text-align: right;
-  }
-
-  .split-image {
-    background: var(--black);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2.5rem;
-  }
-
-  .img1 {
-    background-color: var(--blue);
-  }
-
-  .img1 img {
-    width: 10vw !important;
-  }
-
-  .img2 {
-    background-color: var(--pink);
-  }
-
-  .img2 img {
-    width: auto;
-    max-height: 31vh;
-  }
-
-  .img3 {
-    background-color: var(--yellow);
-  }
-
-  .split-image img {
-    width: 55%;
-    display: block;
-  }
-
-  .split-text h2 {
-    font-family: var(--font-display) !important;
-    font-size: clamp(1.8rem, 3vw, 2.8rem) !important;
-    font-weight: 500 !important;
-    color: var(--black);
-    margin: 0 0 1.25rem !important;
-    letter-spacing: 0 !important;
-  }
-
-  .split-text p {
-    font-family: var(--font-body);
-    font-size: 1.0625rem;
-    line-height: 1.75;
-    color: var(--black);
-    margin: 0;
-  }
-
-  /* ── Tablet & Mobile ────────────────────────────────────────────────── */
-  @media (max-width: 768px) {
-    .about-split,
-    .about-split--reverse {
-      grid-template-columns: 1fr;
-      min-height: unset;
-    }
-
-    /* image always above text — move image to top for all sections */
-    .split-image {
-      order: -1;
-      height: 40vw;
-      min-height: unset;
-      border-right: none;
-      border-left: none;
-      border-bottom: 2px solid var(--black);
-      border-right: 2px solid var(--black);
-      border-left: 2px solid var(--black);
-    }
-
-    .split-text {
-      order: 0;
-      border-right: none;
-      border-left: none;
-      padding: 2.5rem 2.5rem;
-    }
-
-    .split-text h2 {
-      font-size: 3rem !important;
-    }
-
-    .about-split--reverse .split-text {
-      text-align: left;
-    }
-
-    .img1 img {
-      width: auto !important;
-      height: 60%;
-    }
-
-    .img2 img {
-      width: auto;
-      max-height: 70%;
-    }
-
-    .split-image img {
-      width: auto;
-      max-height: 70%;
-    }
-  }
-
-  /* ── Small mobile ────────────────────────────────────────────────────── */
-  @media (max-width: 500px) {
-    .split-image {
-      height: 50vw;
-      border-right: 2px solid var(--black);
-      border-left: 2px solid var(--black);
-    }
-
-    .split-text {
-      padding: 2rem 1.5rem;
-      justify-content: flex-start;
-    }
-
-    .split-text h2 {
-      font-size: 1.6rem !important;
-      margin-bottom: 0.75rem !important;
-    }
-
-    .split-text p {
-      font-size: 0.95rem;
-    }
-  }
-</style>
