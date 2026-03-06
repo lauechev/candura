@@ -84,6 +84,16 @@ const imgAlt = image ? image.alt : projectName;
     padding: 10rem 5vw 3rem;
   }
 
+  .page-title {
+    font-family: var(--font-logo) !important;
+    font-size: clamp(4.8rem, 8vw, 7rem) !important;
+    font-weight: 400 !important;
+    color: var(--black);
+    margin: 0 0 0.15em !important;
+    line-height: 1 !important;
+    letter-spacing: -0.02em !important;
+  }
+
   @media (max-width: 1024px) {
     .page-header-global {
       padding-top: 12rem;
@@ -98,23 +108,13 @@ const imgAlt = image ? image.alt : projectName;
 
   @media (max-width: 500px) {
     .page-header-global {
-      padding-top: 16rem;
+      padding-top: 14rem;
     }
-  }
-
-  .page-title {
-    font-family: var(--font-logo) !important;
-    font-size: 7rem;
-    font-weight: 400 !important;
-    color: var(--black);
-    margin: 0 0 0.15em !important;
-    line-height: 1 !important;
-    letter-spacing: -0.02em !important;
   }
 
   .page-rule {
     height: 3px;
-    width: clamp(6rem, 18vw, 14rem);
+    width: clamp(8rem, 18vw, 10rem);
     background: linear-gradient(
       to right,
       var(--blue) 0%,
