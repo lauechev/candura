@@ -144,9 +144,10 @@ const isContact = pathname.startsWith('/contact');
   .nav-link {
     display: inline-block;
     padding: 0.3rem 1rem;
+    margin-right: 0.5rem;
     border-radius: 10px;
     color: var(--black);
-    border: 2px solid var(--color);
+    border: 1px solid transparent;
     font-family: var(--font-body);
     font-weight: 500;
     font-size: 0.95rem;
@@ -154,12 +155,14 @@ const isContact = pathname.startsWith('/contact');
     &:hover {
       background-color: var(--color);
       color: var(--white);
+      border: 1.8px solid var(--black);
     }
 
     &:active,
     &.is-active {
       background-color: var(--color);
       color: var(--white);
+      border: 1.8px solid var(--black);
     }
   }
 
@@ -206,12 +209,14 @@ const isContact = pathname.startsWith('/contact');
     color: var(--black);
     padding: 0.4rem 1.2rem;
     border-radius: 8px;
-    border: 2px solid var(--color);
+    border: 1px solid transparent;
     transition: background-color 150ms ease;
 
     &:hover,
     &.is-active {
       background-color: var(--color);
+      color: var(--white);
+      border: 1.8px solid var(--black);
     }
   }
 
@@ -282,10 +287,6 @@ const isContact = pathname.startsWith('/contact');
     .mobile-overlay {
       width: 70vw;
       border: 1.5px solid var(--black);
-    }
-
-    .overlay-link {
-      border: 1.5px solid var(--color);
     }
   }
 
