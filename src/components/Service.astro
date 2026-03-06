@@ -1,0 +1,147 @@
+---
+interface Props {
+  title: string;
+  color: string;
+  services: Array<{ title: string; description: string }>;
+}
+
+const { title, color, services } = Astro.props;
+---
+
+<div class="service-pillar">
+  <button class="service-banner" aria-expanded="false" style={`--banner-color: ${color}`}>
+    <span class="banner-title">{title}</span>
+    <svg
+      class="banner-chevron"
+      aria-hidden="true"
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <line x1="10" y1="2" x2="10" y2="18" stroke="var(--black)" stroke-width="2" stroke-linecap="round"></line>
+      <line x1="2" y1="10" x2="18" y2="10" stroke="var(--black)" stroke-width="2" stroke-linecap="round"></line>
+    </svg>
+  </button>
+  <div class="service-content">
+    {
+      services.map((s: { title: string; description: string }) => (
+        <div class="service-item">
+          <h3>{s.title}</h3>
+          <p>{s.description}</p>
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<script>
+  const pillars = document.querySelectorAll<HTMLElement>('.service-pillar');
+
+  pillars.forEach((pillar) => {
+    const btn = pillar.querySelector<HTMLButtonElement>('.service-banner')!;
+    const content = pillar.querySelector<HTMLElement>('.service-content')!;
+
+    btn.addEventListener('click', () => {
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+
+      // Close all other pillars
+      pillars.forEach((other) => {
+        if (other === pillar) return;
+        const otherBtn = other.querySelector<HTMLButtonElement>('.service-banner')!;
+        const otherContent = other.querySelector<HTMLElement>('.service-content')!;
+        otherBtn.setAttribute('aria-expanded', 'false');
+        otherContent.style.height = '0';
+      });
+
+      // Toggle this pillar
+      if (isOpen) {
+        btn.setAttribute('aria-expanded', 'false');
+        content.style.height = '0';
+      } else {
+        btn.setAttribute('aria-expanded', 'true');
+        content.style.height = content.scrollHeight + 'px';
+      }
+    });
+  });
+</script>
+
+<style lang="scss">
+  .service-pillar {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    border-top: 2px solid var(--black);
+    border-left: 2px solid var(--black);
+    border-right: 2px solid var(--black);
+
+    // &:not(:first-child) {
+    //   box-shadow: 0 -6px 10px rgba(0, 0, 0, 0.15);
+    // }
+
+    &:last-child {
+      border-bottom: 2px solid var(--black);
+    }
+  }
+
+  .service-banner {
+    width: 100%;
+    background: var(--banner-color);
+    color: var(--white);
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 8vw, 5.3rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-align: left;
+  }
+
+  .banner-chevron {
+    width: 1.1rem;
+    height: 1.1rem;
+    flex-shrink: 0;
+    margin-left: 1rem;
+    transition: transform 350ms ease;
+
+    .service-banner[aria-expanded='true'] & {
+      transform: rotate(45deg);
+    }
+  }
+
+  .service-content {
+    height: 0;
+    overflow: hidden;
+    transition: height 350ms ease;
+    background: var(--white);
+  }
+
+  .service-item {
+    padding: 2rem;
+    color: var(--black);
+    border-top: 2px solid var(--black);
+    border-left: 2px solid var(--black);
+    border-right: 2px solid var(--black);
+
+    h3 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 8vw, 2.5rem);
+      font-weight: 600;
+      margin: 0 0 0.5rem;
+    }
+
+    p {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.65;
+      margin: 0;
+      max-width: 72ch;
+    }
+  }
+</style>

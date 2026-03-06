@@ -1,136 +1,110 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import Service from '@/components/Service.astro';
 
-const services = [
+const pillars = [
   {
-    title: 'Shopify Store Development',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna.',
-    color: 'var(--blue)',
+    title: 'Shopify Development',
+    color: 'var(--red)',
+    services: [
+      {
+        title: 'Complete Store',
+        description:
+          'You have a product and a vision. We build the storefront from the ground up: architecture, design, and development aligned from day one.',
+      },
+      {
+        title: 'Store Expansion',
+        description:
+          "Your store exists. Now it needs to grow. We build on what's there — new sections, new functionality, new pages — without breaking what works.",
+      },
+      {
+        title: 'Store Redesign',
+        description:
+          "Same store, entirely new direction. We audit what you have, define where you're going, and rebuild the experience around it.",
+      },
+    ],
   },
   {
-    title: 'Website development',
-    description:
-      'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    color: 'var(--purple)',
-  },
-  {
-    title: 'Digital Design',
-    description:
-      'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-    color: 'var(--yellow)',
-  },
-  {
-    title: 'Strategy & Consulting',
-    description:
-      'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    color: 'var(--orange)',
-  },
-  {
-    title: 'Brand Identity',
-    description:
-      'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium totam rem.',
+    title: 'Web Development',
     color: 'var(--pink)',
+    services: [
+      {
+        title: 'Website Development',
+        description: 'From one-pager landing to full-on digital journeys, we focus on one thing: engagement.',
+      },
+    ],
   },
   {
-    title: 'Creative Direction',
-    description:
-      'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores.',
+    title: 'Design',
     color: 'var(--green)',
+    services: [
+      {
+        title: 'UX/UI & Interface Design',
+        description: 'From wireframe to final spec. Every interaction considered, every screen purposeful.',
+      },
+      {
+        title: 'Design Systems',
+        description:
+          'A coherent visual language expressed in components, tokens, and documentation. Design that scales without losing integrity.',
+      },
+      {
+        title: 'Data Visualization',
+        description:
+          'How you present data is a design problem. We shape complex information into something legible, precise, and visually coherent.',
+      },
+      {
+        title: 'Brand Universe',
+        description:
+          'We define the visual direction — color, typography, spatial language, tone — and shape a cohesive brand world.',
+      },
+    ],
+  },
+  {
+    title: 'Consulting & Strategy',
+    color: 'var(--orange)',
+    services: [
+      {
+        title: 'UI/UX Audit',
+        description:
+          "A structured review of your interface: what's working, what's creating friction, and what to prioritize. Delivered as a clear, actionable report.",
+      },
+      {
+        title: 'Shopify Audit',
+        description:
+          'We go through your store the way a first-time visitor would — then the way an analyst would. You get both perspectives in one document.',
+      },
+      {
+        title: 'Creative Consulting',
+        description:
+          'For teams that have executional resources but need directional clarity. We help define or sharpen the visual language of your brand.',
+      },
+    ],
   },
 ];
 ---
 
 <BaseLayout pageHeading="Services" title="Services" description="What Candura offers — from strategy to execution.">
   <main class="container">
-    <header class="page-header"></header>
-    <div class="grid">
-      {
-        services.map((service) => (
-          <article class="card" style={`--accent: ${service.color}`}>
-            <div class="card-accent" />
-            <h2>{service.title}</h2>
-            <p>{service.description}</p>
-          </article>
-        ))
-      }
+    <div class="pillars">
+      {pillars.map((pillar) => <Service title={pillar.title} color={pillar.color} services={pillar.services} />)}
     </div>
   </main>
 </BaseLayout>
 
 <style lang="scss">
   main {
-    padding-top: 5rem;
-    padding-bottom: 6rem;
+    padding-top: 1rem;
+    padding-bottom: 3rem;
   }
 
-  .page-header {
-    margin-bottom: 4rem;
+  .pillars {
+    display: flex;
+    flex-direction: column;
   }
 
-  .accent-rule {
-    width: 3rem;
-    height: 4px;
-    background-color: var(--purple);
-    margin-bottom: 1.5rem;
-    border-radius: 2px;
-  }
-
-  h1 {
-    font-family: var(--font-display);
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    font-weight: 700;
-    color: var(--black);
-    margin: 0;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-  }
-
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-
-    @media (max-width: 900px) {
-      grid-template-columns: repeat(2, 1fr);
+  @media (max-width: 768px) {
+    main {
+      padding-bottom: 8rem;
     }
-
-    @media (max-width: 560px) {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .card {
-    padding: 2rem;
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 4px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .card-accent {
-    width: 100%;
-    height: 4px;
-    background-color: var(--accent);
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-
-  h2 {
-    font-family: var(--font-display);
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--black);
-    margin: 0.5rem 0 0.75rem;
-  }
-
-  p {
-    font-family: var(--font-body);
-    font-size: 0.9375rem;
-    line-height: 1.65;
-    color: var(--black);
-    opacity: 0.65;
-    margin: 0;
   }
 </style>

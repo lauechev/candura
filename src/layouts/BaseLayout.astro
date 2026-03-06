@@ -1,6 +1,7 @@
 ---
 import Nav from '@/components/Nav.astro';
 import Footer from '@/components/Footer.astro';
+import Divider2 from '@/components/Divider2.astro';
 
 interface Props {
   title?: string;
@@ -73,6 +74,7 @@ const imgAlt = image ? image.alt : projectName;
       )
     }
     <slot />
+    <Divider2 />
     <Footer />
   </body>
 </html>
@@ -81,15 +83,15 @@ const imgAlt = image ? image.alt : projectName;
   @use '@/styles/styles.scss';
 
   .page-header-global {
-    padding: 10rem 5vw 3rem;
+    padding: 8rem 5vw 3rem;
   }
 
   .page-title {
     font-family: var(--font-logo) !important;
-    font-size: clamp(4.8rem, 8vw, 7rem) !important;
+    font-size: clamp(4.5rem, 8vw, 6rem) !important;
     font-weight: 400 !important;
     color: var(--black);
-    margin: 0 0 0.15em !important;
+    margin: 0 0 0.1em !important;
     line-height: 1 !important;
     letter-spacing: -0.02em !important;
   }
@@ -102,13 +104,13 @@ const imgAlt = image ? image.alt : projectName;
 
   @media (max-width: 768px) {
     .page-header-global {
-      padding-top: 14rem;
+      padding-top: 12rem;
     }
   }
 
   @media (max-width: 500px) {
     .page-header-global {
-      padding-top: 14rem;
+      padding-top: 12rem;
     }
   }
 
