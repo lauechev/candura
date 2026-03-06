@@ -64,12 +64,14 @@ const imgAlt = image ? image.alt : projectName;
 
   <body>
     <Nav />
-    {pageHeading && (
-      <div class="page-header-global">
-        <h1 class="page-title">{pageHeading}</h1>
-        <div class="page-rule"></div>
-      </div>
-    )}
+    {
+      pageHeading && (
+        <div class="page-header-global">
+          <h1 class="page-title">{pageHeading}</h1>
+          <div class="page-rule" />
+        </div>
+      )
+    }
     <slot />
     <Footer />
   </body>
@@ -82,9 +84,27 @@ const imgAlt = image ? image.alt : projectName;
     padding: 10rem 5vw 3rem;
   }
 
+  @media (max-width: 1024px) {
+    .page-header-global {
+      padding-top: 12rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .page-header-global {
+      padding-top: 14rem;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .page-header-global {
+      padding-top: 16rem;
+    }
+  }
+
   .page-title {
     font-family: var(--font-logo) !important;
-    font-size: 7.5rem;
+    font-size: 7rem;
     font-weight: 400 !important;
     color: var(--black);
     margin: 0 0 0.15em !important;
@@ -103,14 +123,14 @@ const imgAlt = image ? image.alt : projectName;
       var(--purple) 28.57%,
       var(--yellow) 28.57%,
       var(--yellow) 42.85%,
-      var(--orange) 42.85%,
-      var(--orange) 57.14%,
+      var(--red) 42.85%,
+      var(--red) 57.14%,
       var(--pink) 57.14%,
       var(--pink) 71.42%,
-      var(--green) 71.42%,
+      var(--orange) 71.42%,
+      var(--orange) 85.71%,
       var(--green) 85.71%,
-      var(--red) 85.71%,
-      var(--red) 100%
+      var(--green) 100%
     );
   }
 </style>
