@@ -8,8 +8,8 @@ interface Props {
 const { title, color, services } = Astro.props;
 ---
 
-<div class="service-pillar">
-  <button class="service-banner" aria-expanded="false" style={`--banner-color: ${color}`}>
+<div class="service-pillar" style={`--banner-color: ${color}`}>
+  <button class="service-banner" aria-expanded="false">
     <span class="banner-title">{title}</span>
     <svg
       class="banner-chevron"
@@ -69,27 +69,21 @@ const { title, color, services } = Astro.props;
 
 <style lang="scss">
   .service-pillar {
-    width: 100vw;
+    width: calc(100vw - 2rem);
     position: relative;
     left: 50%;
     transform: translateX(-50%);
-    border-top: 2px solid var(--black);
-    border-left: 2px solid var(--black);
-    border-right: 2px solid var(--black);
-
-    // &:not(:first-child) {
-    //   box-shadow: 0 -6px 10px rgba(0, 0, 0, 0.15);
-    // }
-
-    &:last-child {
-      border-bottom: 2px solid var(--black);
-    }
+    border: 2px solid var(--black);
+    border-radius: 15px;
+    overflow: hidden;
+    margin-bottom: 0.7rem;
   }
 
   .service-banner {
     width: 100%;
-    background: var(--banner-color);
-    color: var(--white);
+    background: var(--white);
+    color: var(--black);
+
     border: none;
     cursor: pointer;
     padding: 0.5rem 2rem;
@@ -97,10 +91,23 @@ const { title, color, services } = Astro.props;
     align-items: center;
     justify-content: space-between;
     font-family: var(--font-display);
-    font-size: clamp(2rem, 8vw, 5.3rem);
+    font-size: clamp(2.5rem, 8vw, 5rem);
     font-weight: 600;
     letter-spacing: -0.02em;
     text-align: left;
+    transition:
+      background 200ms ease,
+      color 200ms ease;
+
+    &:hover,
+    &[aria-expanded='true'] {
+      background: var(--banner-color);
+      color: var(--white);
+
+      .banner-chevron line {
+        stroke: var(--white);
+      }
+    }
   }
 
   .banner-chevron {
@@ -109,6 +116,10 @@ const { title, color, services } = Astro.props;
     flex-shrink: 0;
     margin-left: 1rem;
     transition: transform 350ms ease;
+
+    line {
+      transition: stroke 200ms ease;
+    }
 
     .service-banner[aria-expanded='true'] & {
       transform: rotate(45deg);
@@ -122,16 +133,26 @@ const { title, color, services } = Astro.props;
     background: var(--white);
   }
 
+  @media (max-width: 768px) {
+    .service-banner {
+      height: 22vw;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .service-banner {
+      height: 28vw;
+    }
+  }
+
   .service-item {
     padding: 2rem;
     color: var(--black);
     border-top: 2px solid var(--black);
-    border-left: 2px solid var(--black);
-    border-right: 2px solid var(--black);
 
     h3 {
       font-family: var(--font-display);
-      font-size: clamp(2rem, 8vw, 2.5rem);
+      font-size: 2.5rem;
       font-weight: 600;
       margin: 0 0 0.5rem;
     }
