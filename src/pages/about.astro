@@ -4,9 +4,9 @@ import Divider1 from '@/components/Divider1.astro';
 import Divider2 from '@/components/Divider2.astro';
 import Intro from '@/components/Intro.astro';
 import ImageText from '@/components/ImageText.astro';
-const phone = '/phone.svg';
-const heart = '/heart.png';
-const vinyl = '/vinyl.png';
+const floppy = '/floppy.svg';
+const heart = '/heart.svg';
+const mouse = '/mouse.svg';
 ---
 
 <BaseLayout title="About" pageHeading="About" description="Learn about Candura — who we are and how we work.">
@@ -16,13 +16,13 @@ const vinyl = '/vinyl.png';
     <ImageText
       title="Who We Are"
       description="We are a creative technology studio & consultancy. We work at the intersection of interface design, custom code, and strategic thinking treating each as inseparable from the others. Data isn't just databases; it's the brand DNA, the user behavior, the reasoning behind every design decision. Code is our creative medium. Design is how it becomes real."
-      image={vinyl}
+      image={floppy}
       color="var(--blue)"
     />
     <ImageText
       title="How We Work"
       description="Every interaction, transition, and component is considered. Nothing is templated. The technical decisions are aesthetic decisions and the aesthetic decisions are always intentional."
-      image={phone}
+      image={mouse}
       color="var(--pink)"
       reverse
     />
@@ -31,6 +31,7 @@ const vinyl = '/vinyl.png';
       description="We work with brands and founders who understand that the quality of their digital presence is a business decision and who are ready to invest in something built specifically for them. No templates. No shortcuts."
       image={heart}
       color="var(--yellow)"
+      imageSize="60%"
     />
   </div>
 </BaseLayout>
