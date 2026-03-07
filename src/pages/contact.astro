@@ -2,83 +2,70 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Contact" description="Get in touch with Candura.">
-  <main class="container">
-    <div class="layout">
-      <div class="info">
-        <div class="accent-rule"></div>
-        <h1>Let's work<br />together.</h1>
-        <p class="intro">
-          Have a project in mind? We'd love to hear about it. Reach out and let's start a conversation.
-        </p>
-        <div class="contact-details">
-          <p class="name">Your Name</p>
-          <a href="mailto:hello@candura.studio" class="email">hello@candura.studio</a>
-        </div>
-        <div class="dots" aria-hidden="true">
-          <span style="background: var(--blue)"></span>
-          <span style="background: var(--purple)"></span>
-          <span style="background: var(--yellow)"></span>
-          <span style="background: var(--orange)"></span>
-          <span style="background: var(--pink)"></span>
-          <span style="background: var(--green)"></span>
-          <span style="background: var(--red)"></span>
-        </div>
+<BaseLayout pageHeading="Contact" title="Contact" description="Get in touch with Candura.">
+  <main>
+    <div class="contact-card">
+      <div class="card-left">
+        <h1>Let's talk</h1>
       </div>
-
-      <form class="form" action="#" method="post">
-        <div class="field">
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" placeholder="Your name" required />
-        </div>
-        <div class="field">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" placeholder="your@email.com" required />
-        </div>
-        <div class="field">
-          <label for="message">Message</label>
-          <textarea id="message" name="message" rows="6" placeholder="Tell us about your project…" required></textarea>
-        </div>
-        <button type="submit">Send message</button>
-      </form>
+      <div class="card-right">
+        <p class="intro">Have a project in mind? We'd love to hear about it. Email us at:</p>
+        <a href="mailto:candura.studio@gmail.com" class="email">💌 candura.studio@gmail.com</a>
+      </div>
     </div>
   </main>
 </BaseLayout>
 
 <style lang="scss">
   main {
-    padding-top: 5rem;
-    padding-bottom: 6rem;
+    display: flex;
+    justify-content: center;
+    padding: 4.5rem 3rem 11.5rem;
   }
 
-  .layout {
+  .contact-card {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6rem;
-    align-items: start;
-
-    @media (max-width: 768px) {
-      grid-template-columns: 1fr;
-      gap: 3rem;
-    }
+    grid-template-columns: 38% 1fr;
+    border: 2px solid var(--black);
+    border-radius: 15px;
+    overflow: hidden;
+    width: 88vw;
+    min-height: 28vh;
   }
 
-  .accent-rule {
-    width: 3rem;
-    height: 4px;
-    background-color: var(--red);
-    margin-bottom: 1.5rem;
-    border-radius: 2px;
+  .card-left {
+    background: var(--purple);
+    display: flex;
+    align-items: flex-end;
+    padding: 2rem 3rem;
   }
 
   h1 {
     font-family: var(--font-display);
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    font-weight: 700;
-    color: var(--black);
-    margin: 0 0 1.5rem;
+    font-size: clamp(3.5rem, 7vw, 5.5rem);
+    font-weight: 600;
+    color: var(--white);
+    margin: 0;
     letter-spacing: -0.02em;
-    line-height: 1.1;
+    line-height: 1;
+  }
+
+  .intro {
+    font-family: var(--font-body);
+    font-size: clamp(3.5rem, 8vw, 0.1rem);
+    font-weight: 400;
+    color: var(--white);
+    letter-spacing: -0.02em;
+  }
+
+  .card-right {
+    background: var(--white);
+    border-left: 2px solid var(--black);
+    padding: 2.5rem 3.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 1.5rem;
   }
 
   .intro {
@@ -87,103 +74,39 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     line-height: 1.7;
     color: var(--black);
     opacity: 0.65;
-    margin: 0 0 2.5rem;
-  }
-
-  .contact-details {
-    margin-bottom: 3rem;
-  }
-
-  .name {
-    font-family: var(--font-body);
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--black);
-    margin: 0 0 0.25rem;
+    margin: 0;
+    max-width: 42ch;
   }
 
   .email {
-    font-family: var(--font-body);
-    font-size: 1rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+    font-weight: 500;
     color: var(--black);
-    text-decoration: underline;
-    text-underline-offset: 3px;
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    line-height: 1;
 
     &:hover {
       opacity: 0.6;
     }
   }
 
-  .dots {
-    display: flex;
-    gap: 0.5rem;
-
-    span {
-      display: block;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-    }
-  }
-
-  // Form
-  .form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .field {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  label {
-    font-family: var(--font-body);
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--black);
-  }
-
-  input,
-  textarea {
-    font-family: var(--font-body);
-    font-size: 1rem;
-    color: var(--black);
-    background: transparent;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-    padding: 0.75rem 1rem;
-    width: 100%;
-    transition: border-color 150ms ease;
-    resize: vertical;
-
-    &::placeholder {
-      opacity: 0.35;
+  @media (max-width: 768px) {
+    .contact-card {
+      grid-template-columns: 1fr;
+      min-height: unset;
     }
 
-    &:focus {
-      outline: none;
-      border-color: var(--black);
+    .card-left {
+      min-height: 35vw;
+      align-items: flex-end;
+      border-bottom: 2px solid var(--black);
     }
-  }
 
-  button {
-    font-family: var(--font-body);
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--white);
-    background-color: var(--black);
-    border: none;
-    border-radius: 4px;
-    padding: 0.875rem 2rem;
-    cursor: pointer;
-    width: fit-content;
-    transition: opacity 150ms ease;
-
-    &:hover {
-      opacity: 0.75;
+    .card-right {
+      border-left: none;
+      padding: 3rem 2rem;
     }
   }
 </style>
