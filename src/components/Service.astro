@@ -143,6 +143,25 @@ const { title, color, services } = Astro.props;
     .service-banner {
       min-height: 34vw;
       padding: 2rem 1rem;
+
+      &:hover {
+        background: var(--white);
+        color: var(--black);
+
+        .banner-chevron line {
+          stroke: var(--black);
+        }
+      }
+
+      &[aria-expanded='true'],
+      &[aria-expanded='true']:hover {
+        background: var(--banner-color);
+        color: var(--white);
+
+        .banner-chevron line {
+          stroke: var(--white);
+        }
+      }
     }
   }
 
