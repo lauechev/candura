@@ -2,19 +2,25 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PhotoAndDescription from '@/components/PhotoAndDescription.astro';
 
-const floppy = '/floppy.svg';
+const bienvenides = '/bienvenides.png';
+const sanarte = '/sanarte.png';
+const type = '/type-checker.png';
+const news = '/newsletter.png';
+const ebook2 = '/ebook2.png';
+const art = '/art.png';
+const ux = '/ux.png';
 ---
 
 <BaseLayout title="Work" pageHeading="Work" description="Selected projects by Candura.">
   <main class="container">
     <p class="intro">A selection of projects we've brought to life for brands we love working with.</p>
     <div class="grid">
-      <PhotoAndDescription description="Shopify Store Development" image={floppy} color="var(--blue)" />
-      <PhotoAndDescription description="Landing Page" image={floppy} color="var(--purple)" />
-      <PhotoAndDescription description="Brand Visual Universe" image={floppy} color="var(--red)" />
-      <PhotoAndDescription description="Ebook Creative Direction & Design" image={floppy} color="var(--orange)" />
-      <PhotoAndDescription description="Podcast Cover Art" image={floppy} color="var(--pink)" />
-      <PhotoAndDescription description="Typeface Checker Website" image={floppy} color="var(--green)" />
+      <PhotoAndDescription description="Shopify Store Development" image={sanarte} color="var(--blue)" />
+      <PhotoAndDescription description="History of the Internet Website" image={ux} color="var(--pink)" />
+      <PhotoAndDescription description="Typeface Checker Website" image={type} color="var(--purple)" />
+      <PhotoAndDescription description="Digital Art Collection Website" image={art} color="var(--red)" />
+      <PhotoAndDescription description="Newsletter Visual Universe" image={news} color="var(--green)" />
+      <PhotoAndDescription description="Ebook Creative Direction & Design" image={ebook2} color="var(--orange)" />
     </div>
   </main>
 </BaseLayout>
@@ -36,14 +42,10 @@ const floppy = '/floppy.svg';
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 2rem;
 
-    @media (max-width: 900px) {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    @media (max-width: 560px) {
+    @media (max-width: 760px) {
       grid-template-columns: 1fr;
     }
   }
