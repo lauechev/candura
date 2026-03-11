@@ -33,6 +33,13 @@ const isContact = pathname.startsWith('/contact');
       </li>
       <li>
         <a
+          href="/work"
+          class:list={['nav-link', { 'is-active': isWork }]}
+          style="--color: var(--pink); --text: var(--white)">work</a
+        >
+      </li>
+      <li>
+        <a
           href="/contact"
           class:list={['nav-link', { 'is-active': isContact }]}
           style="--color: var(--orange); --text: var(--white)">contact</a
@@ -50,6 +57,11 @@ const isContact = pathname.startsWith('/contact');
         <li>
           <a href="/services" class:list={['overlay-link', { 'is-active': isServices }]} style="--color: var(--purple)"
             >services</a
+          >
+        </li>
+        <li>
+          <a href="/work" class:list={['overlay-link', { 'is-active': isWork }]} style="--color: var(--pink)"
+            >work</a
           >
         </li>
         <li>
