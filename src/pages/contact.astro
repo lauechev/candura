@@ -1,17 +1,35 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import ImageText from '@/components/ImageText.astro';
 ---
 
 <BaseLayout pageHeading="Contact" title="Contact" description="Get in touch with Candura.">
   <main>
-    <div class="contact-card">
-      <div class="card-left">
-        <h1>Let's talk</h1>
-      </div>
-      <div class="card-right">
-        <p class="intro">Have a project in mind? We'd love to hear about it. Email us at:</p>
-        <a href="mailto:candura.studio@gmail.com" class="email">💌 candura.studio@gmail.com</a>
-      </div>
+    <div class="contact-wrapper">
+      <ImageText
+        color="transparent"
+        title="Let's talk"
+        description="Have a project in mind? We'd love to hear about it. Email us at:"
+        image="/envelope.svg"
+        imageSize="100%"
+      >
+        <a href="mailto:candura.studio@gmail.com" class="email">candura.studio@gmail.com</a>
+
+        <div class="social-links">
+          <p class="follow">Follow us on:</p>
+          <div class="social-icons">
+            <a href="https://www.instagram.com/candura.studio" target="_blank" rel="noopener noreferrer"
+              ><img src="/ig.svg" alt="Instagram" /></a
+            >
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
+              ><img src="/linkedin.svg" alt="LinkedIn" /></a
+            >
+            <a href="https://substack.com" target="_blank" rel="noopener noreferrer"
+              ><img src="/substack.svg" alt="Substack" /></a
+            >
+          </div>
+        </div>
+      </ImageText>
     </div>
   </main>
 </BaseLayout>
@@ -23,59 +41,22 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     padding: 4.5rem 3rem 11.5rem;
   }
 
-  .contact-card {
-    display: grid;
-    grid-template-columns: 38% 1fr;
-    border: 2px solid var(--black);
-    border-radius: 15px;
-    overflow: hidden;
-    width: 88vw;
-    min-height: 28vh;
-  }
+  .contact-wrapper {
+    width: 65vw;
+    margin: 0 auto;
 
-  .card-left {
-    background: var(--purple);
-    display: flex;
-    align-items: flex-end;
-    padding: 2rem 3rem;
-  }
+    :global(.about-split) {
+      width: 100%;
+    }
 
-  h1 {
-    font-family: var(--font-display);
-    font-size: clamp(3.5rem, 7vw, 5.5rem);
-    font-weight: 600;
-    color: var(--white);
-    margin: 0;
-    letter-spacing: -0.02em;
-    line-height: 1;
-  }
+    :global(.split-text) {
+      border-right: none;
+      border-left: none;
+    }
 
-  .intro {
-    font-family: var(--font-body);
-    font-size: clamp(3.5rem, 8vw, 0.1rem);
-    font-weight: 400;
-    color: var(--white);
-    letter-spacing: -0.02em;
-  }
-
-  .card-right {
-    background: var(--white);
-    border-left: 2px solid var(--black);
-    padding: 2.5rem 3.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    gap: 1.5rem;
-  }
-
-  .intro {
-    font-family: var(--font-body);
-    font-size: 1.0625rem;
-    line-height: 1.7;
-    color: var(--black);
-    opacity: 0.65;
-    margin: 0;
-    max-width: 42ch;
+    :global(.split-image) {
+      border-bottom: none;
+    }
   }
 
   .email {
@@ -92,25 +73,56 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     }
   }
 
+  .social-links {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    .follow {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+      font-weight: 500;
+      color: var(--black);
+      margin: 0;
+      letter-spacing: -0.01em;
+    }
+
+    .social-icons {
+      display: flex;
+      flex-direction: row;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    a {
+      text-decoration: none;
+      display: inline-block;
+
+      &:hover {
+        opacity: 0.6;
+      }
+
+      img {
+        height: 1.5rem;
+        width: auto;
+      }
+    }
+  }
+
+  @media (max-width: 1500px) {
+    .contact-wrapper {
+      width: 50vw;
+    }
+  }
+
   @media (max-width: 768px) {
     main {
       padding-top: 1.5rem;
     }
 
-    .contact-card {
-      grid-template-columns: 1fr;
-      min-height: unset;
-    }
-
-    .card-left {
-      min-height: 35vw;
-      align-items: flex-end;
-      border-bottom: 2px solid var(--black);
-    }
-
-    .card-right {
-      border-left: none;
-      padding: 3rem 2rem;
+    .contact-wrapper {
+      width: 100%;
     }
   }
 </style>

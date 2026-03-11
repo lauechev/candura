@@ -14,7 +14,8 @@ const { color, title, description, image, reverse = false, imageSize = '80%' } =
 <div class:list={['about-split', { 'about-split--reverse': reverse }]}>
   <div class="split-text">
     <h2>{title}</h2>
-    <p>{description}</p>
+    {description && <p>{description}</p>}
+    <slot />
   </div>
   <div class="split-image" style={`--square-color: ${color}`}>
     <img src={image} alt={title} style={`max-width: ${imageSize}; max-height: ${imageSize};`} />
@@ -91,8 +92,8 @@ const { color, title, description, image, reverse = false, imageSize = '80%' } =
     margin: 0;
   }
 
-  /* ── Tablet & Mobile ─────────────────────────────────────────────────── */
-  @media (max-width: 768px) {
+  /* ── Below 1500px ──────────────────────────────────────────────────── */
+  @media (max-width: 1500px) {
     .about-split,
     .about-split--reverse {
       display: flex;
