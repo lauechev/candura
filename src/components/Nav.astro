@@ -60,9 +60,7 @@ const isContact = pathname.startsWith('/contact');
           >
         </li>
         <li>
-          <a href="/work" class:list={['overlay-link', { 'is-active': isWork }]} style="--color: var(--pink)"
-            >work</a
-          >
+          <a href="/work" class:list={['overlay-link', { 'is-active': isWork }]} style="--color: var(--pink)">work</a>
         </li>
         <li>
           <a href="/contact" class:list={['overlay-link', { 'is-active': isContact }]} style="--color: var(--orange)"
@@ -189,16 +187,14 @@ const isContact = pathname.startsWith('/contact');
     position: absolute;
     top: calc(100% + 10px);
     right: 0;
-    // width: 90vw;
-    height: 10vh;
     z-index: 200;
     background: var(--white);
     border: 2px solid var(--black);
     border-radius: 15px;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 1.2rem 1.5rem;
+    padding: 1.8rem 1.5rem;
 
     &.is-open {
       display: flex;
@@ -209,10 +205,12 @@ const isContact = pathname.startsWith('/contact');
     list-style: none;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 0.75rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 0rem;
+    row-gap: 1.25rem;
+    width: 100%;
+    justify-items: center;
   }
 
   .overlay-link {
@@ -224,6 +222,7 @@ const isContact = pathname.startsWith('/contact');
     border-radius: 8px;
     border: 1px solid transparent;
     transition: background-color 150ms ease;
+    text-align: center;
 
     &:hover,
     &.is-active {
