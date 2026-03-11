@@ -158,7 +158,7 @@ const isContact = pathname.startsWith('/contact');
     margin-right: 0.5rem;
     border-radius: 8px;
     color: var(--black);
-    border: 1px solid transparent;
+    border: 1.8px solid transparent;
     font-family: var(--font-body);
     font-weight: 500;
     font-size: 1.1rem;
@@ -166,14 +166,14 @@ const isContact = pathname.startsWith('/contact');
     &:hover {
       background-color: var(--color);
       color: var(--white);
-      border: 1.8px solid var(--black);
+      border-color: var(--black);
     }
 
     &:active,
     &.is-active {
       background-color: var(--color);
       color: var(--white);
-      border: 1.8px solid var(--black);
+      border-color: var(--black);
     }
   }
 
@@ -220,7 +220,7 @@ const isContact = pathname.startsWith('/contact');
     color: var(--black);
     padding: 0.4rem 1.2rem;
     border-radius: 8px;
-    border: 1px solid transparent;
+    border: 1.8px solid transparent;
     transition: background-color 150ms ease;
     text-align: center;
 
@@ -228,7 +228,7 @@ const isContact = pathname.startsWith('/contact');
     &.is-active {
       background-color: var(--color);
       color: var(--white);
-      border: 1.8px solid var(--black);
+      border-color: var(--black);
     }
   }
 
