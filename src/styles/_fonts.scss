@@ -1,11 +1,6 @@
-@font-face {
-  font-family: 'NeueHaasGrot';
-  src: url('/fonts/neuehaasgrotdispround-55roman-trial.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
+// Neue Haas Grotesk is served by the Adobe Fonts kit loaded in BaseLayout.astro
+// (https://use.typekit.net/lda1qyz.css) — no local @font-face needed.
+//
 // font-family: 'neue-haas-grotesk-text', sans-serif;
 // font-weight: 400;
 // font-style: normal;

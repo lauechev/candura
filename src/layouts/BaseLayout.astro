@@ -2,6 +2,8 @@
 import Nav from '@/components/Nav.astro';
 import Footer from '@/components/Footer.astro';
 import Divider2 from '@/components/Divider2.astro';
+import Brand from '@/components/Brand.astro';
+import { getLangFromUrl, stripLang } from '@/i18n/ui';
 
 interface Props {
   title?: string;
@@ -15,6 +17,8 @@ const { title, pageHeading, description, image } = Astro.props;
 const projectName = 'Candura';
 const defaultDescription = 'Candura';
 const { pathname } = Astro.url;
+const lang = getLangFromUrl(Astro.url);
+const isHome = (stripLang(pathname).replace(/\/$/, '') || '/') === '/';
 const seoTitle = title || projectName;
 const seoDescription = description || defaultDescription;
 const baseUrl = new URL(import.meta.env.BASE_URL, Astro.site);
@@ -24,7 +28,7 @@ const imgAlt = image ? image.alt : projectName;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -64,6 +68,9 @@ const imgAlt = image ? image.alt : projectName;
   </head>
 
   <body>
+    <Brand variant={isHome ? 'home' : 'compact'} />
+    <!-- Nav renders the language toggle: on desktop it's fixed top-right, on
+         smaller screens it lives inside the fullscreen menu. -->
     <Nav />
     {
       pageHeading && (
@@ -82,8 +89,15 @@ const imgAlt = image ? image.alt : projectName;
 <style lang="scss" is:global>
   @use '@/styles/styles.scss';
 
+  body {
+    background: var(--cream);
+    // Anchors the absolutely-positioned Brand in the top-left corner.
+    position: relative;
+  }
+
   .page-header-global {
-    padding: 8rem 5vw 3rem;
+    // The old fixed top nav bar is gone; this now clears the compact logo.
+    padding: 7rem 5vw 3rem;
   }
 
   .page-title {
@@ -98,19 +112,13 @@ const imgAlt = image ? image.alt : projectName;
 
   @media (max-width: 1024px) {
     .page-header-global {
-      padding-top: 12rem;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .page-header-global {
-      padding-top: 12rem;
+      padding-top: 6rem;
     }
   }
 
   @media (max-width: 500px) {
     .page-header-global {
-      padding-top: 14rem;
+      padding-top: 5.5rem;
     }
   }
 

@@ -1,146 +1,120 @@
 ---
+import LanguageToggle from '@/components/LanguageToggle.astro';
+import { getLangFromUrl, hasTranslation, localizePath, stripLang, useTranslations } from '@/i18n/ui';
+
 const { pathname } = Astro.url;
-const isAbout = pathname.startsWith('/about');
-const isServices = pathname.startsWith('/services');
-const isWork = pathname.startsWith('/work');
-const isContact = pathname.startsWith('/contact');
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+// Compare against the locale-stripped path so `/es/about` still marks "about".
+const route = stripLang(pathname);
+
+// Untranslated pages have no `/es/` version yet, so from a Spanish page those
+// links fall back to the English route rather than 404ing. Once a page is
+// translated, add it to `translatedRoutes` in @/i18n/ui and this picks it up.
+const links = [
+  { href: '/about', label: t('nav.about') },
+  { href: '/services', label: t('nav.services') },
+  { href: '/work', label: t('nav.work') },
+  { href: '/contact', label: t('nav.contact') },
+].map(({ href, label }) => ({
+  href: hasTranslation(href) ? localizePath(href, lang) : href,
+  label,
+  isActive: route.startsWith(href),
+}));
 ---
 
-<div class="nav-wrapper">
-  <nav>
-    <a href="/" class="wordmark">candura</a>
+<nav class="corner-nav" id="corner-nav">
+  <!-- Phones + tablets only: the links live behind this. -->
+  <button
+    class="hamburger"
+    id="nav-toggle"
+    aria-expanded="false"
+    aria-controls="nav-menu"
+    aria-label="Toggle navigation"
+  >
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
 
-    <button class="hamburger" aria-expanded="false" aria-label="Toggle navigation">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-
+  <div class="nav-menu" id="nav-menu">
     <ul class="nav-links">
-      <li>
-        <a
-          href="/about"
-          class:list={['nav-link', { 'is-active': isAbout }]}
-          style="--color: var(--blue); --text: var(--white)">about</a
-        >
-      </li>
-      <li>
-        <a
-          href="/services"
-          class:list={['nav-link', { 'is-active': isServices }]}
-          style="--color: var(--purple); --text: var(--white)">services</a
-        >
-      </li>
-      <li>
-        <a
-          href="/work"
-          class:list={['nav-link', { 'is-active': isWork }]}
-          style="--color: var(--pink); --text: var(--white)">work</a
-        >
-      </li>
-      <li>
-        <a
-          href="/contact"
-          class:list={['nav-link', { 'is-active': isContact }]}
-          style="--color: var(--orange); --text: var(--white)">contact</a
-        >
-      </li>
+      {
+        links.map(({ href, label, isActive }) => (
+          <li>
+            <a href={href} class:list={['nav-link', { 'is-active': isActive }]}>
+              ({label})
+            </a>
+          </li>
+        ))
+      }
     </ul>
 
-    <!-- Dropdown mobile menu -->
-    <div class="mobile-overlay" id="mobile-overlay" aria-hidden="true">
-      <ul class="overlay-links">
-        <li>
-          <a href="/about" class:list={['overlay-link', { 'is-active': isAbout }]} style="--color: var(--blue)">about</a
-          >
-        </li>
-        <li>
-          <a href="/services" class:list={['overlay-link', { 'is-active': isServices }]} style="--color: var(--purple)"
-            >services</a
-          >
-        </li>
-        <li>
-          <a href="/work" class:list={['overlay-link', { 'is-active': isWork }]} style="--color: var(--pink)">work</a>
-        </li>
-        <li>
-          <a href="/contact" class:list={['overlay-link', { 'is-active': isContact }]} style="--color: var(--orange)"
-            >contact</a
-          >
-        </li>
-      </ul>
-    </div>
-  </nav>
-</div>
+    <!-- Fixed top-right on desktop; drops into the overlay below the links on
+         phones and tablets. See LanguageToggle.astro. -->
+    <LanguageToggle />
+  </div>
+</nav>
 
 <script>
-  const nav = document.querySelector('nav') as HTMLElement;
-  const btn = document.querySelector('.hamburger') as HTMLButtonElement;
-  const overlay = document.getElementById('mobile-overlay') as HTMLElement;
-  const overlayLinks = document.querySelectorAll('.overlay-link');
+  const nav = document.getElementById('corner-nav');
+  const toggle = document.getElementById('nav-toggle');
+  const menu = document.getElementById('nav-menu');
+  const footer = document.querySelector('footer');
 
-  function openMenu() {
-    btn.setAttribute('aria-expanded', 'true');
-    overlay.classList.add('is-open');
-    overlay.setAttribute('aria-hidden', 'false');
+  // ── Fullscreen menu (phones + tablets) ──────────────────────────────────────
+  if (nav && toggle && menu) {
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      nav.classList.toggle('is-open', open);
+      // Stop the page scrolling behind the overlay.
+      document.body.classList.toggle('nav-open', open);
+    };
+
+    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+
+    // Close on navigation and on Escape.
+    menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setOpen(false)));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
   }
 
-  function closeMenu() {
-    btn.setAttribute('aria-expanded', 'false');
-    overlay.classList.remove('is-open');
-    overlay.setAttribute('aria-hidden', 'true');
+  // ── Footer collision ────────────────────────────────────────────────────────
+  // The nav is fixed and the footer is near-black — purple links over it are
+  // unreadable, so fade the nav out while the footer is on screen.
+  if (nav && footer) {
+    const observer = new IntersectionObserver(([entry]) => nav.classList.toggle('is-hidden', entry.isIntersecting), {
+      threshold: 0,
+    });
+    observer.observe(footer);
+
+    window.addEventListener('pagehide', () => observer.disconnect());
   }
-
-  window.addEventListener(
-    'scroll',
-    () => {
-      nav.classList.toggle('is-scrolled', window.scrollY > 0);
-    },
-    { passive: true }
-  );
-
-  btn.addEventListener('click', () => {
-    const expanded = btn.getAttribute('aria-expanded') === 'true';
-    expanded ? closeMenu() : openMenu();
-  });
-
-  overlayLinks.forEach((link) => link.addEventListener('click', closeMenu));
 </script>
 
+<style lang="scss" is:global>
+  // Set on <body> while the fullscreen menu is open.
+  body.nav-open {
+    overflow: hidden;
+  }
+</style>
+
 <style lang="scss">
-  .nav-wrapper {
+  .corner-nav {
     position: fixed;
-    top: 1.6%;
-    left: 0;
-    right: 0;
+    right: clamp(1.25rem, 3vw, 2.75rem);
+    bottom: clamp(1.5rem, 6vh, 4rem);
     z-index: 100;
-    display: flex;
-    justify-content: center;
-    pointer-events: none;
-  }
 
-  nav {
-    position: relative;
-    width: 50%;
-    pointer-events: auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.45rem 1.5rem;
-    border: 2px solid var(--black);
-    border-radius: 10px;
-    background: var(--white);
-  }
-
-  .wordmark {
-    font-family: var(--font-logo);
-    color: var(--green);
-    font-size: 1.6rem;
-    font-weight: 600;
-    transition: opacity 150ms ease;
-    letter-spacing: -4%;
-
-    &:hover {
-      opacity: 0.7;
+    // While the fullscreen menu is open it must cover the logo (z 90) and the
+    // language toggle (z 100) too.
+    &.is-open {
+      z-index: 300;
     }
   }
 
@@ -149,127 +123,96 @@ const isContact = pathname.startsWith('/contact');
     margin: 0;
     padding: 0;
     display: flex;
-    gap: 0.75rem;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: clamp(0.75rem, 2.5vh, 1.6rem);
+    transition:
+      opacity 250ms ease,
+      visibility 250ms ease;
+  }
+
+  // Only the links fade over the footer — the language toggle is a child of
+  // this nav too, and it must stay usable at the bottom of the page.
+  .corner-nav.is-hidden .nav-links {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
   }
 
   .nav-link {
     display: inline-block;
-    padding: 0.3rem 1rem;
-    margin-right: 0.5rem;
-    border-radius: 8px;
-    color: var(--black);
-    border: 1.8px solid transparent;
     font-family: var(--font-body);
-    font-weight: 500;
-    font-size: 1.1rem;
+    font-weight: 700;
+    font-size: clamp(1.15rem, 1.9vw, 1.75rem);
+    letter-spacing: -0.02em;
+    color: var(--purple);
+    text-decoration: none;
+    opacity: 0.85;
+    transition:
+      transform 200ms ease,
+      opacity 200ms ease,
+      color 200ms ease;
 
-    &:hover {
-      background-color: var(--color);
-      color: var(--white);
-      border-color: var(--black);
+    &:hover,
+    &:focus-visible {
+      opacity: 1;
+      transform: translateX(-6px);
+      color: var(--green);
     }
 
-    &:active,
     &.is-active {
-      background-color: var(--color);
-      color: var(--white);
-      border-color: var(--black);
+      opacity: 1;
+      transform: translateX(-6px);
+      color: var(--green);
     }
   }
 
+  // Desktop only — the hamburger is a small-screen affordance.
   .hamburger {
     display: none;
   }
 
-  // ── Dropdown mobile menu ────────────────────────────────────────────────────
-  .mobile-overlay {
-    display: none;
-    position: absolute;
-    top: calc(100% + 10px);
-    right: 0;
-    z-index: 200;
-    background: var(--white);
-    border: 2px solid var(--black);
-    border-radius: 15px;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 1.8rem 1.5rem;
-
-    &.is-open {
-      display: flex;
-    }
-  }
-
-  .overlay-links {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 0rem;
-    row-gap: 1.25rem;
-    width: 100%;
-    justify-items: center;
-  }
-
-  .overlay-link {
-    font-family: var(--font-body);
-    font-size: 1.25rem;
-    font-weight: 500;
-    color: var(--black);
-    padding: 0.4rem 1.2rem;
-    border-radius: 8px;
-    border: 1.8px solid transparent;
-    transition: background-color 150ms ease;
-    text-align: center;
-
-    &:hover,
-    &.is-active {
-      background-color: var(--color);
-      color: var(--white);
-      border-color: var(--black);
-    }
-  }
-
-  // ── Tablet ─────────────────────────────────────────────────────────────────
+  // ── Phones + tablets: hamburger + fullscreen menu ───────────────────────────
   @media (max-width: 1024px) {
-    nav {
-      width: 75%;
+    // The hamburger takes the top-right corner the language toggle occupied on
+    // desktop; the toggle itself moves inside the overlay.
+    .corner-nav {
+      top: clamp(1.25rem, 3vw, 2.5rem);
+      right: clamp(1.25rem, 3vw, 2.75rem);
+      bottom: auto;
     }
 
-    .nav-link {
-      padding: 0.4rem 0.8rem;
-      font-size: 1rem;
-    }
-  }
-
-  // ── Mobile (hamburger kicks in) ────────────────────────────────────────────
-  @media (max-width: 760px) {
-    nav {
-      width: 85%;
-      padding: 0.8rem 1.5rem;
-      border: 1.5px solid var(--black);
-    }
-
-    .nav-links {
-      display: none;
+    // The footer fade exists to keep purple links legible over black. Up here
+    // the nav no longer sits over the footer at all, so never hide it.
+    .corner-nav.is-hidden .nav-links {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
     }
 
     .hamburger {
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      justify-content: center;
+      gap: 6px;
+      // Comfortable tap target.
+      width: 44px;
+      height: 44px;
+      padding: 0.25rem;
+      margin-left: auto;
       background: none;
       border: none;
       cursor: pointer;
-      padding: 0.25rem;
-      pointer-events: auto;
+      // Sits above the overlay so it doubles as the close button.
+      position: relative;
+      z-index: 2;
 
       span {
         display: block;
-        width: 24px;
-        height: 2px;
+        width: 28px;
+        height: 4px;
+        border-radius: 2px;
+        margin: 0 auto;
         transition:
           transform 200ms ease,
           opacity 200ms ease;
@@ -279,54 +222,81 @@ const isContact = pathname.startsWith('/contact');
         background: var(--red);
       }
       span:nth-child(2) {
-        background: var(--green);
+        background: var(--pink);
       }
       span:nth-child(3) {
         background: var(--orange);
       }
+    }
 
-      &[aria-expanded='true'] span:nth-child(1) {
-        transform: translateY(7px) rotate(45deg);
+    // Burger → X. Offset matches bar height (4px) + gap (6px).
+    .is-open .hamburger {
+      span:nth-child(1) {
+        transform: translateY(10px) rotate(45deg);
       }
-      &[aria-expanded='true'] span:nth-child(2) {
+      span:nth-child(2) {
         opacity: 0;
       }
-      &[aria-expanded='true'] span:nth-child(3) {
-        transform: translateY(-7px) rotate(-45deg);
+      span:nth-child(3) {
+        transform: translateY(-10px) rotate(-45deg);
       }
     }
 
-    .mobile-overlay {
-      width: 70vw;
-      border: 1.5px solid var(--black);
+    // Fullscreen overlay: covers the entire viewport, closed by default.
+    .nav-menu {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      background: var(--cream);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: clamp(1.5rem, 5vh, 3rem);
+      margin: 0;
+      opacity: 0;
+      visibility: hidden;
+      transition:
+        opacity 250ms ease,
+        visibility 250ms ease;
+    }
+
+    .is-open .nav-menu {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .nav-links {
+      align-items: center;
+      gap: clamp(1.5rem, 5vh, 3rem);
+    }
+
+    .nav-link {
+      font-size: clamp(1.75rem, 6vw, 2.75rem);
+      // Comfortable tap target without changing the visual size.
+      padding: 0.4rem 1rem;
+      opacity: 1;
+
+      &:hover,
+      &:focus-visible,
+      &.is-active {
+        // Sliding sideways makes no sense in a centered stack.
+        transform: none;
+      }
     }
   }
 
-  // ── Small mobile ───────────────────────────────────────────────────────────
-  @media (max-width: 500px) {
-    nav {
-      width: 90%;
-      padding: 0.7rem 1.2rem;
+  @media (prefers-reduced-motion: reduce) {
+    .nav-links,
+    .nav-link,
+    .nav-menu,
+    .hamburger span {
+      transition: none;
     }
 
-    .mobile-overlay {
-      width: 90vw;
-    }
-  }
-
-  // ── Very small mobile ──────────────────────────────────────────────────────
-  @media (max-width: 410px) {
-    .overlay-link {
-      font-size: 1.3rem;
-      padding: 0.25rem 0.6rem;
-    }
-
-    .mobile-overlay {
-      left: 0;
-      right: 0;
-      width: auto;
-      padding: 0.8rem 1rem;
-      gap: 0.4rem;
+    .nav-link:hover,
+    .nav-link:focus-visible {
+      transform: none;
     }
   }
 </style>

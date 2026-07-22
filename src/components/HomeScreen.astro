@@ -1,0 +1,31 @@
+---
+import Pinata from '@/components/Pinata.astro';
+---
+
+<!-- The logo + tagline come from Brand.astro, rendered site-wide in BaseLayout. -->
+<section class="home">
+  <!-- Centerpiece. See Pinata.astro — swap the image for an animation there. -->
+  <Pinata />
+</section>
+
+<style lang="scss">
+  .home {
+    position: relative;
+    min-height: 100dvh;
+    background: var(--cream);
+    display: grid;
+    // `place-content` (not `place-items`) — the row is content-sized, so the
+    // free space is distributed by align-content, which defaults to `start`.
+    place-content: center;
+    // Symmetric padding so the piñata lands on the true vertical center.
+    padding: clamp(2rem, 6vh, 4.5rem) clamp(1.5rem, 5vw, 5rem);
+    box-sizing: border-box;
+  }
+
+  // ── Mobile: nav moves to a bottom row, so reserve space for it ─────────────
+  @media (max-width: 500px) {
+    .home {
+      padding-bottom: 7rem;
+    }
+  }
+</style>

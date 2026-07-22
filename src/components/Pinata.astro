@@ -1,0 +1,32 @@
+---
+// ── CENTERPIECE — SWAP TARGET ───────────────────────────────────────────────
+// This component exists solely to isolate the piñata so it can later be
+// replaced by an animation (Lottie, video, canvas, sprite sheet — whatever).
+//
+// To swap it: replace ONLY the markup inside `.pinata-stage` below.
+// The wrapper owns all sizing, centering and responsive behaviour, so as long
+// as the replacement is a block-level child that fills 100% width, the page
+// layout stays byte-for-byte identical. Nothing outside this file needs to
+// change.
+// ────────────────────────────────────────────────────────────────────────────
+import { getLangFromUrl, useTranslations } from '@/i18n/ui';
+
+const t = useTranslations(getLangFromUrl(Astro.url));
+---
+
+<div class="pinata-stage">
+  <img src={`${import.meta.env.BASE_URL}pinata.png`} alt={t('pinata.alt')} width="1024" height="1536" />
+</div>
+
+<style lang="scss">
+  .pinata-stage {
+    width: clamp(170px, 20vw, 300px);
+    line-height: 0;
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+</style>
