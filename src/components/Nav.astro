@@ -39,6 +39,13 @@ const links = [
   </button>
 
   <div class="nav-menu" id="nav-menu">
+    <!-- Desktop only: purely decorative balloons that "hold up" the panel. -->
+    <div class="balloons" aria-hidden="true">
+      <img class="balloon balloon--green" src={`${import.meta.env.BASE_URL}ballon-pink.png`} alt="" />
+      <img class="balloon balloon--pink" src={`${import.meta.env.BASE_URL}ballon-pink.png`} alt="" />
+      <img class="balloon balloon--yellow" src={`${import.meta.env.BASE_URL}ballon-pink.png`} alt="" />
+    </div>
+
     <ul class="nav-links">
       {
         links.map(({ href, label, isActive }) => (
@@ -61,7 +68,6 @@ const links = [
   const nav = document.getElementById('corner-nav');
   const toggle = document.getElementById('nav-toggle');
   const menu = document.getElementById('nav-menu');
-  const footer = document.querySelector('footer');
 
   // ── Fullscreen menu (phones + tablets) ──────────────────────────────────────
   if (nav && toggle && menu) {
@@ -83,18 +89,6 @@ const links = [
       }
     });
   }
-
-  // ── Footer collision ────────────────────────────────────────────────────────
-  // The nav is fixed and the footer is near-black — purple links over it are
-  // unreadable, so fade the nav out while the footer is on screen.
-  if (nav && footer) {
-    const observer = new IntersectionObserver(([entry]) => nav.classList.toggle('is-hidden', entry.isIntersecting), {
-      threshold: 0,
-    });
-    observer.observe(footer);
-
-    window.addEventListener('pagehide', () => observer.disconnect());
-  }
 </script>
 
 <style lang="scss" is:global>
@@ -108,7 +102,14 @@ const links = [
   .corner-nav {
     position: fixed;
     right: clamp(1.25rem, 3vw, 2.75rem);
-    bottom: clamp(1.5rem, 6vh, 4rem);
+    // Vertically centered via auto margins, nudged a touch above dead-center.
+    // NOTE: don't use `transform` here — a transformed ancestor becomes the
+    // containing block for the fixed-position LanguageToggle child, which would
+    // drag it inside the panel instead of the viewport corner.
+    top: 0;
+    bottom: -20vh;
+    height: fit-content;
+    margin-block: auto;
     z-index: 100;
 
     // While the fullscreen menu is open it must cover the logo (z 90) and the
@@ -118,6 +119,17 @@ const links = [
     }
   }
 
+  // ── Desktop: the green panel the balloons float above ───────────────────────
+  .nav-menu {
+    position: relative;
+    background: var(--green);
+    border-radius: 15px;
+    padding: clamp(1.25rem, 3vh, 1.75rem) clamp(1.25rem, 2.2vw, 1.75rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
   .nav-links {
     list-style: none;
     margin: 0;
@@ -125,45 +137,86 @@ const links = [
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: clamp(0.75rem, 2.5vh, 1.6rem);
-    transition:
-      opacity 250ms ease,
-      visibility 250ms ease;
-  }
-
-  // Only the links fade over the footer — the language toggle is a child of
-  // this nav too, and it must stay usable at the bottom of the page.
-  .corner-nav.is-hidden .nav-links {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
+    gap: clamp(0.75rem, 2.5vh, 1.4rem);
   }
 
   .nav-link {
     display: inline-block;
     font-family: var(--font-body);
-    font-weight: 700;
-    font-size: clamp(1.15rem, 1.9vw, 1.75rem);
+    font-weight: 400;
+    font-size: clamp(1.05rem, 1.5vw, 1.35rem);
     letter-spacing: -0.02em;
-    color: var(--purple);
+    // White on the green panel, always — no color change on any state.
+    color: #fff;
     text-decoration: none;
-    opacity: 0.85;
+    opacity: 1;
     transition:
       transform 200ms ease,
-      opacity 200ms ease,
-      color 200ms ease;
+      opacity 200ms ease;
 
     &:hover,
-    &:focus-visible {
-      opacity: 1;
-      transform: translateX(-6px);
-      color: var(--green);
-    }
-
+    &:focus-visible,
     &.is-active {
       opacity: 1;
+      color: var(--black);
       transform: translateX(-6px);
-      color: var(--green);
+    }
+  }
+
+  // ── Balloons: bottoms fixed to the panel's top edge; they rock side to side ─
+  .balloons {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    // Overlap the panel top so the empty transparent area at the bottom of the
+    // PNGs tucks behind the nav and the strings read as "attached" to it.
+    bottom: calc(100% - 1.8rem);
+    display: flex;
+    align-items: flex-end; // aligns all string ends on one line
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  .balloon {
+    width: clamp(4rem, 6vw, 5.25rem);
+    height: auto;
+    transform-origin: bottom center; // pivot at the attached string end
+    filter: drop-shadow(0 8px 10px rgba(10, 10, 10, 0.22));
+    animation: balloon-sway 6.5s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  // Left → right: green, pink (on top), yellow — overlapping slightly via the
+  // negative margins. Each rocks on its own timing so they don't move in unison.
+  .balloon--green {
+    z-index: 1;
+    margin-right: -2.4rem;
+    // Nudge up to sit level with the pink/yellow — the green PNG has less empty
+    // space below its string.
+    margin-bottom: 0.1rem;
+    animation-duration: 7s;
+  }
+
+  .balloon--pink {
+    z-index: 3;
+    animation-duration: 6s;
+    animation-delay: -1.2s;
+  }
+
+  .balloon--yellow {
+    z-index: 2;
+    margin-left: -2.4rem;
+    animation-duration: 7.6s;
+    animation-delay: -0.6s;
+  }
+
+  @keyframes balloon-sway {
+    0%,
+    100% {
+      transform: rotate(-2deg);
+    }
+    50% {
+      transform: rotate(2deg);
     }
   }
 
@@ -180,14 +233,6 @@ const links = [
       top: clamp(1.25rem, 3vw, 2.5rem);
       right: clamp(1.25rem, 3vw, 2.75rem);
       bottom: auto;
-    }
-
-    // The footer fade exists to keep purple links legible over black. Up here
-    // the nav no longer sits over the footer at all, so never hide it.
-    .corner-nav.is-hidden .nav-links {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
     }
 
     .hamburger {

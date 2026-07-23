@@ -15,7 +15,7 @@ export const translatedRoutes = ['/'];
 export const ui = {
   en: {
     'site.title': 'Candura',
-    'home.tagline': 'A creative technology studio & consultancy',
+    'home.tagline': 'a creative technology studio & consultancy',
     'nav.about': 'about',
     'nav.services': 'services',
     'nav.work': 'work',

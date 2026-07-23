@@ -1,0 +1,66 @@
+---
+// Full-width tagline banner that scrolls its copy continuously. Used on the
+// home page below the logo (see HomeScreen.astro). Replaces the static tagline
+// that used to live in Brand.astro.
+const phrase = 'a creative technology studio & consultancy ● we make boring fun ● ';
+
+// Repeat the phrase so a single group comfortably exceeds the viewport width;
+// the group is then duplicated and the track slides by exactly one group
+// (-50%) for a seamless, gap-free loop.
+const group = phrase.repeat(4);
+
+// One clean, unrepeated copy for screen readers — the visual track is hidden
+// from them so the looping text isn't announced over and over.
+const label = ' a creative technology studio & consultancy. we make boring fun.';
+---
+
+<div class="marquee" aria-label={label}>
+  <div class="marquee__track" aria-hidden="true">
+    <span class="marquee__group">{group}</span>
+    <span class="marquee__group">{group}</span>
+  </div>
+</div>
+
+<style lang="scss">
+  .marquee {
+    width: 100%;
+    overflow: hidden;
+    padding-block: 0.15em;
+    // Match the old tagline's type exactly.
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: clamp(0.7rem, 2.6vw, 1.5rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    background: var(--purple);
+    color: var(--cream);
+  }
+
+  .marquee__track {
+    display: flex;
+    width: max-content;
+    // -50% == one group width, since the track holds two identical groups.
+    animation: marquee-scroll 100s linear infinite;
+    will-change: transform;
+  }
+
+  .marquee__group {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  @keyframes marquee-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee__track {
+      animation: none;
+    }
+  }
+</style>

@@ -1,32 +1,42 @@
 ---
-// ── CENTERPIECE — SWAP TARGET ───────────────────────────────────────────────
-// This component exists solely to isolate the piñata so it can later be
-// replaced by an animation (Lottie, video, canvas, sprite sheet — whatever).
-//
-// To swap it: replace ONLY the markup inside `.pinata-stage` below.
-// The wrapper owns all sizing, centering and responsive behaviour, so as long
-// as the replacement is a block-level child that fills 100% width, the page
-// layout stays byte-for-byte identical. Nothing outside this file needs to
-// change.
-// ────────────────────────────────────────────────────────────────────────────
+// ── CENTERPIECE ─────────────────────────────────────────────────────────────
+// A Three.js star piñata (see src/scripts/pinata.ts): hangs from a cord at the
+// top of the hero, sways gently, and bursts palette confetti when clicked.
+// The canvas fills the whole hero; the 3D camera (not CSS) frames the piñata.
 import { getLangFromUrl, useTranslations } from '@/i18n/ui';
 
 const t = useTranslations(getLangFromUrl(Astro.url));
 ---
 
 <div class="pinata-stage">
-  <img src={`${import.meta.env.BASE_URL}pinata.png`} alt={t('pinata.alt')} width="1024" height="1536" />
+  <canvas id="pinata-canvas" role="img" aria-label={t('pinata.alt')}></canvas>
 </div>
 
+<script>
+  import { Pinata } from '@/scripts/pinata';
+
+  const canvas = document.getElementById('pinata-canvas') as HTMLCanvasElement;
+  const pinata = new Pinata(canvas);
+  pinata.start();
+
+  window.addEventListener('pagehide', () => pinata.destroy());
+</script>
+
 <style lang="scss">
+  // Full-hero overlay. Sits behind the marquee band (z 1) and the logo/nav,
+  // but stays clickable so the piñata catches pointer events.
   .pinata-stage {
-    width: clamp(170px, 20vw, 300px);
-    line-height: 0;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
   }
 
-  img {
+  canvas {
     width: 100%;
-    height: auto;
+    height: 100%;
     display: block;
+    // Only the piñata itself reacts (raycast), but the canvas must receive the
+    // pointer events to test against.
+    touch-action: manipulation;
   }
 </style>

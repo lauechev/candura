@@ -1,14 +1,29 @@
 ---
 import Pinata from '@/components/Pinata.astro';
+import Marquee from '@/components/Marquee.astro';
 ---
 
-<!-- The logo + tagline come from Brand.astro, rendered site-wide in BaseLayout. -->
+<!-- The logo comes from Brand.astro, rendered site-wide in BaseLayout. -->
 <section class="home">
+  <!-- Scrolling tagline banner, sits full-width just below the corner logo. -->
+  <div class="home__marquee">
+    <Marquee />
+  </div>
+
   <!-- Centerpiece. See Pinata.astro — swap the image for an animation there. -->
   <Pinata />
 </section>
 
 <style lang="scss">
+  .home__marquee {
+    position: absolute;
+    // Clears the corner logo so the band sits just beneath it.
+    top: clamp(7rem, 13vh, 10rem);
+    left: 0;
+    right: 0;
+    z-index: 1;
+  }
+
   .home {
     position: relative;
     min-height: 100dvh;

@@ -1,22 +1,18 @@
 ---
-import { defaultLang, getLangFromUrl, localizePath, ui } from '@/i18n/ui';
+import { getLangFromUrl, localizePath } from '@/i18n/ui';
 
 interface Props {
-  /** `home` shows the tagline and a large logo; `compact` is logo-only. */
+  /** `home` shows a large logo; `compact` is a smaller logo for other pages. */
   variant?: 'home' | 'compact';
 }
 
 const { variant = 'compact' } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const homeHref = localizePath('/', lang);
-
-// The tagline is brand copy, not UI copy — it stays in English in every locale.
-const tagline = ui[defaultLang]['home.tagline'];
 ---
 
 <a class:list={['brand', variant]} href={homeHref} aria-label="Candura — home">
   <img class="logo" src={`${import.meta.env.BASE_URL}greenlogo.svg`} alt="Candura" width="1301" height="330" />
-  {variant === 'home' && <span class="tagline">{tagline}</span>}
 </a>
 
 <style lang="scss">
@@ -47,19 +43,6 @@ const tagline = ui[defaultLang]['home.tagline'];
   // Smaller on every page other than home.
   .compact .logo {
     width: clamp(5.5rem, 9vw, 7.5rem);
-  }
-
-  .tagline {
-    display: block;
-    margin-top: 0.4rem;
-    font-family: var(--font-body);
-    font-weight: 400;
-    // Viewport-driven so the line shrinks to fit rather than wrapping.
-    font-size: clamp(0.8rem, 3.4vw, 2rem);
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    color: var(--green);
-    white-space: nowrap;
   }
 
   @media (prefers-reduced-motion: reduce) {
