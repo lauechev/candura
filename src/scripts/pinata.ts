@@ -10,7 +10,7 @@ import {
   Group,
   HemisphereLight,
   Mesh,
-  MeshLambertMaterial,
+  MeshPhongMaterial,
   MeshBasicMaterial,
   PerspectiveCamera,
   Points,
@@ -30,6 +30,11 @@ const DEG = Math.PI / 180;
 // Overall brightness. Lower = dimmer. Tone mapping rolls off highlights so the
 // colours never blow out the way the old MeshStandard + env-map setup did.
 const EXPOSURE = 0.85;
+
+// Subtle sheen. Higher SPECULAR = brighter highlight; higher SHININESS = a
+// tighter, glossier dot. Kept low for just a hint of shine.
+const SPECULAR = 0x608080;
+const SHININESS = 37;
 
 // ── Scene framing (world units) ─────────────────────────────────────────────
 const FOV = 42;
@@ -122,10 +127,7 @@ export class Pinata {
     this.pivot = new Group();
     this.scene.add(this.pivot);
 
-    this.cord = new Mesh(
-      new CylinderGeometry(0.01, 0.01, 1, 6),
-      new MeshBasicMaterial({ color: 0x3a3a3a })
-    );
+    this.cord = new Mesh(new CylinderGeometry(0.01, 0.01, 1, 6), new MeshBasicMaterial({ color: 0x3a3a3a }));
     this.pivot.add(this.cord);
 
     this.pinata = new Group();
@@ -152,7 +154,7 @@ export class Pinata {
     const bodyStripes = this.makeStripeTexture(this.colors);
     const body = new Mesh(
       new SphereGeometry(BODY_R, 32, 24),
-      new MeshLambertMaterial({ map: bodyStripes })
+      new MeshPhongMaterial({ map: bodyStripes, specular: SPECULAR, shininess: SHININESS })
     );
     this.pinata.add(body);
 
@@ -175,8 +177,10 @@ export class Pinata {
       const d = dir.clone().normalize();
       const cone = new Mesh(
         new ConeGeometry(CONE_R, CONE_LEN, 18, 1, true),
-        new MeshLambertMaterial({
+        new MeshPhongMaterial({
           map: this.makeTipTexture(coneColors[i % coneColors.length], yellow),
+          specular: SPECULAR,
+          shininess: SHININESS,
         })
       );
       cone.quaternion.setFromUnitVectors(up, d); // point the tip outward
@@ -196,7 +200,11 @@ export class Pinata {
       const strandLen = 0.75;
       const strand = new Mesh(
         new CylinderGeometry(0.015, 0.05, strandLen, 4),
-        new MeshLambertMaterial({ color: this.colors[(i + 1) % this.colors.length] })
+        new MeshPhongMaterial({
+          color: this.colors[(i + 1) % this.colors.length],
+          specular: SPECULAR,
+          shininess: SHININESS,
+        })
       );
       // Splay outward along the tip direction, then let it droop downward.
       const droop = dir
@@ -394,7 +402,7 @@ export class Pinata {
       const mat = (mesh as Mesh).material;
       if (Array.isArray(mat)) mat.forEach((m) => m.dispose());
       else if (mat) {
-        const withMap = mat as MeshLambertMaterial;
+        const withMap = mat as MeshPhongMaterial;
         if (withMap.map) withMap.map.dispose();
         mat.dispose();
       }
