@@ -12,6 +12,7 @@ import Marquee from '@/components/Marquee.astro';
 
   <!-- Centerpiece. See Pinata.astro — swap the image for an animation there. -->
   <Pinata />
+  <h2 class="whack">(whack me!)</h2>
 </section>
 
 <style lang="scss">
@@ -35,6 +36,16 @@ import Marquee from '@/components/Marquee.astro';
     // Symmetric padding so the piñata lands on the true vertical center.
     padding: clamp(2rem, 6vh, 4.5rem) clamp(1.5rem, 5vw, 5rem);
     box-sizing: border-box;
+  }
+
+  .whack {
+    position: absolute;
+    top: calc(50% + 25dvh);
+    left: max(1.5rem, calc(50% - 34dvh));
+    margin: 0;
+    color: var(--green);
+    font-family: var(--font-body);
+    font-size: 1rem;
   }
 
   // ── Mobile: nav moves to a bottom row, so reserve space for it ─────────────
