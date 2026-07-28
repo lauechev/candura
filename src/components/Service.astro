@@ -1,16 +1,15 @@
 ---
 interface Props {
   title: string;
-  color: string;
-  services: Array<{ title: string; description: string }>;
+  items: string[];
 }
 
-const { title, color, services } = Astro.props;
+const { title, items } = Astro.props;
 ---
 
-<div class="service-pillar" style={`--banner-color: ${color}`}>
+<div class="service-pillar">
   <button class="service-banner" aria-expanded="false">
-    <span class="banner-title">{title}</span>
+    <span class="banner-title">({title})</span>
     <svg
       class="banner-chevron"
       aria-hidden="true"
@@ -20,19 +19,14 @@ const { title, color, services } = Astro.props;
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <line x1="10" y1="2" x2="10" y2="18" stroke="var(--black)" stroke-width="2" stroke-linecap="round"></line>
-      <line x1="2" y1="10" x2="18" y2="10" stroke="var(--black)" stroke-width="2" stroke-linecap="round"></line>
+      <line x1="10" y1="2" x2="10" y2="18" stroke="var(--black)" stroke-width="3.5" stroke-linecap="round"></line>
+      <line x1="2" y1="10" x2="18" y2="10" stroke="var(--black)" stroke-width="3.5" stroke-linecap="round"></line>
     </svg>
   </button>
   <div class="service-content">
-    {
-      services.map((s: { title: string; description: string }) => (
-        <div class="service-item">
-          <h3>{s.title}</h3>
-          <p>{s.description}</p>
-        </div>
-      ))
-    }
+    <ul class="service-items">
+      {items.map((item: string) => <li>{item}</li>)}
+    </ul>
   </div>
 </div>
 
@@ -69,57 +63,47 @@ const { title, color, services } = Astro.props;
 
 <style lang="scss">
   .service-pillar {
-    width: calc(100vw - 5rem);
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 2px solid var(--black);
-    border-radius: 15px;
+    // Needed by the height animation on .service-content.
     overflow: hidden;
-    margin-bottom: 0.7rem;
   }
 
   .service-banner {
     width: 100%;
-    background: var(--white);
+    background: none;
     color: var(--black);
-
     border: none;
     cursor: pointer;
-    padding: 0.5rem 2rem;
+    padding: 1.1rem 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
     font-family: var(--font-display);
-    font-size: clamp(2.5rem, 8vw, 5rem);
-    font-weight: 600;
+    font-size: clamp(1.35rem, 2vw, 1.8rem);
+    font-weight: var(--font-weight-display);
     letter-spacing: -0.02em;
     text-align: left;
-    transition:
-      background 200ms ease,
-      color 200ms ease;
+  }
 
-    &:hover,
-    &[aria-expanded='true'] {
-      background: var(--banner-color);
-      color: var(--white);
+  // Mirror of .nav-link in Nav.astro: same 200ms ease and 6px nudge, but
+  // rightward and in blue (nav goes left, in orange). Color snaps, as there.
+  .banner-title {
+    display: inline-block;
+    transition: transform 200ms ease;
+  }
 
-      .banner-chevron line {
-        stroke: var(--white);
-      }
-    }
+  .service-banner:hover .banner-title,
+  .service-banner:focus-visible .banner-title,
+  .service-banner[aria-expanded='true'] .banner-title {
+    color: var(--blue);
+    transform: translateX(6px);
   }
 
   .banner-chevron {
-    width: 1.1rem;
-    height: 1.1rem;
+    width: 0.8rem;
+    height: 0.8rem;
     flex-shrink: 0;
     margin-left: 1rem;
     transition: transform 350ms ease;
-
-    line {
-      transition: stroke 200ms ease;
-    }
 
     .service-banner[aria-expanded='true'] & {
       transform: rotate(45deg);
@@ -130,60 +114,38 @@ const { title, color, services } = Astro.props;
     height: 0;
     overflow: hidden;
     transition: height 350ms ease;
-    background: var(--white);
-    font-size: 2rem;
+  }
+
+  .service-items {
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem 0 2rem;
+    // Items flow down the first column, then continue in the second.
+    columns: 2;
+    column-gap: 4rem;
+
+    li {
+      break-inside: avoid;
+      font-family: var(--font-body);
+      font-weight: var(--font-weight-body);
+      font-size: 1.15rem;
+      line-height: 1.4;
+      color: var(--black);
+      padding: 0.3rem 0;
+    }
   }
 
   @media (max-width: 768px) {
-    .service-banner {
-      height: 22vw;
+    .service-items {
+      columns: 1;
     }
   }
 
-  @media (max-width: 500px) {
-    .service-banner {
-      min-height: 34vw;
-      padding: 2rem 1rem;
-
-      &:hover {
-        background: var(--white);
-        color: var(--black);
-
-        .banner-chevron line {
-          stroke: var(--black);
-        }
-      }
-
-      &[aria-expanded='true'],
-      &[aria-expanded='true']:hover {
-        background: var(--banner-color);
-        color: var(--white);
-
-        .banner-chevron line {
-          stroke: var(--white);
-        }
-      }
-    }
-  }
-
-  .service-item {
-    padding: 2rem;
-    color: var(--black);
-    border-top: 2px solid var(--black);
-
-    h3 {
-      font-family: var(--font-display);
-      font-size: 2.3rem;
-      font-weight: 500;
-      margin: 0 0 0.5rem;
-    }
-
-    p {
-      font-family: var(--font-body);
-      font-size: 1.2rem;
-      line-height: 1.65;
-      margin: 0;
-      max-width: 72ch;
+  @media (prefers-reduced-motion: reduce) {
+    .banner-chevron,
+    .banner-title,
+    .service-content {
+      transition: none;
     }
   }
 </style>

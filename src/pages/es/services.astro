@@ -4,10 +4,14 @@ import Service from '@/components/Service.astro';
 import { serviceCategories } from '@/data/services';
 ---
 
-<BaseLayout pageHeading="Services" title="Services" description="what we do">
+<BaseLayout
+  pageHeading="Servicios"
+  title="Servicios"
+  description="Lo que ofrece Candura — de la estrategia a la ejecución."
+>
   <main>
     <div class="pillars">
-      {serviceCategories.en.map((category) => <Service title={category.title} items={category.items} />)}
+      {serviceCategories.es.map((category) => <Service title={category.title} items={category.items} />)}
     </div>
     <img class="cat" src="/cat2.jpg" alt="" />
   </main>
@@ -35,7 +39,7 @@ import { serviceCategories } from '@/data/services';
     position: absolute;
     top: 0;
     right: 6%;
-    width: clamp(7rem, 10vw, 10.5rem);
+    width: clamp(7rem, 11vw, 10.5rem);
     // Shorter than the source's 395:594, with the photo pinned to its
     // bottom edge — crops the top portion away.
     aspect-ratio: 8 / 11;
@@ -65,7 +69,7 @@ import { serviceCategories } from '@/data/services';
     flex-direction: column;
     // A quiet index doesn't need the full line length; nudged off the left
     // gutter toward the center of the available space.
-    width: 48%;
+    width: 55%;
     margin-left: 10%;
   }
 

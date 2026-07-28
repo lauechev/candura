@@ -31,7 +31,7 @@ const imgAlt = image ? image.alt : projectName;
 <html lang={lang}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.svg`} sizes="32x32" />
     <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.svg`} type="image/png" />
     <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}favicon.svg`} />
@@ -69,14 +69,7 @@ const imgAlt = image ? image.alt : projectName;
          smaller screens it lives inside the fullscreen menu. -->
     <Nav />
     <div class:list={['page-content', { 'with-side-nav': !isHome }]}>
-      {
-        pageHeading && (
-          <div class="page-header-global">
-            <h1 class="page-title">{pageHeading}</h1>
-            <div class="page-rule" />
-          </div>
-        )
-      }
+      {pageHeading && <div class="page-header-global" />}
       <slot />
     </div>
     <Footer />
@@ -90,19 +83,25 @@ const imgAlt = image ? image.alt : projectName;
     background: var(--cream);
     // Anchors the absolutely-positioned Brand in the top-left corner.
     position: relative;
+    // Footer sits at the viewport bottom even on short pages: the content
+    // column grows to fill the gap. svh keeps mobile URL bars from causing
+    // overflow; vh is the fallback for browsers without svh.
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
   }
 
-  // Non-home pages, desktop only (below 1025px the nav is a hamburger
-  // overlay): reserve the right-hand column the fixed corner nav occupies so
-  // page content sits entirely to its left. --side-nav-w ≈ the green panel's
-  // width plus its right offset and a small gutter — tune here if the nav's
-  // padding or type sizes change.
-  @media (min-width: 1025px) {
-    .page-content.with-side-nav {
-      --side-nav-w: 15rem;
-      box-sizing: border-box;
-      padding-right: var(--side-nav-w);
-    }
+  .page-content {
+    flex: 1 0 auto;
+  }
+
+  // Non-home pages: reserve the right-hand column the fixed corner nav
+  // occupies so page content sits entirely to its left. --nav-width
+  // (styles.scss) is 0rem below 1025px, where the nav becomes a hamburger
+  // overlay, so this collapses on its own there.
+  .page-content.with-side-nav {
+    padding-right: var(--nav-width);
   }
 
   .page-header-global {

@@ -20,7 +20,9 @@
     border-radius: 15px;
     overflow: hidden;
     min-height: 40vh;
-    width: calc(100vw - 5rem);
+    // 100% of .page-content, which already excludes the corner nav's
+    // reserved column (--nav-width) on non-home pages.
+    width: calc(100% - 5rem);
     margin: 3rem auto 1rem;
   }
 

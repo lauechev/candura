@@ -32,6 +32,20 @@
   --font-title: 'neue-haas-grotesk-text', sans-serif;
   --font-weight-body: 500;
   --font-weight-display: 600;
+
+  // Layout — width of the column reserved for the fixed corner nav on
+  // non-home pages: widest label "(services)" at 1.35rem semibold + panel
+  // padding + right offset + gutter. Collapses to 0 below 1025px, where
+  // Nav.astro swaps to a hamburger + fullscreen overlay (see its
+  // max-width: 1024px block).
+  --nav-width: 15rem;
+}
+
+@media (max-width: 1024px) {
+  :root {
+    // 0rem, not 0: unitless zero is invalid inside calc() subtraction.
+    --nav-width: 0rem;
+  }
 }
 
 .container {
