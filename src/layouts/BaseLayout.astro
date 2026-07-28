@@ -60,20 +60,25 @@ const imgAlt = image ? image.alt : projectName;
     <meta name="twitter:image:alt" content={imgAlt} />
   </head>
 
-  <body>
+  <!-- --brand-h: the corner logo's rendered height — its width clamp (mirrored
+       from Brand.astro, per variant) × the SVG aspect (330/1301). Lets the
+       hamburger in Nav.astro center-align on the logo. -->
+  <body style={`--brand-h: calc(${isHome ? 'clamp(9rem, 18vw, 15rem)' : 'clamp(5.5rem, 9vw, 7.5rem)'} * 0.2537)`}>
     <Brand variant={isHome ? 'home' : 'compact'} />
     <!-- Nav renders the language toggle: on desktop it's fixed top-right, on
          smaller screens it lives inside the fullscreen menu. -->
     <Nav />
-    {
-      pageHeading && (
-        <div class="page-header-global">
-          <h1 class="page-title">{pageHeading}</h1>
-          <div class="page-rule" />
-        </div>
-      )
-    }
-    <slot />
+    <div class:list={['page-content', { 'with-side-nav': !isHome }]}>
+      {
+        pageHeading && (
+          <div class="page-header-global">
+            <h1 class="page-title">{pageHeading}</h1>
+            <div class="page-rule" />
+          </div>
+        )
+      }
+      <slot />
+    </div>
     <Footer />
   </body>
 </html>
@@ -85,6 +90,19 @@ const imgAlt = image ? image.alt : projectName;
     background: var(--cream);
     // Anchors the absolutely-positioned Brand in the top-left corner.
     position: relative;
+  }
+
+  // Non-home pages, desktop only (below 1025px the nav is a hamburger
+  // overlay): reserve the right-hand column the fixed corner nav occupies so
+  // page content sits entirely to its left. --side-nav-w ≈ the green panel's
+  // width plus its right offset and a small gutter — tune here if the nav's
+  // padding or type sizes change.
+  @media (min-width: 1025px) {
+    .page-content.with-side-nav {
+      --side-nav-w: 15rem;
+      box-sizing: border-box;
+      padding-right: var(--side-nav-w);
+    }
   }
 
   .page-header-global {

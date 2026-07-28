@@ -1,20 +1,22 @@
 ---
-// Full-width tagline banner that scrolls its copy continuously. Used on the
-// home page below the logo (see HomeScreen.astro). Replaces the static tagline
-// that used to live in Brand.astro.
-const phrase = ' a creative technology studio & consultancy ✦ we make boring fun ✦ ';
+// Full-width banner that scrolls its copy continuously. Reusable: the caller
+// provides the phrase and colours (see HomeScreen.astro for the tagline use).
+interface Props {
+  text: string;
+  label?: string;
+  background?: string;
+  color?: string;
+}
+
+const { text, label = text, background = 'var(--purple)', color = 'var(--cream)' } = Astro.props;
 
 // Repeat the phrase so a single group comfortably exceeds the viewport width;
 // the group is then duplicated and the track slides by exactly one group
 // (-50%) for a seamless, gap-free loop.
-const group = phrase.repeat(4);
-
-// One clean, unrepeated copy for screen readers — the visual track is hidden
-// from them so the looping text isn't announced over and over.
-const label = ' a creative technology studio & consultancy. we make boring fun.';
+const group = text.repeat(4);
 ---
 
-<div class="marquee" aria-label={label}>
+<div class="marquee" aria-label={label} style={`--marquee-bg: ${background}; --marquee-fg: ${color}`}>
   <div class="marquee__track" aria-hidden="true">
     <span class="marquee__group">{group}</span>
     <span class="marquee__group">{group}</span>
@@ -31,9 +33,8 @@ const label = ' a creative technology studio & consultancy. we make boring fun.'
     font-weight: 400;
     font-size: clamp(0.7rem, 2.6vw, 1.5rem);
     line-height: 1.15;
-    letter-spacing: -0.02em;
-    background: var(--purple);
-    color: var(--cream);
+    background: var(--marquee-bg);
+    color: var(--marquee-fg);
   }
 
   .marquee__track {
@@ -55,6 +56,14 @@ const label = ' a creative technology studio & consultancy. we make boring fun.'
     }
     to {
       transform: translateX(-50%);
+    }
+  }
+
+  // ── Small screens: the desktop clamp bottoms out at 0.7rem (~11px) on
+  // phones — bump the floor and let it scale with the viewport ───────────────
+  @media (max-width: 590px) {
+    .marquee {
+      font-size: clamp(1.05rem, 4.5vw, 1.4rem);
     }
   }
 

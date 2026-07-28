@@ -135,10 +135,10 @@ const links = [
 
   .nav-link {
     display: inline-block;
-    font-family: var(--font-body);
-    font-weight: 400;
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-display);
     font-size: clamp(1.05rem, 1.5vw, 1.35rem);
-    letter-spacing: -0.02em;
+
     // White on the green panel, always — no color change on any state.
     color: var(--purple);
     text-decoration: none;
@@ -177,10 +177,8 @@ const links = [
 
   // ── Phones + tablets: hamburger + fullscreen menu ───────────────────────────
   @media (max-width: 1024px) {
-    // The hamburger takes the top-right corner the language toggle occupied on
-    // desktop; the toggle itself moves inside the overlay.
     .corner-nav {
-      top: clamp(1.25rem, 3vw, 2.5rem);
+      top: calc(clamp(1.5rem, 4vh, 3rem) + var(--brand-h, 1.9rem) / 2 - 22px);
       right: clamp(1.25rem, 3vw, 2.75rem);
       bottom: auto;
     }
@@ -205,35 +203,30 @@ const links = [
       span {
         display: block;
         width: 28px;
-        height: 4px;
+        height: 3px;
         border-radius: 2px;
         margin: 0 auto;
+        background: var(--green);
         transition:
           transform 200ms ease,
           opacity 200ms ease;
       }
-
-      span:nth-child(1) {
-        background: var(--red);
-      }
-      span:nth-child(2) {
-        background: var(--pink);
-      }
-      span:nth-child(3) {
-        background: var(--orange);
-      }
     }
 
-    // Burger → X. Offset matches bar height (4px) + gap (6px).
+    // Burger → X, recoloured cream to stay visible on the green overlay.
+    // Offset matches bar height (3px) + gap (6px).
     .is-open .hamburger {
+      span {
+        background: var(--cream);
+      }
       span:nth-child(1) {
-        transform: translateY(10px) rotate(45deg);
+        transform: translateY(9px) rotate(45deg);
       }
       span:nth-child(2) {
         opacity: 0;
       }
       span:nth-child(3) {
-        transform: translateY(-10px) rotate(-45deg);
+        transform: translateY(-9px) rotate(-45deg);
       }
     }
 
@@ -242,35 +235,43 @@ const links = [
       position: fixed;
       inset: 0;
       z-index: 1;
-      background: var(--cream);
+      background: var(--green);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       gap: clamp(1.5rem, 5vh, 3rem);
       margin: 0;
-      opacity: 0;
+      // Slides in from the right edge; visibility keeps it unfocusable while
+      // closed (and waits for the slide-out before hiding).
+      transform: translateX(100%);
       visibility: hidden;
+      // Gentle ease-in-and-out: accelerates softly, settles softly.
       transition:
-        opacity 250ms ease,
-        visibility 250ms ease;
+        transform 550ms cubic-bezier(0.4, 0, 0.2, 1),
+        visibility 0s 550ms;
     }
 
     .is-open .nav-menu {
-      opacity: 1;
+      transform: translateX(0);
       visibility: visible;
+      transition:
+        transform 550ms cubic-bezier(0.4, 0, 0.2, 1),
+        visibility 0s;
     }
 
     .nav-links {
       align-items: center;
-      gap: clamp(1.5rem, 5vh, 3rem);
+      gap: clamp(0.75rem, 2.5vh, 1.5rem);
     }
 
     .nav-link {
-      font-size: clamp(1.75rem, 6vw, 2.75rem);
+      font-size: clamp(1.45rem, 4.8vw, 2.45rem);
       // Comfortable tap target without changing the visual size.
       padding: 0.4rem 1rem;
       opacity: 1;
+      // Cream on the green overlay (desktop keeps purple on the panel).
+      color: var(--cream);
 
       &:hover,
       &:focus-visible,

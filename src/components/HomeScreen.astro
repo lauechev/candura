@@ -7,7 +7,10 @@ import Marquee from '@/components/Marquee.astro';
 <section class="home">
   <!-- Scrolling tagline banner, sits full-width just below the corner logo. -->
   <div class="home__marquee">
-    <Marquee />
+    <Marquee
+      text=" a creative technology studio & consultancy ✦ we make boring fun ✦ "
+      label="a creative technology studio & consultancy. we make boring fun."
+    />
   </div>
 
   <!-- Centerpiece. See Pinata.astro — swap the image for an animation there. -->
@@ -44,8 +47,24 @@ import Marquee from '@/components/Marquee.astro';
     left: max(1.5rem, calc(50% - 34dvh));
     margin: 0;
     color: var(--green);
-    font-family: var(--font-body);
-    font-size: 1rem;
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-display);
+    font-size: 1.1rem;
+  }
+
+  // ── Small screens: the camera zooms the piñata out (see pinata.ts), so pull
+  // the label in toward the smaller star — rightward and a touch lower ────────
+  @media (max-width: 590px) {
+    .whack {
+      top: calc(50% + 26dvh);
+      left: max(1.5rem, calc(70% - 27dvh));
+    }
+
+    // The desktop clamp keeps the band at its 7rem floor on phones — drop it
+    // a bit further below the corner logo.
+    .home__marquee {
+      top: clamp(9rem, 15vh, 11rem);
+    }
   }
 
   // ── Mobile: nav moves to a bottom row, so reserve space for it ─────────────

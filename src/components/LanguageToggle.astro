@@ -94,12 +94,16 @@ const otherHref = localizePath(pathname, other);
   // ── Phones + tablets: sits in the flow of the fullscreen menu, under the
   // links, so it only appears once the menu is open.
   @media (max-width: 1024px) {
+    // At this size the toggle only ever appears inside Nav's green fullscreen
+    // overlay, so cream replaces the desktop blue for contrast.
     .lang-toggle {
       position: static;
-      font-size: clamp(1.15rem, 4vw, 1.5rem);
+      font-size: clamp(1.5rem, 5.5vw, 2rem);
+      color: var(--cream);
     }
 
     .lang {
+      color: var(--cream);
       // Comfortable tap target.
       padding: 0.6rem 0.4rem;
     }

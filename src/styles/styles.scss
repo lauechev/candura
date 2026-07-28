@@ -22,12 +22,16 @@
   --nav-border-work: var(--yellow);
   --nav-border-contact: var(--red);
 
-  // Typography — Neue Haas Grotesk is the only typeface site-wide.
-  --font-display: 'neue-haas-grotesk-text', sans-serif;
+  // Typography — Neue Haas Grotesk is the only typeface site-wide. The Adobe
+  // Fonts kit ships the -text cut in 400/700 only; the -display cut carries
+  // 100–900, so any variable that needs an in-between weight points at
+  // -display and pairs with its weight variable below.
+  --font-display: 'neue-haas-grotesk-display', sans-serif;
   --font-logo: 'neue-haas-grotesk-text', sans-serif;
-  --font-body: 'neue-haas-grotesk-text', sans-serif;
+  --font-body: 'neue-haas-grotesk-display', sans-serif;
   --font-title: 'neue-haas-grotesk-text', sans-serif;
-  --font-weight-body: 400;
+  --font-weight-body: 500;
+  --font-weight-display: 600;
 }
 
 .container {

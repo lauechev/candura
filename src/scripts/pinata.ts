@@ -66,7 +66,7 @@ const MIN_HALF_WIDTH = 2.4; // guarantee the star fits horizontally on narrow sc
 // the star gets breathing room. layout() runs on resize, so this acts like a
 // CSS media query.
 const SMALL_SCREEN_W = 590; // px breakpoint
-const SMALL_SCREEN_ZOOM_OUT = 1.2; // camera distance multiplier (≈17% smaller piñata)
+const SMALL_SCREEN_ZOOM_OUT = 1.4; // camera distance multiplier (≈17% smaller piñata)
 
 // ── Piñata proportions ──────────────────────────────────────────────────────
 const PINATA_SCALE = 0.7; // overall size of the hanging star
