@@ -183,6 +183,17 @@ const links = [
       bottom: auto;
     }
 
+    // Pages with the mobile header bar (every page but home — the flag is set
+    // on <body> in BaseLayout): the burger sits inside the bar, centred
+    // vertically opposite the logo.
+    :global(body.has-mobile-header) .corner-nav {
+      top: 0;
+      right: var(--mobile-header-pad);
+      height: var(--mobile-header-height);
+      display: flex;
+      align-items: center;
+    }
+
     .hamburger {
       display: flex;
       flex-direction: column;
@@ -278,6 +289,27 @@ const links = [
       &.is-active {
         // Sliding sideways makes no sense in a centered stack.
         transform: none;
+      }
+
+      // No orange in the overlay: tapping a link fires :hover on touch, so
+      // the hover colour has to be neutralised here too.
+      &:hover,
+      &:focus-visible {
+        color: var(--cream);
+      }
+
+      // Pressed: goes black under the finger, matching the current-page mark.
+      &:active {
+        color: var(--black);
+      }
+
+      // The current page marks itself black on the green overlay, rather
+      // than the orange it uses on the desktop panel — including while it's
+      // being tapped.
+      &.is-active,
+      &.is-active:hover,
+      &.is-active:focus-visible {
+        color: var(--black);
       }
     }
   }

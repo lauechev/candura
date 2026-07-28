@@ -120,3 +120,39 @@ export const serviceCategories: Record<Lang, ServiceCategory[]> = {
     },
   ],
 };
+
+/**
+ * Programs bundle services that complement each other. The item lists are
+ * still to be written — fill the empty arrays below and the page renders
+ * them with no other changes needed.
+ */
+export const programCategories: Record<Lang, ServiceCategory[]> = {
+  en: [
+    {
+      title: 'brand creation',
+      items: [], // ← items go here
+    },
+    {
+      title: 'brand refresh',
+      items: [], // ← items go here
+    },
+    {
+      title: 'brand expansion & innovation',
+      items: [], // ← items go here
+    },
+  ],
+  es: [
+    {
+      title: 'creación de marca',
+      items: [], // ← los items van aquí
+    },
+    {
+      title: 'renovación de marca',
+      items: [], // ← los items van aquí
+    },
+    {
+      title: 'expansión e innovación de marca',
+      items: [], // ← los items van aquí
+    },
+  ],
+};

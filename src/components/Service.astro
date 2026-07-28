@@ -2,12 +2,15 @@
 interface Props {
   title: string;
   items: string[];
+  // 'right' mirrors the row: title flush right, toggle on the left, and the
+  // hover nudge reversed. Used by the programs group on the services page.
+  align?: 'left' | 'right';
 }
 
-const { title, items } = Astro.props;
+const { title, items, align = 'left' } = Astro.props;
 ---
 
-<div class="service-pillar">
+<div class:list={['service-pillar', { 'is-right': align === 'right' }]}>
   <button class="service-banner" aria-expanded="false">
     <span class="banner-title">({title})</span>
     <svg
@@ -132,6 +135,38 @@ const { title, items } = Astro.props;
       line-height: 1.4;
       color: var(--black);
       padding: 0.3rem 0;
+    }
+  }
+
+  // ── Mirrored variant ──────────────────────────────────────────────────────
+  // Everything flips: the toggle moves to the left of the row, the title sits
+  // flush right, and the hover nudge points left instead of right.
+  .is-right {
+    .service-banner {
+      flex-direction: row-reverse;
+      text-align: right;
+    }
+
+    .banner-chevron {
+      margin-left: 0;
+      margin-right: 1rem;
+    }
+
+    .service-banner:hover .banner-title,
+    .service-banner:focus-visible .banner-title,
+    .service-banner[aria-expanded='true'] .banner-title {
+      transform: translateX(-6px);
+    }
+
+    // rtl makes the two columns fill right-to-left, so reading order follows
+    // the alignment; each item restores ltr so its own text renders normally.
+    .service-items {
+      direction: rtl;
+      text-align: right;
+
+      li {
+        direction: ltr;
+      }
     }
   }
 

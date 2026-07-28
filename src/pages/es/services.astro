@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Service from '@/components/Service.astro';
-import { serviceCategories } from '@/data/services';
+import { programCategories, serviceCategories } from '@/data/services';
 ---
 
 <BaseLayout
@@ -11,11 +11,30 @@ import { serviceCategories } from '@/data/services';
 >
   <main>
     <div class="pillars">
+      <p class="group-label">(servicios)</p>
       {serviceCategories.es.map((category) => <Service title={category.title} items={category.items} />)}
     </div>
+    <div class="programs">
+      <p class="group-label">(programas)</p>
+      <p class="programs-intro">
+        nuestros (programas) combinan algunos servicios que se complementan según las necesidades de cada cliente.
+      </p>
+      {
+        programCategories.es.map((program) => (
+          <Service title={program.title} items={program.items} align="right" />
+        ))
+      }
+    </div>
+
     <img class="cat" src="/cat2.jpg" alt="" />
   </main>
 </BaseLayout>
+
+<script>
+  import { attachConfettiPop } from '@/scripts/confetti';
+
+  attachConfettiPop('.cat');
+</script>
 
 <style lang="scss">
   main {
@@ -23,10 +42,10 @@ import { serviceCategories } from '@/data/services';
     // reserved column — leaves the same 2.5rem side gutters as Intro.astro.
     width: calc(100% - 5rem);
     margin-inline: auto;
-    padding-top: 12rem;
-    padding-bottom: 1rem;
-    // Bottom edge lands exactly at the fold (the empty page header above is
-    // 10rem tall), so the footer sits just below and appears on scroll.
+    padding-top: 10rem;
+    padding-bottom: 20rem;
+    // Keeps the footer off the fold if the page is ever short (the empty page
+    // header above is 10rem tall); inert once the content runs longer.
     min-height: calc(100vh - 10rem);
     min-height: calc(100svh - 10rem);
     // Anchors .cat.
@@ -40,11 +59,20 @@ import { serviceCategories } from '@/data/services';
     top: 0;
     right: 6%;
     width: clamp(7rem, 11vw, 10.5rem);
-    // Shorter than the source's 395:594, with the photo pinned to its
-    // bottom edge — crops the top portion away.
-    aspect-ratio: 8 / 11;
-    object-fit: cover;
-    object-position: bottom;
+    height: auto;
+    // Clicking it bursts the piñata's confetti (see @/scripts/confetti).
+    cursor: pointer;
+    transition: transform 150ms ease;
+
+    &.is-popping {
+      transform: scale(0.88);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cat {
+      transition: none;
+    }
   }
 
   @media (max-width: 1024px) {
@@ -77,6 +105,45 @@ import { serviceCategories } from '@/data/services';
     .pillars {
       width: 100%;
       margin-left: 0;
+    }
+  }
+
+  // The mirror of .pillars: same width, anchored to the right edge instead,
+  // with everything inside reading flush right.
+  .programs {
+    display: flex;
+    flex-direction: column;
+    width: 48%;
+    margin-left: auto;
+    margin-right: 10%;
+    // Enough air that the two groups read as separate sections.
+    margin-top: 9rem;
+    text-align: right;
+  }
+
+  // Small green label naming each group.
+  .group-label {
+    font-family: var(--font-body);
+    font-weight: var(--font-weight-display);
+    font-size: 0.95rem;
+    color: var(--green);
+    margin: 0 0 1.5rem;
+  }
+
+  .programs-intro {
+    font-family: var(--font-body);
+    font-weight: var(--font-weight-body);
+    font-size: 1.15rem;
+    line-height: 1.5;
+    color: var(--black);
+    margin: 0 0 2rem;
+  }
+
+  @media (max-width: 1024px) {
+    .programs {
+      width: 100%;
+      margin-right: 0;
+      margin-top: 6rem;
     }
   }
 

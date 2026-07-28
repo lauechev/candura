@@ -39,12 +39,22 @@
   // Nav.astro swaps to a hamburger + fullscreen overlay (see its
   // max-width: 1024px block).
   --nav-width: 15rem;
+
+  // Height of the mobile header bar (logo + hamburger). 0 on desktop, where
+  // there is no bar; the real value is set in the breakpoint below. The bar
+  // is fixed, so BaseLayout offsets .page-content by this same token — they
+  // must never drift apart.
+  --mobile-header-height: 0rem;
+  // Horizontal padding inside that bar, shared by the logo and the burger so
+  // they stay symmetric.
+  --mobile-header-pad: clamp(1.25rem, 5vw, 2.5rem);
 }
 
 @media (max-width: 1024px) {
   :root {
     // 0rem, not 0: unitless zero is invalid inside calc() subtraction.
     --nav-width: 0rem;
+    --mobile-header-height: 4.5rem;
   }
 }
 
