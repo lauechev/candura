@@ -40,10 +40,10 @@ const EXPOSURE = 0.85;
 // Matte clay with ONE small bright specular glint per rounded form (stylized
 // clay render), not an overall sheen. The base stays flat; the glint is a
 // tight clearcoat highlight caught from a single dedicated light.
-const CLAY_ROUGHNESS = 0.75; // matte base — the clay itself
+const CLAY_ROUGHNESS = 0.9; // matte base — the clay itself
 const CLEARCOAT = 0.5; // glint brightness (raise toward 0.7 if faint)
-const CLEARCOAT_ROUGHNESS = 0.12; // glint size (lower toward 0.08 if too big)
-const GLINT_INTENSITY = 1.6; // highlight light strength (2.4 if too faint on dark colours)
+const CLEARCOAT_ROUGHNESS = 0.08; // glint size (lower toward 0.08 if too big)
+const GLINT_INTENSITY = 0.02; // highlight light strength (2.4 if too faint on dark colours)
 // High and camera-left so the glint rides each form's top silhouette edge.
 const GLINT_POS = new Vector3(-4, 5, 4);
 
