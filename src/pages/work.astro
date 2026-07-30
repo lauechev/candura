@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import PhotoAndDescription from '@/components/PhotoAndDescription.astro';
+// Aliased: Astro names a page's own component after its file, so a plain
+// `Work` import collides with work.astro's generated local declaration.
+import WorkCard from '@/components/Work.astro';
 
 const bienvenides = '/bienvenides.png';
 const sanarte = '/sanarte.png';
@@ -13,35 +15,24 @@ const ux = '/ux.png';
 
 <BaseLayout title="Work" pageHeading="Work" description="Selected projects by Candura.">
   <main class="container">
-    <p class="intro">A selection of projects we've brought to life for brands we love working with.</p>
     <div class="grid">
-      <PhotoAndDescription description="Shopify Store Development" image={sanarte} color="var(--blue)" />
-      <PhotoAndDescription description="History of the Internet Website" image={ux} color="var(--pink)" />
-      <PhotoAndDescription description="Typeface Checker Website" image={type} color="var(--purple)" />
-      <PhotoAndDescription description="Digital Art Collection Website" image={art} color="var(--red)" />
-      <PhotoAndDescription description="Newsletter Visual Universe" image={news} color="var(--green)" />
-      <PhotoAndDescription description="Ebook Creative Direction & Design" image={ebook2} color="var(--orange)" />
+      <WorkCard brand="Brand name" services={['Shopify Store Development']} images={[sanarte]} />
+      <WorkCard brand="Brand name" services={['History of the Internet Website']} images={[ux]} />
+      <WorkCard brand="Brand name" services={['Typeface Checker Website']} images={[type]} />
+      <WorkCard brand="Brand name" services={['Digital Art Collection Website']} images={[art]} />
+      <WorkCard brand="Brand name" services={['Newsletter Visual Universe']} images={[news]} />
+      <WorkCard brand="Brand name" services={['Ebook Creative Direction & Design']} images={[ebook2]} />
     </div>
   </main>
 </BaseLayout>
 
 <style lang="scss">
+  // No top padding: the grid sits directly under .page-header-global's own
+  // 3rem bottom padding (BaseLayout), so the cards start as high as the
+  // header spacer allows.
   main {
-    padding-top: 4rem;
+    padding-top: 0;
     padding-bottom: 6rem;
-
-    @media (max-width: 768px) {
-      padding-top: 3rem;
-    }
-  }
-
-  .intro {
-    font-family: var(--font-body);
-    font-size: 1.4rem;
-    line-height: 1.6;
-    color: var(--black);
-    margin: 0 0 3rem;
-    max-width: 50rem;
   }
 
   .grid {

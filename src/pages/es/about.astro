@@ -5,17 +5,16 @@ import Profiles from '@/components/Profiles.astro';
 import ImageText from '@/components/ImageText.astro';
 import { aboutIntro, aboutProfiles, aboutSections } from '@/data/about';
 
-// Locale slice picked explicitly, the same way services.astro reads
-// serviceCategories.en and its /es/ twin reads .es.
-const intro = aboutIntro.en;
-const profiles = aboutProfiles.en;
-const sections = aboutSections.en;
+// Spanish twin of /about — same structure, the .es slice of the same copy.
+const intro = aboutIntro.es;
+const profiles = aboutProfiles.es;
+const sections = aboutSections.es;
 
 const michael = '/michael.jpg';
 const office = '/office.jpg';
 ---
 
-<BaseLayout title="About" pageHeading="About" description="Learn about Candura — who we are and how we work.">
+<BaseLayout title="somos" pageHeading="somos" description="Conoce a Candura — quiénes somos y cómo trabajamos.">
   <TextBlock heading={intro.heading} tagline={intro.tagline} paragraphs={intro.paragraphs} />
 
   <div class="about-sections">

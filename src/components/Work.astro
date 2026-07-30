@@ -1,0 +1,194 @@
+---
+interface Props {
+  brand: string;
+  services: string[];
+  // At least one path. More than one turns on the hover cycling below.
+  images: string[];
+  link?: string;
+}
+
+const { brand, services, images, link } = Astro.props;
+
+const isMulti = images.length > 1;
+const alt = `${brand} — ${services.join(', ')}`;
+// Only spread when a link exists, so the no-link branch never emits a bare <a>.
+const linkAttrs = link ? { href: link, target: '_blank', rel: 'noopener noreferrer' } : {};
+// The media block and the brand line are anchors when there's a link, plain
+// elements otherwise.
+const Media = link ? 'a' : 'div';
+const Brand = link ? 'a' : 'span';
+---
+
+<div class:list={['work-card', { 'has-link': !!link }]}>
+  <!-- The wrapper carries the aspect ratio and the radius; the images stack
+       absolutely inside it, so cycling can never shift layout. data-cycle is
+       only present on multi-image cards — single-image cards get no listeners
+       and no interval at all. -->
+  <Media class="work-media" data-cycle={isMulti ? '' : undefined} {...linkAttrs}>
+    {
+      images.map((src: string, i: number) => (
+        <img
+          src={src}
+          alt={i === 0 ? alt : ''}
+          aria-hidden={i === 0 ? undefined : 'true'}
+          class:list={['work-image', { 'is-active': i === 0 }]}
+          loading="eager"
+          decoding="async"
+        />
+      ))
+    }
+  </Media>
+
+  <div class="work-meta">
+    <Brand class="work-brand" {...linkAttrs}>({brand})</Brand>
+    <span class="work-services">{services.join(', ')}</span>
+  </div>
+</div>
+
+<script>
+  // Milliseconds between frames while a multi-image card is hovered.
+  const CYCLE_MS = 800;
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  // One entry per actively cycling card — also the guard against starting a
+  // second interval for a card that already has one.
+  const timers = new Map<HTMLElement, number>();
+
+  function clear(media: HTMLElement) {
+    const id = timers.get(media);
+    if (id !== undefined) {
+      clearInterval(id);
+      timers.delete(media);
+    }
+  }
+
+  document.querySelectorAll<HTMLElement>('.work-media[data-cycle]').forEach((media) => {
+    // Each card closes over its own images and index, so cards never sync.
+    const images = [...media.querySelectorAll<HTMLElement>('.work-image')];
+    let index = 0;
+
+    const start = () => {
+      if (reduceMotion.matches || timers.has(media)) return;
+
+      timers.set(
+        media,
+        window.setInterval(() => {
+          images[index].classList.remove('is-active');
+          // Wraps back to the first image after the last.
+          index = (index + 1) % images.length;
+          images[index].classList.add('is-active');
+        }, CYCLE_MS)
+      );
+    };
+
+    const stop = () => {
+      clear(media);
+      images.forEach((img, i) => img.classList.toggle('is-active', i === 0));
+      index = 0;
+    };
+
+    media.addEventListener('mouseenter', start);
+    media.addEventListener('focusin', start);
+    media.addEventListener('mouseleave', stop);
+    media.addEventListener('focusout', stop);
+  });
+
+  // Nothing survives a navigation, including a bfcache freeze.
+  window.addEventListener('pagehide', () => {
+    timers.forEach((id) => clearInterval(id));
+    timers.clear();
+  });
+</script>
+
+<style lang="scss">
+  .work-card {
+    width: 100%;
+  }
+
+  .work-media {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 9;
+    background-color: var(--white);
+    border-radius: 15px;
+    // Clips the stacked images to the radius.
+    overflow: hidden;
+  }
+
+  // Stacked one on top of another; only .is-active is visible, so the swap is
+  // a cross-fade rather than a display toggle.
+  .work-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0;
+    transition: opacity 250ms ease;
+
+    &.is-active {
+      opacity: 1;
+    }
+  }
+
+  .work-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: 0.75rem;
+  }
+
+  .work-brand {
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-display);
+    font-size: 1.2rem;
+    line-height: 1.3;
+    color: var(--black);
+  }
+
+  .work-services {
+    font-family: var(--font-body);
+    font-weight: var(--font-weight-body);
+    font-size: 1rem;
+    line-height: 1.4;
+    color: var(--black);
+    opacity: 0.75;
+  }
+
+  // Link affordance — same opacity fade as .right a in Footer.astro.
+  .has-link {
+    .work-media,
+    .work-brand {
+      cursor: pointer;
+    }
+
+    .work-brand {
+      opacity: 0.85;
+      transition: opacity 150ms ease;
+
+      &:hover,
+      &:focus-visible {
+        opacity: 1;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .work-brand {
+      font-size: 1.05rem;
+    }
+
+    .work-services {
+      font-size: 0.9rem;
+    }
+  }
+
+  // The cycling itself is skipped in the script; this kills the fade too, so
+  // only the first image is ever shown.
+  @media (prefers-reduced-motion: reduce) {
+    .work-image {
+      transition: none;
+    }
+  }
+</style>

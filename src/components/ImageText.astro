@@ -2,19 +2,34 @@
 interface Props {
   color: string;
   title: string;
-  description: string;
+  // A single string renders one <p>; an array renders one <p> per entry.
+  description: string | string[];
   image: string;
+  // Optional list rendered after the paragraphs, e.g. the About page's
+  // "who we work with" section.
+  bullets?: string[];
   reverse?: boolean;
   imageSize?: string;
 }
 
-const { color, title, description, image, reverse = false, imageSize = '80%' } = Astro.props;
+const { color, title, description, image, bullets, reverse = false, imageSize = '80%' } = Astro.props;
+
+const paragraphs = (Array.isArray(description) ? description : [description]).filter(Boolean);
 ---
 
 <div class:list={['about-split', { 'about-split--reverse': reverse }]}>
   <div class="split-text">
     <h2>{title}</h2>
-    {description && <p>{description}</p>}
+    {paragraphs.map((paragraph: string) => <p>{paragraph}</p>)}
+    {
+      bullets && bullets.length > 0 && (
+        <ul>
+          {bullets.map((bullet: string) => (
+            <li>{bullet}</li>
+          ))}
+        </ul>
+      )
+    }
     <slot />
   </div>
   <div class="split-image" style={`--square-color: ${color}`}>
@@ -29,7 +44,9 @@ const { color, title, description, image, reverse = false, imageSize = '80%' } =
     grid-template-areas: 'text image';
     border-radius: 15px;
     overflow: hidden;
-    height: 50vh;
+    // min-, not a fixed height: blocks with long copy (the bulleted "who we
+    // work with") grow instead of being clipped by the overflow above.
+    min-height: 50vh;
     // 100% of .page-content (already excludes the corner nav's --nav-width
     // column) minus 10rem of gutters.
     width: calc(100% - 10rem);
@@ -81,12 +98,44 @@ const { color, title, description, image, reverse = false, imageSize = '80%' } =
     letter-spacing: 0;
   }
 
-  p {
+  // Shared so list items can never drift from the body copy above them.
+  p,
+  li {
     font-family: var(--font-body);
     font-size: 1.2rem;
     line-height: 1.75;
     color: var(--black);
+    // Flush on both edges, matching TextBlock and Profiles. Wins over the
+    // text-align: right that .about-split--reverse sets on the container, so
+    // only the heading follows the mirrored alignment.
+    text-align: justify;
     margin: 0;
+  }
+
+  // Only bites when `description` is an array; single-string blocks render one
+  // <p> and are unaffected.
+  p + p {
+    margin-top: 1.25rem;
+  }
+
+  // The project had no list style to reuse (Service.astro's is list-style:
+  // none + columns: 2, a different thing), so this is the baseline.
+  ul {
+    list-style: disc;
+    // Room for the marker; same 1.25rem rhythm as p + p above.
+    padding-left: 1.25rem;
+    margin: 1.25rem 0 0;
+  }
+
+  li + li {
+    margin-top: 0.75rem;
+  }
+
+  // The reversed variant right-aligns .split-text; keeping the marker inside
+  // the text flow stops it stranding on the far left of a right-aligned list.
+  .about-split--reverse ul {
+    list-style-position: inside;
+    padding-left: 0;
   }
 
   /* ── Below 1500px ──────────────────────────────────────────────────── */
