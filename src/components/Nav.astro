@@ -183,13 +183,13 @@ const links = [
       bottom: auto;
     }
 
-    // Pages with the mobile header bar (every page but home — the flag is set
+    // Pages with the header bar (every page but home — the flag is set
     // on <body> in BaseLayout): the burger sits inside the bar, centred
     // vertically opposite the logo.
-    :global(body.has-mobile-header) .corner-nav {
+    :global(body.has-header) .corner-nav {
       top: 0;
       right: var(--mobile-header-pad);
-      height: var(--mobile-header-height);
+      height: var(--header-height);
       display: flex;
       align-items: center;
     }

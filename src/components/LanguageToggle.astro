@@ -47,7 +47,9 @@ const otherHref = localizePath(pathname, other);
     // query at the end of this block, and Nav.astro which renders it.
     position: fixed;
     top: clamp(1.25rem, 3vw, 2.5rem);
-    right: clamp(1.25rem, 3vw, 2.75rem);
+    // Lines the text up with .nav-link: Nav's own right offset, plus the
+    // horizontal padding on .nav-menu, less this element's own .lang padding.
+    right: calc(clamp(1.25rem, 3vw, 2.75rem) + clamp(1.25rem, 2.2vw, 1.75rem) - 0.15rem);
     z-index: 100;
     display: flex;
     align-items: center;
@@ -55,11 +57,17 @@ const otherHref = localizePath(pathname, other);
     font-weight: 700;
     font-size: clamp(1rem, 1.4vw, 1.35rem);
     letter-spacing: -0.01em;
-    color: var(--blue);
+    color: var(--green);
+  }
+
+  // Non-home pages: centred in the header bar alongside the logo.
+  :global(body.has-header) .lang-toggle {
+    top: 0;
+    height: var(--header-height);
   }
 
   .lang {
-    color: var(--blue);
+    color: var(--green);
     text-decoration: none;
     // Keeps the toggle a comfortable tap target without visually padding it.
     padding: 0.5rem 0.15rem;
@@ -96,8 +104,10 @@ const otherHref = localizePath(pathname, other);
   @media (max-width: 1024px) {
     // At this size the toggle only ever appears inside Nav's green fullscreen
     // overlay, so cream replaces the desktop blue for contrast.
-    .lang-toggle {
+    .lang-toggle,
+    :global(body.has-header) .lang-toggle {
       position: static;
+      height: auto;
       font-size: clamp(1.5rem, 5.5vw, 2rem);
       color: var(--cream);
     }

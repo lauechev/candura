@@ -40,13 +40,12 @@
   // max-width: 1024px block).
   --nav-width: 15rem;
 
-  // Height of the mobile header bar (logo + hamburger). 0 on desktop, where
-  // there is no bar; the real value is set in the breakpoint below. The bar
-  // is fixed, so BaseLayout offsets .page-content by this same token — they
-  // must never drift apart.
-  --mobile-header-height: 0rem;
-  // Horizontal padding inside that bar, shared by the logo and the burger so
-  // they stay symmetric.
+  // Height of the header bar (logo + language toggle; + hamburger below
+  // 1025px). The bar is fixed, so BaseLayout offsets .page-content by this
+  // same token — they must never drift apart.
+  --header-height: 6rem;
+  // Horizontal padding inside that bar below 1025px, shared by the logo and
+  // the burger so they stay symmetric.
   --mobile-header-pad: clamp(1.25rem, 5vw, 2.5rem);
 }
 
@@ -54,7 +53,7 @@
   :root {
     // 0rem, not 0: unitless zero is invalid inside calc() subtraction.
     --nav-width: 0rem;
-    --mobile-header-height: 4.5rem;
+    --header-height: 4.5rem;
   }
 }
 
@@ -63,6 +62,10 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
+}
+
+img {
+  border-radius: 6px;
 }
 
 h1 {

@@ -1,4 +1,6 @@
 ---
+import Heading from '@/components/Heading.astro';
+
 interface Props {
   heading: string;
   tagline: string;
@@ -9,29 +11,23 @@ const { heading, tagline, paragraphs } = Astro.props;
 ---
 
 <section class="text-block">
-  <h2>{heading}</h2>
-  <p class="tagline">{tagline}</p>
+  <div class="heading-wrap"><Heading>{heading}</Heading></div>
   <div class="body">
     {paragraphs.map((paragraph: string) => <p>{paragraph}</p>)}
   </div>
+  <p class="tagline">{tagline}</p>
 </section>
 
 <style lang="scss">
   .text-block {
     // Narrower than ImageText's .about-split and centred in the same column
     // (.page-content already excludes the corner nav's --nav-width).
-    width: calc(100% - 20rem);
+    width: calc(100% - 34rem);
     max-width: 55rem;
-    margin: 3rem auto 4rem;
+    margin: 2rem auto 3rem;
 
-    h2 {
-      font-family: var(--font-display);
-      font-weight: var(--font-weight-display);
-      // A step below ImageText's h2 — this block leads with its body copy.
-      font-size: clamp(1.5rem, 2.6vw, 2rem);
-      line-height: 1.2;
-      color: var(--green);
-      margin: 0 0 0.5rem;
+    .heading-wrap {
+      margin-bottom: 4rem;
     }
 
     .tagline {
@@ -40,7 +36,8 @@ const { heading, tagline, paragraphs } = Astro.props;
       font-size: 1.4rem;
       line-height: 1.4;
       color: var(--black);
-      margin: 0 0 2rem;
+      text-align: center;
+      margin: 2rem 0 0;
     }
 
     .body p {

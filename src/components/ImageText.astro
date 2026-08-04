@@ -2,11 +2,8 @@
 interface Props {
   color: string;
   title: string;
-  // A single string renders one <p>; an array renders one <p> per entry.
   description: string | string[];
   image: string;
-  // Optional list rendered after the paragraphs, e.g. the About page's
-  // "who we work with" section.
   bullets?: string[];
   reverse?: boolean;
   imageSize?: string;
@@ -19,7 +16,7 @@ const paragraphs = (Array.isArray(description) ? description : [description]).fi
 
 <div class:list={['about-split', { 'about-split--reverse': reverse }]}>
   <div class="split-text">
-    <h2>{title}</h2>
+    <h2>({title})</h2>
     {paragraphs.map((paragraph: string) => <p>{paragraph}</p>)}
     {
       bullets && bullets.length > 0 && (
@@ -47,8 +44,7 @@ const paragraphs = (Array.isArray(description) ? description : [description]).fi
     // min-, not a fixed height: blocks with long copy (the bulleted "who we
     // work with") grow instead of being clipped by the overflow above.
     min-height: 50vh;
-    // 100% of .page-content (already excludes the corner nav's --nav-width
-    // column) minus 10rem of gutters.
+
     width: calc(100% - 10rem);
     margin: 0 auto 1rem;
   }
@@ -60,7 +56,8 @@ const paragraphs = (Array.isArray(description) ? description : [description]).fi
 
   .split-text {
     grid-area: text;
-    padding: 3.5rem 4rem;
+    max-width: 48rem;
+    padding: 3.5rem 1.5rem 3.5rem 4rem;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -68,6 +65,8 @@ const paragraphs = (Array.isArray(description) ? description : [description]).fi
     .about-split--reverse & {
       border-right: none;
       text-align: right;
+      padding: 3.5rem 4rem 3.5rem 1.5rem;
+      margin-left: auto;
     }
   }
 
@@ -76,7 +75,7 @@ const paragraphs = (Array.isArray(description) ? description : [description]).fi
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 5rem;
+    padding: 2rem;
     overflow: hidden;
 
     img {
@@ -91,8 +90,8 @@ const paragraphs = (Array.isArray(description) ? description : [description]).fi
 
   h2 {
     font-family: var(--font-display);
-    font-size: clamp(1.8rem, 3.8vw, 2.8rem);
-    font-weight: 500;
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: var(--font-weight-body);
     color: var(--black);
     margin: 0 0 1.25rem;
     letter-spacing: 0;
@@ -102,6 +101,7 @@ const paragraphs = (Array.isArray(description) ? description : [description]).fi
   p,
   li {
     font-family: var(--font-body);
+    font-weight: var(--font-weight-body);
     font-size: 1.2rem;
     line-height: 1.75;
     color: var(--black);
@@ -118,10 +118,8 @@ const paragraphs = (Array.isArray(description) ? description : [description]).fi
     margin-top: 1.25rem;
   }
 
-  // The project had no list style to reuse (Service.astro's is list-style:
-  // none + columns: 2, a different thing), so this is the baseline.
   ul {
-    list-style: disc;
+    list-style-type: '★  ';
     // Room for the marker; same 1.25rem rhythm as p + p above.
     padding-left: 1.25rem;
     margin: 1.25rem 0 0;
@@ -131,8 +129,6 @@ const paragraphs = (Array.isArray(description) ? description : [description]).fi
     margin-top: 0.75rem;
   }
 
-  // The reversed variant right-aligns .split-text; keeping the marker inside
-  // the text flow stops it stranding on the far left of a right-aligned list.
   .about-split--reverse ul {
     list-style-position: inside;
     padding-left: 0;
@@ -145,13 +141,14 @@ const paragraphs = (Array.isArray(description) ? description : [description]).fi
       display: flex;
       flex-direction: column;
       height: auto;
+      width: calc(100% - 20rem);
+      max-width: 55rem;
     }
 
     .split-image {
-      order: -1;
       height: 40vw;
       padding: 1.5rem;
-      border-bottom: 2px solid var(--black);
+      justify-content: flex-end;
 
       img {
         width: auto;
@@ -161,12 +158,16 @@ const paragraphs = (Array.isArray(description) ? description : [description]).fi
       }
     }
 
+    .about-split--reverse .split-image {
+      justify-content: flex-start;
+    }
+
     .split-text,
     .about-split--reverse .split-text {
-      order: 0;
       border-right: none;
       border-left: none;
-      padding: 2.5rem;
+      max-width: none;
+      padding: 2.5rem 0;
       text-align: left;
     }
 
@@ -190,17 +191,17 @@ const paragraphs = (Array.isArray(description) ? description : [description]).fi
     }
 
     .split-text {
-      padding: 2rem 1.5rem;
+      padding: 2rem 0;
       justify-content: flex-start;
     }
 
     h2 {
       font-size: 2.3rem;
       margin-bottom: 0.75rem;
-      font-weight: 500;
     }
 
-    p {
+    p,
+    li {
       font-size: 1rem;
     }
 

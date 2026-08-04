@@ -60,20 +60,13 @@ const imgAlt = image ? image.alt : projectName;
     <meta name="twitter:image:alt" content={imgAlt} />
   </head>
 
-  <!-- --brand-h: the corner logo's rendered height — its width clamp (mirrored
-       from Brand.astro, per variant) × the SVG aspect (330/1301). Lets the
-       hamburger in Nav.astro center-align on the logo. -->
   <body
-    class:list={{ 'has-mobile-header': !isHome }}
+    class:list={{ 'has-header': !isHome }}
     style={`--brand-h: calc(${isHome ? 'clamp(9rem, 18vw, 15rem)' : 'clamp(5.5rem, 9vw, 7.5rem)'} * 0.2537)`}
   >
-    <!-- The mobile header bar itself: just the backdrop. The logo and the
-         hamburger stay in their own components and sit on top of it, so the
-         markup (and the menu's behaviour) is unchanged. -->
-    {!isHome && <div class="mobile-header-bar" aria-hidden="true" />}
+    {!isHome && <div class="header-bar" aria-hidden="true" />}
     <Brand variant={isHome ? 'home' : 'compact'} />
-    <!-- Nav renders the language toggle: on desktop it's fixed top-right, on
-         smaller screens it lives inside the fullscreen menu. -->
+
     <Nav />
     <div class:list={['page-content', { 'with-side-nav': !isHome }]}>
       {pageHeading && <div class="page-header-global" />}
@@ -103,40 +96,25 @@ const imgAlt = image ? image.alt : projectName;
     flex: 1 0 auto;
   }
 
-  // Non-home pages: reserve the right-hand column the fixed corner nav
-  // occupies so page content sits entirely to its left. --nav-width
-  // (styles.scss) is 0rem below 1025px, where the nav becomes a hamburger
-  // overlay, so this collapses on its own there.
   .page-content.with-side-nav {
     padding-right: var(--nav-width);
-    // The bar is fixed, so reserve its height here. Both sides read the same
-    // token (0rem on desktop), so content can never slide under the bar.
-    padding-top: var(--mobile-header-height);
+
+    padding-top: var(--header-height);
   }
 
-  // Fixed strip behind the logo and hamburger. Opaque so content scrolling
-  // past never shows through, and below both of them in the stack (Brand is
-  // 90, .corner-nav 100) but above page content.
-  .mobile-header-bar {
-    display: none;
+  .header-bar {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    height: var(--mobile-header-height);
+    height: var(--header-height);
     background: var(--cream);
     z-index: 80;
   }
 
-  @media (max-width: 1024px) {
-    .mobile-header-bar {
-      display: block;
-    }
-  }
-
   .page-header-global {
-    // The old fixed top nav bar is gone; this now clears the compact logo.
-    padding: 7rem 5vw 3rem;
+    // .page-content already reserves --header-height above this.
+    padding: 1rem 5vw 3rem;
   }
 
   .page-title {

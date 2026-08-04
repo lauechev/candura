@@ -106,7 +106,7 @@ export const aboutProfiles: Record<Lang, Profile[]> = {
   en: [
     {
       name: 'Isabel',
-      tagline: 'Turning ideas into systems, brands, and experiences.',
+      tagline: 'idea downloader',
       paragraphs: [
         'With over six years of experience leading projects from strategy to execution, Isabel transforms concepts into thoughtful, lasting realities. She is passionate about uncovering the unique DNA of people, brands, and businesses, shaping identities through strategic, visual, and communication-driven direction.',
         'Naturally curious, she is deeply immersed in the digital ecosystem, constantly exploring trends, cultural shifts, and new ways to connect. Content creation, strategic thinking, and helping ideas grow are at the core of her work.',
@@ -116,7 +116,7 @@ export const aboutProfiles: Record<Lang, Profile[]> = {
     },
     {
       name: 'Laura',
-      tagline: 'Transforms ideas into digital experiences.',
+      tagline: 'creative technologist',
       paragraphs: [
         "Laura is a multidisciplinary creator whose practice sits at the intersection of art and technology. Holding a Master's degree in Digital Humanities, she combines research, design, programming, and conceptual thinking to shape complex ideas into meaningful experiences. Her work spans data, interaction design, interfaces, and code as a creative medium.",
         'After two years in a research lab, she brings the rigor of academic research into an open, exploratory creative practice. Interested in human-computer interaction, she approaches the digital ecosystem as a living space for research, experimentation, and creation.',
@@ -128,7 +128,7 @@ export const aboutProfiles: Record<Lang, Profile[]> = {
   es: [
     {
       name: 'Isabel',
-      tagline: 'Convierte ideas en sistemas, marcas y experiencias.',
+      tagline: 'idea downloader',
       paragraphs: [
         'Con más de seis años de experiencia desarrollando proyectos desde la estrategia hasta la ejecución, Isabel transforma conceptos en realidades sólidas y con intención. Le apasiona descubrir y potenciar el ADN de personas, marcas y proyectos, construyendo identidades con una dirección estratégica, estética y comunicativa auténtica.',
         'Curiosa por naturaleza, vive inmersa en el ecosistema digital, explorando tendencias, narrativas y nuevas formas de conectar. La creación de contenido, el pensamiento estratégico y la expansión de ideas son el hilo conductor de su trabajo.',
@@ -138,11 +138,10 @@ export const aboutProfiles: Record<Lang, Profile[]> = {
     },
     {
       name: 'Laura',
-      tagline: 'Transforma las ideas en experiencias digitales.',
+      tagline: 'cretive technologist',
       paragraphs: [
         'Laura es una creadora multidisciplinaria cuya práctica se desarrolla en la intersección entre el arte y la tecnología. Como magíster en Humanidades Digitales, integra investigación, diseño, programación y pensamiento conceptual para dar forma a ideas complejas. Su trabajo transita entre los datos, el diseño de interacción, las interfaces y el código como material creativo.',
         'Tras dos años de experiencia en un laboratorio de investigación, incorpora el rigor del research a una práctica artística y de diseño abierta a la exploración y la experimentación. Interesada en la interacción humano-computador, entiende el ecosistema digital como un espacio vivo para investigar, crear y cuestionar.',
-        'Su trabajo busca traducir lo abstracto en experiencias tangibles, explorando críticamente las posibilidades, los usos y las implicaciones filosóficas de la inteligencia artificial.',
       ],
       image: '/laura.jpg',
       imageAlt: 'Laura',

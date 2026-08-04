@@ -18,7 +18,7 @@ const { title, columns } = Astro.props;
         <article class="profile">
           {/* First in source order: the portrait heads its column, centred. */}
           <img class="profile-image" src={column.image} alt={column.imageAlt} loading="lazy" decoding="async" />
-          <h3 class="profile-name">{column.name}</h3>
+          <h3 class="profile-name">({column.name})</h3>
           <p class="profile-tagline">{column.tagline}</p>
           {column.paragraphs.map((paragraph: string) => (
             <p class="profile-body">{paragraph}</p>
@@ -41,7 +41,7 @@ const { title, columns } = Astro.props;
 
   .profiles-title {
     font-family: var(--font-display);
-    font-weight: var(--font-weight-display);
+    font-weight: var(--font-weight-body);
     font-size: clamp(1.8rem, 3.8vw, 2.8rem);
     line-height: 1.2;
     color: var(--black);
@@ -62,12 +62,13 @@ const { title, columns } = Astro.props;
 
   .profile-name {
     font-family: var(--font-display);
-    font-weight: var(--font-weight-display);
+    font-weight: var(--font-weight-body);
     // A step down from a full-width section heading — these sit in half-width
-    // columns. Same clamp as TextBlock's h2.
+    // columns.
     font-size: clamp(1.5rem, 2.6vw, 2rem);
     line-height: 1.2;
     color: var(--black);
+    text-transform: lowercase;
     margin: 0 0 0.5rem;
   }
 
@@ -98,10 +99,9 @@ const { title, columns } = Astro.props;
     max-width: 11rem;
     aspect-ratio: 4 / 5;
     object-fit: cover;
-    border-radius: 15px;
     display: block;
     // Centred over the text it heads.
-    margin: 0 auto 1.5rem;
+    margin: 0 auto 4.5rem;
   }
 
   // The nav column is gone here; match the narrower gutters ImageText uses.

@@ -1,0 +1,21 @@
+---
+interface Props {
+  as?: keyof astroHTML.JSX.IntrinsicElements;
+}
+
+const { as: Tag = 'p' } = Astro.props;
+---
+
+<Tag class="heading">(<slot />)</Tag>
+
+<style lang="scss">
+  .heading {
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-body);
+    font-size: clamp(1.5rem, 2.6vw, 2rem);
+    line-height: 1.2;
+    color: var(--green);
+    text-align: center;
+    margin: 0;
+  }
+</style>
