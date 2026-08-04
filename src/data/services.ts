@@ -1,7 +1,7 @@
 import type { Lang } from '@/i18n/ui';
 
 export interface ServiceCategory {
-  // Lowercase, no parens — Service.astro wraps it as "(title)" like Nav does.
+  // Lowercase, rendered as-is by Service.astro.
   title: string;
   items: string[];
 }
@@ -121,38 +121,68 @@ export const serviceCategories: Record<Lang, ServiceCategory[]> = {
   ],
 };
 
-/**
- * Programs bundle services that complement each other. The item lists are
- * still to be written — fill the empty arrays below and the page renders
- * them with no other changes needed.
- */
+/** Programs bundle services that complement each other. */
 export const programCategories: Record<Lang, ServiceCategory[]> = {
   en: [
     {
       title: 'brand creation',
-      items: [], // ← items go here
+      items: [
+        'market and trend research',
+        'user and audience research',
+        'naming',
+        'brand concept development',
+        'brand communication',
+        'branding',
+      ],
     },
     {
       title: 'brand refresh',
-      items: [], // ← items go here
+      items: [
+        'brand research and diagnostic',
+        'brand concept and communication refresh',
+        'rebranding',
+        'digital strategy',
+      ],
     },
     {
       title: 'brand expansion & innovation',
-      items: [], // ← items go here
+      items: [
+        'market and trend research',
+        'user and audience research',
+        'niche trend forecasting',
+        'strategic roadmap development',
+      ],
     },
   ],
   es: [
     {
       title: 'creación de marca',
-      items: [], // ← los items van aquí
+      items: [
+        'investigación de mercado y tendencias',
+        'investigación de usuarios y audiencias',
+        'naming',
+        'desarrollo de concepto de marca',
+        'comunicación de marca',
+        'branding',
+      ],
     },
     {
       title: 'renovación de marca',
-      items: [], // ← los items van aquí
+      items: [
+        'investigación y diagnóstico de marca',
+        'renovación de concepto y comunicación de marca',
+        'rebranding',
+        'estrategia digital',
+      ],
     },
     {
       title: 'expansión e innovación de marca',
-      items: [], // ← los items van aquí
+      items: [
+        'investigación de mercado y tendencias',
+        'investigación de usuarios y audiencias',
+        'pronóstico de tendencias de nicho',
+        'desarrollo de hoja de ruta estratégica',
+      ],
     },
   ],
 };

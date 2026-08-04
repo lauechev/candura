@@ -12,13 +12,12 @@ import { programCategories, serviceCategories } from '@/data/services';
     </div>
     <div class="programs">
       <p class="group-label">(programs)</p>
-      <p class="programs-intro">
-        our (programs) combine some services that complement each other depending on the client's needs.
-      </p>
+      <p class="programs-intro">* all of our programs are customizable</p>
       {programCategories.en.map((program) => <Service title={program.title} items={program.items} align="right" />)}
     </div>
 
-    <img class="cat" src="/cat2.jpg" alt="" />
+    <img class="cat cat--top" src="/cat2.jpg" alt="" />
+    <img class="cat cat--bottom" src="/cat2.jpg" alt="" />
   </main>
 </BaseLayout>
 
@@ -117,8 +116,8 @@ import { programCategories, serviceCategories } from '@/data/services';
   .group-label {
     font-family: var(--font-body);
     font-weight: var(--font-weight-display);
-    font-size: 1.2rem;
-    color: var(--orange);
+    font-size: 1.8rem;
+    color: var(--green);
     margin: 0 0 1.5rem;
   }
 
@@ -145,7 +144,7 @@ import { programCategories, serviceCategories } from '@/data/services';
     }
 
     .group-label {
-      font-size: 1rem;
+      font-size: 1.4rem;
     }
   }
 </style>

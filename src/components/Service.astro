@@ -12,7 +12,7 @@ const { title, items, align = 'left' } = Astro.props;
 
 <div class:list={['service-pillar', { 'is-right': align === 'right' }]}>
   <button class="service-banner" aria-expanded="false">
-    <span class="banner-title">({title})</span>
+    <span class="banner-title">{title}</span>
     <svg
       class="banner-chevron"
       aria-hidden="true"
@@ -82,13 +82,13 @@ const { title, items, align = 'left' } = Astro.props;
     justify-content: space-between;
     font-family: var(--font-display);
     font-size: clamp(1.35rem, 2vw, 1.8rem);
-    font-weight: var(--font-weight-display);
+    font-weight: var(--font-weight-body);
     letter-spacing: -0.02em;
     text-align: left;
   }
 
   // Mirror of .nav-link in Nav.astro: same 200ms ease and 6px nudge, but
-  // rightward and in blue (nav goes left, in orange). Color snaps, as there.
+  // nudging rightward (nav goes left) and in green. Color snaps, as there.
   .banner-title {
     display: inline-block;
     transition: transform 200ms ease;
@@ -97,7 +97,7 @@ const { title, items, align = 'left' } = Astro.props;
   .service-banner:hover .banner-title,
   .service-banner:focus-visible .banner-title,
   .service-banner[aria-expanded='true'] .banner-title {
-    color: var(--blue);
+    color: var(--green);
     transform: translateX(6px);
   }
 

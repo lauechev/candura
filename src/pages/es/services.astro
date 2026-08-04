@@ -26,7 +26,8 @@ import { programCategories, serviceCategories } from '@/data/services';
       }
     </div>
 
-    <img class="cat" src="/cat2.jpg" alt="" />
+    <img class="cat cat--top" src="/cat2.jpg" alt="" />
+    <img class="cat cat--bottom" src="/cat2.jpg" alt="" />
   </main>
 </BaseLayout>
 
@@ -52,13 +53,10 @@ import { programCategories, serviceCategories } from '@/data/services';
     position: relative;
   }
 
-  // Sits in the empty upper-right gap between the services index and the
-  // corner nav, starting a bit above both.
+  // One in each empty corner the two 48%-wide groups leave behind.
   .cat {
     position: absolute;
-    top: 0;
-    right: 6%;
-    width: clamp(7rem, 11vw, 10.5rem);
+    width: clamp(8rem, 12.5vw, 12rem);
     height: auto;
     // Clicking it bursts the piñata's confetti (see @/scripts/confetti).
     cursor: pointer;
@@ -67,6 +65,18 @@ import { programCategories, serviceCategories } from '@/data/services';
     &.is-popping {
       transform: scale(0.88);
     }
+  }
+
+  // Upper-right gap between the services index and the corner nav.
+  .cat--top {
+    top: 0;
+    right: 6%;
+  }
+
+  // Mirror: the empty lower-left space beside and below the programs group.
+  .cat--bottom {
+    bottom: 10rem;
+    left: 6%;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -87,7 +97,7 @@ import { programCategories, serviceCategories } from '@/data/services';
     .cat {
       position: static;
       display: block;
-      width: 6rem;
+      width: 7rem;
       margin: 5rem auto 0;
     }
   }
@@ -125,7 +135,7 @@ import { programCategories, serviceCategories } from '@/data/services';
   .group-label {
     font-family: var(--font-body);
     font-weight: var(--font-weight-display);
-    font-size: 0.95rem;
+    font-size: 1.8rem;
     color: var(--green);
     margin: 0 0 1.5rem;
   }
@@ -150,6 +160,10 @@ import { programCategories, serviceCategories } from '@/data/services';
   @media (max-width: 768px) {
     main {
       padding-bottom: 8rem;
+    }
+
+    .group-label {
+      font-size: 1.4rem;
     }
   }
 </style>
