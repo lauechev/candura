@@ -32,6 +32,9 @@
   --font-title: 'neue-haas-grotesk-text', sans-serif;
   --font-weight-body: 500;
   --font-weight-display: 600;
+  // The one exception to the Neue Haas rule: receipts in Review.astro are set
+  // in Tomorrow Light, loaded from Google Fonts in BaseLayout.
+  --font-receipt: 'Tomorrow', sans-serif;
 
   // Layout — width of the column reserved for the fixed corner nav on
   // non-home pages: widest label "(services)" at 1.35rem semibold + panel

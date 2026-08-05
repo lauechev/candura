@@ -7,10 +7,7 @@ import Marquee from '@/components/Marquee.astro';
 <section class="home">
   <!-- Scrolling tagline banner, sits full-width just below the corner logo. -->
   <div class="home__marquee">
-    <Marquee
-      text=" a creative technology studio & consultancy ★ we make boring fun ★ "
-      label=" a creative technology studio & consultancy ★ we make boring fun ★"
-    />
+    <Marquee text={['a creative technology studio & consultancy', 'we make boring fun']} separator="★" />
   </div>
 
   <!-- Centerpiece. See Pinata.astro — swap the image for an animation there. -->
@@ -55,15 +52,17 @@ import Marquee from '@/components/Marquee.astro';
   // ── Small screens: the camera zooms the piñata out (see pinata.ts), so pull
   // the label in toward the smaller star — rightward and a touch lower ────────
   @media (max-width: 590px) {
+    // --pinata-raise is published by pinata.ts's layout() (in px), so tuning
+    // SMALL_SCREEN_RAISE there moves the label with the star automatically.
     .whack {
-      top: calc(50% + 26dvh);
+      top: calc(50% + 26dvh - var(--pinata-raise, 0px));
       left: max(1.5rem, calc(70% - 27dvh));
     }
 
-    // The desktop clamp keeps the band at its 7rem floor on phones — drop it
-    // a bit further below the corner logo.
+    // Sits closer under the corner logo on phones than the desktop clamp puts
+    // it, giving the piñata below more room.
     .home__marquee {
-      top: clamp(9rem, 15vh, 11rem);
+      top: clamp(6.5rem, 11vh, 8.5rem);
     }
   }
 

@@ -35,8 +35,9 @@ const { title, columns } = Astro.props;
     // .about-split blocks below. The generous top margin sets this section
     // apart from TextBlock.
     width: calc(100% - 20rem + 15px);
-    max-width: calc(55rem + 15px);
+    max-width: calc(65rem + 15px);
     margin: 8rem auto 4rem;
+    text-wrap: pretty;
   }
 
   .profiles-title {
@@ -51,7 +52,7 @@ const { title, columns } = Astro.props;
   .profiles-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 4rem;
+    gap: 10rem;
   }
 
   .profile {
@@ -89,7 +90,7 @@ const { title, columns } = Astro.props;
     font-size: 1.2rem;
     line-height: 1.75;
     color: var(--black);
-    text-align: justify;
+    text-align: left;
     margin: 0 0 1.25rem;
   }
 

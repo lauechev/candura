@@ -67,6 +67,10 @@ const MIN_HALF_WIDTH = 2.4; // guarantee the star fits horizontally on narrow sc
 // CSS media query.
 const SMALL_SCREEN_W = 590; // px breakpoint
 const SMALL_SCREEN_ZOOM_OUT = 1.4; // camera distance multiplier (≈17% smaller piñata)
+// ...and lift it, so it sits nearer the marquee instead of low in the viewport.
+// World units — one unit is ~58px at 390x844. Tune freely: layout() publishes
+// the lift as --pinata-raise, and the "(whack me!)" label follows on its own.
+const SMALL_SCREEN_RAISE = 0.1;
 
 // ── Piñata proportions ──────────────────────────────────────────────────────
 const PINATA_SCALE = 0.7; // overall size of the hanging star
@@ -817,8 +821,9 @@ export class Pinata {
     const tan = Math.tan((FOV * DEG) / 2);
     const fitHeightZ = VH / tan;
     const fitWidthZ = MIN_HALF_WIDTH / (tan * aspect);
+    const isSmall = w <= SMALL_SCREEN_W;
     let camZ = Math.max(fitHeightZ, fitWidthZ);
-    if (w <= SMALL_SCREEN_W) camZ *= SMALL_SCREEN_ZOOM_OUT;
+    if (isSmall) camZ *= SMALL_SCREEN_ZOOM_OUT;
 
     this.camera.aspect = aspect;
     this.camera.position.set(0, 0, camZ);
@@ -826,12 +831,20 @@ export class Pinata {
     this.camera.updateProjectionMatrix();
 
     const topY = camZ * tan; // world Y at the top edge of the frame
+    const centerY = isSmall ? CENTER_Y + SMALL_SCREEN_RAISE : CENTER_Y;
     this.pivot.position.set(0, topY, 0);
-    this.pinata.position.y = CENTER_Y - topY;
+    this.pinata.position.y = centerY - topY;
 
-    const cordLen = topY - (CENTER_Y + BODY_R * PINATA_SCALE);
+    // Derived, so lifting the piñata shortens the cord to match.
+    const cordLen = topY - (centerY + BODY_R * PINATA_SCALE);
     this.cord.scale.y = cordLen;
     this.cord.position.y = -cordLen / 2;
+
+    // Publish the lift in CSS pixels so the "(whack me!)" label can follow the
+    // star without anyone hand-syncing a second number — see HomeScreen.astro.
+    // h/2 spans topY world units, which converts world units to px.
+    const raisePx = (centerY - CENTER_Y) * (h / 2 / topY);
+    document.documentElement.style.setProperty('--pinata-raise', `${raisePx}px`);
   }
 
   // ── Loop ──────────────────────────────────────────────────────────────────

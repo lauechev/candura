@@ -176,6 +176,19 @@ const { title, items, align = 'left' } = Astro.props;
     }
   }
 
+  // Phones: the open lists read as body copy, so match the about page's body
+  // size exactly (TextBlock and ImageText both drop to 1rem at this width),
+  // and bring the banner titles down with them.
+  @media (max-width: 500px) {
+    .service-banner {
+      font-size: 1.15rem;
+    }
+
+    .service-items li {
+      font-size: 1rem;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .banner-chevron,
     .banner-title,

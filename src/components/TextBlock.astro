@@ -25,6 +25,7 @@ const { heading, tagline, paragraphs } = Astro.props;
     width: calc(100% - 34rem);
     max-width: 55rem;
     margin: 2rem auto 3rem;
+    text-wrap: pretty;
 
     .heading-wrap {
       margin-bottom: 4rem;
@@ -47,7 +48,7 @@ const { heading, tagline, paragraphs } = Astro.props;
       font-size: 1.2rem;
       line-height: 1.75;
       color: var(--black);
-      text-align: justify;
+      text-align: left;
       margin: 0 0 1.25rem;
 
       &:last-child {

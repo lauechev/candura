@@ -10,14 +10,19 @@ import { programCategories, serviceCategories } from '@/data/services';
       <p class="group-label">(services)</p>
       {serviceCategories.en.map((category) => <Service title={category.title} items={category.items} />)}
     </div>
+
+    <!-- Each cat follows its own group, which is what stacks them alternately
+         on mobile. Both are absolutely positioned above 1024px, so this order
+         has no effect on the desktop composition. -->
+    <img class="cat cat--top" src="/cat2.jpg" alt="" />
+
     <div class="programs">
       <p class="group-label">(programs)</p>
       <p class="programs-intro">* all of our programs are customizable</p>
       {programCategories.en.map((program) => <Service title={program.title} items={program.items} align="right" />)}
     </div>
 
-    <img class="cat cat--top" src="/cat2.jpg" alt="" />
-    <img class="cat cat--bottom" src="/cat2.jpg" alt="" />
+    <img class="cat cat--bottom" src="/party.jpg" alt="" />
   </main>
 </BaseLayout>
 
@@ -43,13 +48,10 @@ import { programCategories, serviceCategories } from '@/data/services';
     position: relative;
   }
 
-  // Sits in the empty upper-right gap between the services index and the
-  // corner nav, starting a bit above both.
+  // One in each empty corner the two 48%-wide groups leave behind.
   .cat {
     position: absolute;
-    top: 0;
-    right: 6%;
-    width: clamp(7rem, 9vw, 10.5rem);
+    width: clamp(8rem, 12.5vw, 12rem);
     height: auto;
     // Clicking it bursts the piñata's confetti (see @/scripts/confetti).
     cursor: pointer;
@@ -58,6 +60,22 @@ import { programCategories, serviceCategories } from '@/data/services';
     &.is-popping {
       transform: scale(0.88);
     }
+  }
+
+  // Upper-right gap between the services index and the corner nav.
+  .cat--top {
+    top: 0;
+    right: 6%;
+  }
+
+  // Mirror: the empty lower-left space beside and below the programs group.
+  // Runs larger than the top one — there's more empty room down here.
+  // Flush with main's bottom edge, so the only gap to the footer is the
+  // shared one BaseLayout puts on .page-content.
+  .cat--bottom {
+    bottom: 0;
+    left: 6%;
+    width: clamp(13rem, 20vw, 19rem);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -71,15 +89,25 @@ import { programCategories, serviceCategories } from '@/data/services';
     // can sit much closer to the top.
     main {
       padding-top: 2rem;
+      // The tall padding below only existed to house the absolute .cat; it
+      // sits in the flow here, so the shared .page-content gap is enough.
+      padding-bottom: 0;
     }
 
-    // The side gap is gone once the nav collapses and the list goes full
-    // width, so the cat drops into the flow above the list instead.
+    // In the flow now, one under each group. Sized and edge-pinned like
+    // ImageText's mobile images rather than small and centred.
     .cat {
       position: static;
       display: block;
-      width: 6rem;
-      margin: 5rem auto 0;
+      width: min(32vw, 11rem);
+      // Flush left, under the services list.
+      margin: 2.5rem 0 0;
+    }
+
+    // Mirrors .programs' right-aligned text, and stays the larger of the two.
+    .cat--bottom {
+      width: min(48vw, 17rem);
+      margin-left: auto;
     }
   }
 
@@ -108,7 +136,7 @@ import { programCategories, serviceCategories } from '@/data/services';
     margin-left: auto;
     margin-right: 10%;
     // Enough air that the two groups read as separate sections.
-    margin-top: 9rem;
+    margin-top: 5rem;
     text-align: right;
   }
 
@@ -139,10 +167,6 @@ import { programCategories, serviceCategories } from '@/data/services';
   }
 
   @media (max-width: 768px) {
-    main {
-      padding-bottom: 8rem;
-    }
-
     .group-label {
       font-size: 1.4rem;
     }

@@ -156,7 +156,7 @@ export const programCategories: Record<Lang, ServiceCategory[]> = {
   ],
   es: [
     {
-      title: 'creación de marca',
+      title: 'brand creation',
       items: [
         'investigación de mercado y tendencias',
         'investigación de usuarios y audiencias',
@@ -167,7 +167,7 @@ export const programCategories: Record<Lang, ServiceCategory[]> = {
       ],
     },
     {
-      title: 'renovación de marca',
+      title: 'brand refresh',
       items: [
         'investigación y diagnóstico de marca',
         'renovación de concepto y comunicación de marca',
@@ -176,7 +176,7 @@ export const programCategories: Record<Lang, ServiceCategory[]> = {
       ],
     },
     {
-      title: 'expansión e innovación de marca',
+      title: 'brand expansion & innovation',
       items: [
         'investigación de mercado y tendencias',
         'investigación de usuarios y audiencias',

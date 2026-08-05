@@ -7,7 +7,6 @@ import Marquee from '@/components/Marquee.astro';
 import Review from '@/components/Review.astro';
 import { reviews } from '@/data/reviews';
 
-const bienvenides = '/bienvenides.png';
 const sanarte = '/sanarte.png';
 const type = '/type-checker.png';
 const news = '/newsletter.png';
@@ -16,29 +15,29 @@ const art = '/art.png';
 const ux = '/ux.png';
 ---
 
-<BaseLayout title="Work" pageHeading="Work" description="Selected projects by Candura.">
+<BaseLayout title="Proyectos" pageHeading="Proyectos" description="Proyectos seleccionados de Candura.">
   <!-- The work grid and the reviews sit in identical `<div class="container">`
        wrappers so they can't drift apart; the marquee stays outside them and
        spans the full content column. -->
   <main>
     <div class="container">
       <div class="grid">
-        <WorkCard brand="orbita" services={['Shopify Store Development']} images={[sanarte]} />
-        <WorkCard brand="enflujo" services={['History of the Internet Website']} images={[ux]} />
-        <WorkCard brand="Brand name" services={['Typeface Checker Website']} images={[type]} />
-        <WorkCard brand="Brand name" services={['Digital Art Collection Website']} images={[art]} />
-        <WorkCard brand="Brand name" services={['Newsletter Visual Universe']} images={[news]} />
-        <WorkCard brand="Brand name" services={['Ebook Creative Direction & Design']} images={[ebook2]} />
+        <WorkCard brand="Nombre de marca" services={['Desarrollo de tienda Shopify']} images={[sanarte]} />
+        <WorkCard brand="Nombre de marca" services={['Sitio web sobre la historia de internet']} images={[ux]} />
+        <WorkCard brand="Nombre de marca" services={['Sitio web verificador de tipografías']} images={[type]} />
+        <WorkCard brand="Nombre de marca" services={['Sitio web de colección de arte digital']} images={[art]} />
+        <WorkCard brand="Nombre de marca" services={['Universo visual de newsletter']} images={[news]} />
+        <WorkCard brand="Nombre de marca" services={['Dirección creativa y diseño de ebook']} images={[ebook2]} />
       </div>
     </div>
 
     <div class="work-marquee">
-      <Marquee text="dont just take our word for it" separator="★" background="var(--green)" />
+      <Marquee text="no solo tomes nuestra palabra" separator="★" background="var(--green)" />
     </div>
 
     <div class="container">
       <div class="reviews">
-        {reviews.en.map((review) => <Review quote={review.quote} author={review.author} />)}
+        {reviews.es.map((review) => <Review quote={review.quote} author={review.author} />)}
       </div>
     </div>
   </main>
@@ -106,7 +105,8 @@ const ux = '/ux.png';
   .grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-
+    // Wider between the columns than between the rows, so the two stacks read
+    // as separate columns rather than one dense block.
     gap: 6rem 6rem;
 
     // One column here, so the 6rem is pure vertical dead space.

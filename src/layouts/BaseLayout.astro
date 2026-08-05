@@ -32,12 +32,17 @@ const imgAlt = image ? image.alt : projectName;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.svg`} sizes="32x32" />
-    <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.svg`} type="image/png" />
-    <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.png`} sizes="32x32" />
+    <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.png`} type="image/png" />
+    <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}favicon.png`} />
     <meta name="generator" content={Astro.generator} />
     <link rel="canonical" href={pageUrl} />
     <link rel="stylesheet" href="https://use.typekit.net/lda1qyz.css" />
+    <!-- Tomorrow Light, used only by Review.astro's receipts. Requested at
+         wght@300 alone since that's the single weight in use. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Tomorrow:wght@300&display=swap" rel="stylesheet" />
     <title>{seoTitle}</title>
     <meta name="description" content={seoDescription} />
     <!-- OpenGraph -->
@@ -94,6 +99,15 @@ const imgAlt = image ? image.alt : projectName;
 
   .page-content {
     flex: 1 0 auto;
+    // Air between the last block on any page and the footer. Lives here so
+    // every page gets the same gap rather than each one setting its own.
+    padding-bottom: 10rem;
+  }
+
+  @media (max-width: 768px) {
+    .page-content {
+      padding-bottom: 6rem;
+    }
   }
 
   .page-content.with-side-nav {
@@ -127,15 +141,13 @@ const imgAlt = image ? image.alt : projectName;
     letter-spacing: -0.02em !important;
   }
 
+  // The 6rem here used to clear the logo, but on mobile the logo and burger
+  // both sit inside the fixed .header-bar and .page-content already reserves
+  // exactly that height — so it was doubling up. This is the one dial for the
+  // gap under the header on every non-home page.
   @media (max-width: 1024px) {
     .page-header-global {
-      padding-top: 6rem;
-    }
-  }
-
-  @media (max-width: 500px) {
-    .page-header-global {
-      padding-top: 5.5rem;
+      padding: 0.5rem 5vw 2rem;
     }
   }
 

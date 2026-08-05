@@ -62,9 +62,10 @@ const paragraphs = (Array.isArray(description) ? description : [description]).fi
     flex-direction: column;
     justify-content: flex-end;
 
+    // Only the image/text columns swap sides — the copy itself stays
+    // left-aligned so every block on the page reads off the same edge.
     .about-split--reverse & {
       border-right: none;
-      text-align: right;
       padding: 3.5rem 4rem 3.5rem 1.5rem;
       margin-left: auto;
     }
@@ -105,11 +106,10 @@ const paragraphs = (Array.isArray(description) ? description : [description]).fi
     font-size: 1.2rem;
     line-height: 1.75;
     color: var(--black);
-    // Flush on both edges, matching TextBlock and Profiles. Wins over the
-    // text-align: right that .about-split--reverse sets on the container, so
-    // only the heading follows the mirrored alignment.
-    text-align: justify;
+    // Ragged right, matching TextBlock and Profiles.
+    text-align: left;
     margin: 0;
+    text-wrap: pretty;
   }
 
   // Only bites when `description` is an array; single-string blocks render one
@@ -196,7 +196,7 @@ const paragraphs = (Array.isArray(description) ? description : [description]).fi
     }
 
     h2 {
-      font-size: 2.3rem;
+      font-size: 1.9rem;
       margin-bottom: 0.75rem;
     }
 
