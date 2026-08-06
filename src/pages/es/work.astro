@@ -105,9 +105,12 @@ const ux = '/ux.png';
   .grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    // Wider between the columns than between the rows, so the two stacks read
-    // as separate columns rather than one dense block.
-    gap: 6rem 6rem;
+    gap: 6rem;
+    // Cap + centre the pair rather than letting it span the container: keeps
+    // the cards at the smaller 456px (63rem = 2x456 + the 6rem gutter) while
+    // grouping them toward the middle instead of pushing them to the edges.
+    max-width: 63rem;
+    margin-inline: auto;
 
     // One column here, so the 6rem is pure vertical dead space.
     @media (max-width: 760px) {
