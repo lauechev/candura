@@ -136,8 +136,8 @@ const links = [
   .nav-link {
     display: inline-block;
     font-family: var(--font-display);
-    font-weight: var(--font-weight-display);
-    font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-h6);
 
     // White on the green panel, always — no color change on any state.
     color: var(--purple);
@@ -277,7 +277,10 @@ const links = [
     }
 
     .nav-link {
-      font-size: clamp(1.45rem, 4.8vw, 2.45rem);
+      // The links are the whole screen here, not a corner panel, so they step
+      // up two rungs of the scale. Overriding the property rather than the
+      // font-size keeps the type coming from the system.
+      --fs-h6: var(--fs-h4);
       // Comfortable tap target without changing the visual size.
       padding: 0.4rem 1rem;
       opacity: 1;

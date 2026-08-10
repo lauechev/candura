@@ -60,11 +60,12 @@ const ariaLabel = label ?? phrases.join(separator ? ` ${separator} ` : ' ');
     width: 100%;
     overflow: hidden;
     padding-block: 0.15em;
-    // Match the old tagline's type exactly.
-    font-family: var(--font-body);
-    font-weight: 400;
-    font-size: clamp(0.7rem, 2.6vw, 1.5rem);
-    line-height: 1.15;
+    // Set as an h3, but deliberately not marked up as one — the band is
+    // decorative and shouldn't enter the document outline or be read out.
+    font-family: var(--font-display);
+    font-weight: var(--fw-medium);
+    font-size: var(--fs-h3);
+    line-height: var(--lh-heading);
     background: var(--marquee-bg);
     color: var(--marquee-fg);
   }
@@ -101,14 +102,6 @@ const ariaLabel = label ?? phrases.join(separator ? ` ${separator} ` : ' ');
     }
     to {
       transform: translateX(-50%);
-    }
-  }
-
-  // ── Small screens: the desktop clamp bottoms out at 0.7rem (~11px) on
-  // phones — bump the floor and let it scale with the viewport ───────────────
-  @media (max-width: 590px) {
-    .marquee {
-      font-size: clamp(1.05rem, 4.5vw, 1.4rem);
     }
   }
 

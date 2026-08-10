@@ -58,12 +58,11 @@ import ImageText from '@/components/ImageText.astro';
 
   .email {
     font-family: var(--font-display);
-    font-size: clamp(1.5rem, 2.5vw, 2rem);
-    font-weight: 500;
+    font-size: var(--fs-h5);
+    font-weight: var(--fw-medium);
     color: var(--black);
     text-decoration: none;
-    letter-spacing: -0.01em;
-    line-height: 1;
+    line-height: var(--lh-heading);
 
     &:hover {
       opacity: 0.6;
@@ -76,13 +75,14 @@ import ImageText from '@/components/ImageText.astro';
     flex-direction: column;
     gap: 0.75rem;
 
+    // Set to match .email above — it's a label, not running copy.
     .follow {
       font-family: var(--font-display);
-      font-size: clamp(1.5rem, 2.5vw, 2rem);
-      font-weight: 500;
+      font-size: var(--fs-h5);
+      font-weight: var(--fw-medium);
+      line-height: var(--lh-heading);
       color: var(--black);
       margin: 0;
-      letter-spacing: -0.01em;
     }
 
     .social-icons {

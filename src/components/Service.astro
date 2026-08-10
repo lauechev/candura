@@ -11,21 +11,27 @@ const { title, items, align = 'left' } = Astro.props;
 ---
 
 <div class:list={['service-pillar', { 'is-right': align === 'right' }]}>
-  <button class="service-banner" aria-expanded="false">
-    <span class="banner-title">{title}</span>
-    <svg
-      class="banner-chevron"
-      aria-hidden="true"
-      width="20"
-      height="20"
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <line x1="10" y1="2" x2="10" y2="18" stroke="var(--black)" stroke-width="3.5" stroke-linecap="round"></line>
-      <line x1="2" y1="10" x2="18" y2="10" stroke="var(--black)" stroke-width="3.5" stroke-linecap="round"></line>
-    </svg>
-  </button>
+  {/* The heading wraps the button rather than the other way round: a button
+      takes phrasing content only, so a heading child would be invalid. This is
+      the standard accordion pattern — the category name is a real heading and
+      the control it toggles is the button within. */}
+  <h3 class="service-heading">
+    <button class="service-banner" aria-expanded="false">
+      <span class="banner-title">{title}</span>
+      <svg
+        class="banner-chevron"
+        aria-hidden="true"
+        width="20"
+        height="20"
+        viewBox="0 0 20 20"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <line x1="10" y1="2" x2="10" y2="18" stroke="var(--black)" stroke-width="3.5" stroke-linecap="round"></line>
+        <line x1="2" y1="10" x2="18" y2="10" stroke="var(--black)" stroke-width="3.5" stroke-linecap="round"></line>
+      </svg>
+    </button>
+  </h3>
   <div class="service-content">
     <ul class="service-items">
       {items.map((item: string) => <li>{item}</li>)}
@@ -70,6 +76,14 @@ const { title, items, align = 'left' } = Astro.props;
     overflow: hidden;
   }
 
+  // Category names are h3s semantically — one level under the page's (services)
+  // / (programs) h2s — but sit on the h4 step visually. Overriding the property
+  // keeps them on the scale rather than pinning a size here.
+  .service-heading {
+    --fs-h3: var(--fs-h4);
+    margin: 0;
+  }
+
   .service-banner {
     width: 100%;
     background: none;
@@ -80,10 +94,12 @@ const { title, items, align = 'left' } = Astro.props;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-family: var(--font-display);
-    font-size: clamp(1.35rem, 2vw, 1.8rem);
-    font-weight: var(--font-weight-body);
-    letter-spacing: -0.02em;
+    // Buttons don't inherit type by default, so the h3 above stays the one
+    // place the category name's type is decided.
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
     text-align: left;
   }
 
@@ -129,10 +145,8 @@ const { title, items, align = 'left' } = Astro.props;
 
     li {
       break-inside: avoid;
-      font-family: var(--font-body);
-      font-weight: var(--font-weight-body);
-      font-size: 1.15rem;
-      line-height: 1.4;
+      font-size: var(--fs-body);
+      line-height: var(--lh-body);
       color: var(--black);
       padding: 0.3rem 0;
     }
@@ -173,19 +187,6 @@ const { title, items, align = 'left' } = Astro.props;
   @media (max-width: 768px) {
     .service-items {
       columns: 1;
-    }
-  }
-
-  // Phones: the open lists read as body copy, so match the about page's body
-  // size exactly (TextBlock and ImageText both drop to 1rem at this width),
-  // and bring the banner titles down with them.
-  @media (max-width: 500px) {
-    .service-banner {
-      font-size: 1.15rem;
-    }
-
-    .service-items li {
-      font-size: 1rem;
     }
   }
 

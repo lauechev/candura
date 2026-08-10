@@ -11,7 +11,7 @@ import { programCategories, serviceCategories } from '@/data/services';
 >
   <main>
     <div class="pillars">
-      <p class="group-label">(servicios)</p>
+      <h2 class="group-label">(servicios)</h2>
       {serviceCategories.es.map((category) => <Service title={category.title} items={category.items} />)}
     </div>
 
@@ -21,7 +21,7 @@ import { programCategories, serviceCategories } from '@/data/services';
     <img class="cat cat--top" src="/cat2.jpg" alt="" />
 
     <div class="programs">
-      <p class="group-label">(programas)</p>
+      <h2 class="group-label">(programas)</h2>
       <p class="programs-intro">
         nuestros (programas) combinan algunos servicios que se complementan según las necesidades de cada cliente.
       </p>
@@ -150,20 +150,15 @@ import { programCategories, serviceCategories } from '@/data/services';
     text-align: right;
   }
 
-  // Small green label naming each group.
+  // The section header naming each group. A real <h2>, so type comes from the
+  // base rule; alignment is inherited from the group (left in .pillars, right
+  // in .programs) — that mirroring is what makes the two columns read.
   .group-label {
-    font-family: var(--font-body);
-    font-weight: var(--font-weight-display);
-    font-size: 1.8rem;
     color: var(--green);
     margin: 0 0 1.5rem;
   }
 
   .programs-intro {
-    font-family: var(--font-body);
-    font-weight: var(--font-weight-body);
-    font-size: 1.15rem;
-    line-height: 1.5;
     color: var(--black);
     margin: 0 0 2rem;
   }
@@ -173,12 +168,6 @@ import { programCategories, serviceCategories } from '@/data/services';
       width: 100%;
       margin-right: 0;
       margin-top: 6rem;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .group-label {
-      font-size: 1.4rem;
     }
   }
 </style>

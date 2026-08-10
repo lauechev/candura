@@ -90,21 +90,15 @@ const paragraphs = (Array.isArray(description) ? description : [description]).fi
   }
 
   h2 {
-    font-family: var(--font-display);
-    font-size: clamp(1.8rem, 3vw, 2.4rem);
-    font-weight: var(--font-weight-body);
     color: var(--black);
     margin: 0 0 1.25rem;
-    letter-spacing: 0;
   }
 
   // Shared so list items can never drift from the body copy above them.
   p,
   li {
-    font-family: var(--font-body);
-    font-weight: var(--font-weight-body);
-    font-size: 1.2rem;
-    line-height: 1.75;
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
     color: var(--black);
     // Ragged right, matching TextBlock and Profiles.
     text-align: left;
@@ -170,10 +164,6 @@ const paragraphs = (Array.isArray(description) ? description : [description]).fi
       padding: 2.5rem 0;
       text-align: left;
     }
-
-    h2 {
-      font-size: clamp(1.8rem, 6vw, 3rem);
-    }
   }
 
   @media (max-width: 1024px) {
@@ -196,13 +186,7 @@ const paragraphs = (Array.isArray(description) ? description : [description]).fi
     }
 
     h2 {
-      font-size: 1.9rem;
       margin-bottom: 0.75rem;
-    }
-
-    p,
-    li {
-      font-size: 1rem;
     }
 
     img {

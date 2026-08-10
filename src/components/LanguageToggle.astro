@@ -53,10 +53,10 @@ const otherHref = localizePath(pathname, other);
     z-index: 100;
     display: flex;
     align-items: center;
-    font-family: var(--font-body);
-    font-weight: 700;
-    font-size: clamp(1rem, 1.4vw, 1.35rem);
-    letter-spacing: -0.01em;
+    // Same step as .nav-link — the toggle reads as part of the nav.
+    font-family: var(--font-display);
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-h6);
     color: var(--green);
   }
 
@@ -108,7 +108,9 @@ const otherHref = localizePath(pathname, other);
     :global(body.has-header) .lang-toggle {
       position: static;
       height: auto;
-      font-size: clamp(1.5rem, 5.5vw, 2rem);
+      // Steps up inside the fullscreen overlay like .nav-link does, but one
+      // rung below it so the links stay the dominant thing on screen.
+      --fs-h6: var(--fs-h5);
       color: var(--cream);
     }
 

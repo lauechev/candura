@@ -41,10 +41,6 @@ const { title, columns } = Astro.props;
   }
 
   .profiles-title {
-    font-family: var(--font-display);
-    font-weight: var(--font-weight-body);
-    font-size: clamp(1.8rem, 3.8vw, 2.8rem);
-    line-height: 1.2;
     color: var(--black);
     margin: 0 0 2rem;
   }
@@ -62,12 +58,6 @@ const { title, columns } = Astro.props;
   }
 
   .profile-name {
-    font-family: var(--font-display);
-    font-weight: var(--font-weight-body);
-    // A step down from a full-width section heading — these sit in half-width
-    // columns.
-    font-size: clamp(1.5rem, 2.6vw, 2rem);
-    line-height: 1.2;
     color: var(--black);
     text-transform: lowercase;
     margin: 0 0 0.5rem;
@@ -75,20 +65,11 @@ const { title, columns } = Astro.props;
 
   // Mirrors TextBlock's .tagline: a lead-in line under the name.
   .profile-tagline {
-    font-family: var(--font-body);
-    font-weight: var(--font-weight-body);
-    font-size: 1.4rem;
-    line-height: 1.4;
     color: var(--black);
     margin: 0 0 1.5rem;
   }
 
   .profile-body {
-    font-family: var(--font-body);
-    font-weight: var(--font-weight-body);
-    // = ImageText's p and TextBlock's .body p.
-    font-size: 1.2rem;
-    line-height: 1.75;
     color: var(--black);
     text-align: left;
     margin: 0 0 1.25rem;
@@ -116,16 +97,6 @@ const { title, columns } = Astro.props;
     .profiles-grid {
       grid-template-columns: 1fr;
       gap: 3rem;
-    }
-  }
-
-  @media (max-width: 500px) {
-    .profile-tagline {
-      font-size: 1.15rem;
-    }
-
-    .profile-body {
-      font-size: 1rem;
     }
   }
 </style>

@@ -1,6 +1,4 @@
 ---
-import Heading from '@/components/Heading.astro';
-
 interface Props {
   heading: string;
   tagline: string;
@@ -11,15 +9,30 @@ const { heading, tagline, paragraphs } = Astro.props;
 ---
 
 <section class="text-block">
-  <div class="heading-wrap"><Heading>{heading}</Heading></div>
-  <div class="body">
-    {paragraphs.map((paragraph: string) => <p>{paragraph}</p>)}
+  <div class="measure">
+    <h1>({heading})</h1>
+    <div class="body">
+      {paragraphs.map((paragraph: string) => <p>{paragraph}</p>)}
+    </div>
+    <p class="tagline">{tagline}</p>
   </div>
-  <p class="tagline">{tagline}</p>
 </section>
 
 <style lang="scss">
   .text-block {
+    // ── About heading placement ───────────────────────────────────────────
+    // The heading is deliberately asymmetric here: high and right of centre,
+    // against the centred-title convention the rest of the site keeps. Tune it
+    // by feel with these three and nothing else — the rule below reads them
+    // and derives no geometry of its own.
+    //
+    // TextBlock is used only by /about and /es/about, so this cannot leak to
+    // another page. If it's ever reused elsewhere, gate it behind a prop
+    // rather than loosening the scope.
+    --about-heading-inset-end: 8%; // from the right edge of .measure
+    --about-heading-space-top: 1rem; // clearance above
+    --about-heading-space-bottom: 4rem; // gap down to the first paragraph
+
     // Narrower than ImageText's .about-split and centred in the same column
     // (.page-content already excludes the corner nav's --nav-width).
     width: calc(100% - 34rem);
@@ -27,26 +40,42 @@ const { heading, tagline, paragraphs } = Astro.props;
     margin: 2rem auto 3rem;
     text-wrap: pretty;
 
-    .heading-wrap {
-      margin-bottom: 4rem;
+    // The one box the measure is applied to, and it's centred — so the heading
+    // and the tagline centre over the same column the paragraphs occupy rather
+    // than over the wider .text-block. The global `p` rule also carries
+    // max-width: var(--measure); it's cleared below so the measure isn't
+    // applied twice (once here, once per paragraph) — which is what pulled the
+    // paragraphs left of the centred heading.
+    .measure {
+      max-width: var(--measure);
+      margin-inline: auto;
+
+      p {
+        max-width: none;
+      }
+
+      // Type comes from the base h1 rule; only colour and placement live here.
+      // fit-content + an auto start margin is what pushes it right: the auto
+      // absorbs whatever the inset leaves over. text-align only bites once the
+      // string is long enough to wrap, which it does on phones.
+      h1 {
+        width: fit-content;
+        margin-inline-start: auto;
+        margin-inline-end: var(--about-heading-inset-end);
+        margin-block-start: var(--about-heading-space-top);
+        margin-block-end: var(--about-heading-space-bottom);
+        text-align: right;
+        color: var(--green);
+      }
     }
 
     .tagline {
-      font-family: var(--font-body);
-      font-weight: var(--font-weight-body);
-      font-size: 1.4rem;
-      line-height: 1.4;
       color: var(--black);
       text-align: center;
       margin: 2rem 0 0;
     }
 
     .body p {
-      font-family: var(--font-body);
-      font-weight: var(--font-weight-body);
-      // Matches ImageText's p.
-      font-size: 1.2rem;
-      line-height: 1.75;
       color: var(--black);
       text-align: left;
       margin: 0 0 1.25rem;
@@ -65,15 +94,13 @@ const { heading, tagline, paragraphs } = Astro.props;
     }
   }
 
-  @media (max-width: 500px) {
+  // Phones: .measure is only a few hundred px wide, so a percentage inset
+  // costs real line length and squeezes the heading against the right edge.
+  // Collapse it and let the heading run the full width of the column.
+  @media (max-width: 768px) {
     .text-block {
-      .tagline {
-        font-size: 1.15rem;
-      }
-
-      .body p {
-        font-size: 1rem;
-      }
+      --about-heading-inset-end: 0;
     }
   }
+
 </style>

@@ -35,14 +35,15 @@
     mask: url('/greenlogo.svg') no-repeat left center / contain;
   }
 
+  // The footer is deliberately outside the type scale: these sizes are fine
+  // print, optically matched to a wordmark that drops to 1rem tall on phones.
+  // --fs-small (a fixed 16px) would render the text larger than the logo.
   .descriptor {
-    font-family: var(--font-display);
     font-size: 0.95rem;
     opacity: 0.85;
   }
 
   .copy {
-    font-family: var(--font-body);
     font-size: 0.85rem;
     opacity: 0.6;
     margin-top: 0.5rem;
@@ -50,7 +51,6 @@
   }
 
   .right a {
-    font-family: var(--font-body);
     font-size: 0.95rem;
     color: var(--cream);
     opacity: 0.85;
