@@ -148,19 +148,23 @@ const Brand = link ? 'a' : 'span';
     line-height: 1;
     color: var(--black);
 
-    // A disc behind the glyph so it stays legible over a busy photo.
-    background-color: var(--white);
+    // A disc behind the glyph so it stays legible over a busy photo — kept
+    // translucent so it sits on the image rather than punching a hole in it.
+    // The fade is on the disc alone, not the button: dropping the whole
+    // element's opacity would take the glyph down with it.
+    background-color: color-mix(in srgb, var(--white) 45%, transparent);
     border: none;
     border-radius: 50%;
     padding: 0;
     cursor: pointer;
 
-    opacity: 0.75;
-    transition: opacity 150ms ease;
+    transition:
+      background-color 150ms ease,
+      opacity 150ms ease;
 
     &:hover,
     &:focus-visible {
-      opacity: 1;
+      background-color: color-mix(in srgb, var(--white) 80%, transparent);
     }
   }
 
@@ -170,6 +174,23 @@ const Brand = link ? 'a' : 'span';
 
   .work-arrow--next {
     right: 0.75rem;
+  }
+
+  // Reveal on hover — but only where hovering is possible. On touch there's no
+  // hover state to enter, so the arrows stay visible rather than becoming
+  // unreachable. Keyboard users get them back via :focus-visible.
+  @media (hover: hover) {
+    .work-arrow {
+      opacity: 0;
+      // Hidden arrows shouldn't swallow clicks meant for the linked image.
+      pointer-events: none;
+    }
+
+    .work-frame:hover .work-arrow,
+    .work-arrow:focus-visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
   }
 
   .work-meta {
