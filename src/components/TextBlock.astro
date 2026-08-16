@@ -6,11 +6,53 @@ interface Props {
 }
 
 const { heading, tagline, paragraphs } = Astro.props;
+
+// ── Wave heading ──────────────────────────────────────────────────────────
+// The heading is split into one span per character so each can carry its own
+// phase offset (--i) and ride a shared keyframe. Split at build time: no
+// client JS is involved.
+//
+// Words are grouped so the line still breaks only between them — bare
+// inline-block characters would let it wrap mid-word on phones, where the
+// heading does wrap. Whitespace stays as plain text nodes between the groups.
+// The running index counts spaces too, so the crest crosses gaps at the same
+// rate it crosses letters.
+const headingText = `(${heading})`;
+const headingTotal = Array.from(headingText).length;
+
+let charIndex = 0;
+const headingTokens = headingText.split(/(\s+)/).map((token) => {
+  if (/^\s+$/.test(token)) {
+    charIndex += Array.from(token).length;
+    return { space: token, chars: [] };
+  }
+
+  return {
+    space: null,
+    chars: Array.from(token).map((char) => ({ char, index: charIndex++ })),
+  };
+});
 ---
 
 <section class="text-block">
   <div class="measure">
-    <h1>({heading})</h1>
+    <h1 aria-label={headingText} style={`--n:${headingTotal}`}>
+      <span aria-hidden="true">
+        {
+          headingTokens.map((token) =>
+            token.space !== null ? (
+              token.space
+            ) : (
+              // Written on one line on purpose: any newline inside the span
+              // becomes whitespace in the text node, which would land in a
+              // copied selection between every character.
+              // prettier-ignore
+              <span class="word">{token.chars.map(({ char, index }) => <span class="wave-char" style={`--i:${index}`}>{char}</span>)}</span>
+            )
+          )
+        }
+      </span>
+    </h1>
     <div class="body">
       {paragraphs.map((paragraph: string) => <p>{paragraph}</p>)}
     </div>
@@ -29,9 +71,20 @@ const { heading, tagline, paragraphs } = Astro.props;
     // TextBlock is used only by /about and /es/about, so this cannot leak to
     // another page. If it's ever reused elsewhere, gate it behind a prop
     // rather than loosening the scope.
-    --about-heading-inset-end: 8%; // from the right edge of .measure
+    // Desktop only — the two breakpoints below reset this. Smaller = further
+    // right; 0 puts the heading flush with the right edge of .measure.
+    --about-heading-inset-end: 2%; // from the right edge of .measure
     --about-heading-space-top: 1rem; // clearance above
     --about-heading-space-bottom: 4rem; // gap down to the first paragraph
+
+    // ── Wave ──────────────────────────────────────────────────────────────
+    // Amplitude is in em so the travel tracks --fs-h1 across breakpoints
+    // instead of looking oversized on phones. Stagger is the phase step
+    // between neighbouring characters: larger = a tighter, faster-looking
+    // ripple; larger duration = a slower, lazier one.
+    --wave-amplitude: 0.28em;
+    --wave-duration: 2.4s;
+    --wave-stagger: 0.06s;
 
     // Narrower than ImageText's .about-split and centred in the same column
     // (.page-content already excludes the corner nav's --nav-width).
@@ -66,6 +119,34 @@ const { heading, tagline, paragraphs } = Astro.props;
         margin-block-end: var(--about-heading-space-bottom);
         text-align: right;
         color: var(--green);
+
+        // Keeps a word from breaking across lines now that its characters are
+        // separate inline-block boxes.
+        .word {
+          display: inline-block;
+        }
+
+        // The all-negative delay is deliberate: every character starts partway
+        // into the cycle, so nothing sits flat waiting its turn on load, and
+        // later characters lag earlier ones — the crest travels left to right.
+        // No will-change here; Marquee promotes one track, this would promote
+        // thirty boxes for a transform the compositor already handles.
+        .wave-char {
+          display: inline-block;
+          animation: heading-wave var(--wave-duration) ease-in-out infinite;
+          animation-delay: calc((var(--i) - var(--n)) * var(--wave-stagger));
+        }
+      }
+    }
+
+    @keyframes heading-wave {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(calc(var(--wave-amplitude) * -1));
       }
     }
 
@@ -91,6 +172,11 @@ const { heading, tagline, paragraphs } = Astro.props;
   @media (max-width: 1024px) {
     .text-block {
       width: calc(100% - 5rem);
+
+      // Tablets keep the original, more conservative inset: the column is
+      // narrower here, so the extra push right that reads as deliberate on
+      // desktop just crowds the edge.
+      --about-heading-inset-end: 8%;
     }
   }
 
@@ -103,4 +189,10 @@ const { heading, tagline, paragraphs } = Astro.props;
     }
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .text-block .measure h1 .wave-char {
+      animation: none;
+      transform: none;
+    }
+  }
 </style>
