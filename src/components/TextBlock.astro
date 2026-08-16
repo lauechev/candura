@@ -63,17 +63,14 @@ const headingTokens = headingText.split(/(\s+)/).map((token) => {
 <style lang="scss">
   .text-block {
     // ── About heading placement ───────────────────────────────────────────
-    // The heading is deliberately asymmetric here: high and right of centre,
-    // against the centred-title convention the rest of the site keeps. Tune it
-    // by feel with these three and nothing else — the rule below reads them
-    // and derives no geometry of its own.
+    // The heading reads off the same left edge as the copy below it, so only
+    // its vertical spacing needs tuning. Tune it by feel with these two and
+    // nothing else — the rule below reads them and derives no geometry of its
+    // own.
     //
     // TextBlock is used only by /about and /es/about, so this cannot leak to
     // another page. If it's ever reused elsewhere, gate it behind a prop
     // rather than loosening the scope.
-    // Desktop only — the two breakpoints below reset this. Smaller = further
-    // right; 0 puts the heading flush with the right edge of .measure.
-    --about-heading-inset-end: 2%; // from the right edge of .measure
     --about-heading-space-top: 1rem; // clearance above
     --about-heading-space-bottom: 4rem; // gap down to the first paragraph
 
@@ -108,16 +105,14 @@ const headingTokens = headingText.split(/(\s+)/).map((token) => {
       }
 
       // Type comes from the base h1 rule; only colour and placement live here.
-      // fit-content + an auto start margin is what pushes it right: the auto
-      // absorbs whatever the inset leaves over. text-align only bites once the
-      // string is long enough to wrap, which it does on phones.
+      // Flush with the start edge of .measure, which is the same edge the
+      // paragraphs below run off. text-align only bites once the string is
+      // long enough to wrap, which it does on phones.
       h1 {
-        width: fit-content;
-        margin-inline-start: auto;
-        margin-inline-end: var(--about-heading-inset-end);
+        margin-inline: 0;
         margin-block-start: var(--about-heading-space-top);
         margin-block-end: var(--about-heading-space-bottom);
-        text-align: right;
+        text-align: left;
         color: var(--green);
 
         // Keeps a word from breaking across lines now that its characters are
@@ -172,20 +167,6 @@ const headingTokens = headingText.split(/(\s+)/).map((token) => {
   @media (max-width: 1024px) {
     .text-block {
       width: calc(100% - 5rem);
-
-      // Tablets keep the original, more conservative inset: the column is
-      // narrower here, so the extra push right that reads as deliberate on
-      // desktop just crowds the edge.
-      --about-heading-inset-end: 8%;
-    }
-  }
-
-  // Phones: .measure is only a few hundred px wide, so a percentage inset
-  // costs real line length and squeezes the heading against the right edge.
-  // Collapse it and let the heading run the full width of the column.
-  @media (max-width: 768px) {
-    .text-block {
-      --about-heading-inset-end: 0;
     }
   }
 

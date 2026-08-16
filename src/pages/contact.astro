@@ -9,9 +9,9 @@ import ImageText from '@/components/ImageText.astro';
       <ImageText
         color="transparent"
         title="let's talk"
-        description="Have a project in mind? We'd love to hear about it. Email us at:"
+        description={["Have a project in mind? We'd love to hear about it.", 'Email us at:']}
         image="/beeper.png"
-        imageSize="100%"
+        imageSize="70%"
       >
         <a href="mailto:hi@candura.studio" class="email">hi@candura.studio</a>
 
@@ -21,7 +21,7 @@ import ImageText from '@/components/ImageText.astro';
             <a href="https://www.instagram.com/candura.studio" target="_blank" rel="noopener noreferrer"
               ><img src="/ig.svg" alt="Instagram" /></a
             >
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
+            <a href="https://www.linkedin.com/company/candura-studio/" target="_blank" rel="noopener noreferrer"
               ><img src="/linkedin.svg" alt="LinkedIn" /></a
             >
           </div>
@@ -35,7 +35,7 @@ import ImageText from '@/components/ImageText.astro';
   main {
     display: flex;
     justify-content: center;
-    padding: 4.5rem 3rem 11.5rem;
+    padding: 2rem 3rem 11.5rem;
   }
 
   .contact-wrapper {
