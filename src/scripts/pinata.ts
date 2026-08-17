@@ -91,17 +91,8 @@ const CONE_TIP_R = CONE_R * 0.13; // rounded-tip sphere blunting the apex
 // source for the body bands, the cones, and confetti.
 const PALETTE = ['--blue', '--purple', '--yellow', '--orange', '--pink', '--green', '--red'];
 
-/**
- * Resolves once the palette custom properties are live.
- *
- * On a cold Safari load this module can run before the stylesheet has been
- * applied. An unresolved var reads as '', three.js's Color.setStyle warns
- * "Unknown color" and leaves the colour at its default — which is white — so
- * every surface builds white and only a refresh (warm stylesheet) looks right.
- *
- * Bounded on purpose: after the timeout we resolve anyway, so a genuine styling
- * problem degrades to wrong colours rather than to no piñata at all.
- */
+// Resolves once the palette vars are live. Building before the stylesheet
+// applies reads them as '', which three.js turns into white.
 export function whenPaletteReady(timeoutMs = 1000): Promise<void> {
   const resolved = () => getComputedStyle(document.documentElement).getPropertyValue(PALETTE[0]).trim() !== '';
 
@@ -254,14 +245,13 @@ export class Pinata {
   private pointer = new Vector2();
 
   // Bound handlers so they can be removed in destroy().
-  // False until layout() has measured a non-zero canvas; the loop refuses to
-  // render before then, so the first painted frame is never a stretched 1×1.
+  // False until layout() has measured a non-zero canvas.
   private sized = false;
   private resizeObserver: ResizeObserver;
 
   private onResize = () => this.layout();
   private onPointerDown = (e: PointerEvent) => this.handlePointer(e);
-  // preventDefault is what makes the context eligible for restoration at all.
+  // preventDefault is what makes the context restorable.
   private onContextLost = (e: Event) => e.preventDefault();
   private onContextRestored = () => {
     this.sized = false;
@@ -288,8 +278,7 @@ export class Pinata {
     this.grainSmall.needsUpdate = true;
 
     this.renderer = new WebGLRenderer({ canvas, alpha: true, antialias: true });
-    // setPixelRatio lives in layout() now — it has to be re-applied whenever the
-    // canvas is resized or the window moves to a display with a different DPR.
+    // setPixelRatio lives in layout(), which re-applies it on every resize.
     // Tone mapping gives a single, well-behaved exposure control and stops the
     // lit colours from clipping to white.
     this.renderer.toneMapping = ACESFilmicToneMapping;
@@ -345,13 +334,11 @@ export class Pinata {
     this.layout();
     this.pinata.getWorldPosition(this.prevWorldPos); // so frame one's velocity is 0
 
-    // The container, not the window: the canvas is sized off a `dvh` box
-    // (.home in HomeScreen.astro), which can still measure 0 on a cold load
-    // long after the window has stopped firing resize events.
+    // The container, not the window: the canvas sits in a `dvh` box that can
+    // still measure 0 after the last resize event.
     this.resizeObserver = new ResizeObserver(() => this.layout());
     this.resizeObserver.observe(this.canvas);
-    // Still needed alongside the observer: a DPR change from dragging to
-    // another display doesn't alter the element's box, so it wouldn't fire.
+    // Kept for DPR changes, which don't alter the element's box.
     window.addEventListener('resize', this.onResize);
     this.canvas.addEventListener('pointerdown', this.onPointerDown);
     this.canvas.addEventListener('webglcontextlost', this.onContextLost);
@@ -867,14 +854,11 @@ export class Pinata {
   private layout(): boolean {
     const w = this.canvas.clientWidth;
     const h = this.canvas.clientHeight;
-    // No silent 1×1 fallback here. A zero-sized canvas means layout hasn't
-    // settled yet, and baking that into the drawing buffer is what left Safari
-    // showing one stretched pixel. The ResizeObserver calls us back the moment
-    // there are real dimensions.
+    // No 1×1 fallback: baking a zero measurement into the drawing buffer is
+    // what left Safari showing one stretched pixel.
     if (w === 0 || h === 0) return false;
 
-    // Re-applied on every layout, not once at construction: DPR changes when
-    // the window moves between displays, and it must be set before setSize.
+    // Before setSize, and re-applied here so a DPR change is picked up.
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio ?? 1, 2));
     this.renderer.setSize(w, h, false);
 
@@ -915,9 +899,8 @@ export class Pinata {
   start(): void {
     this.lastTime = performance.now();
     const loop = (now: number) => {
-      // Nothing is painted until the canvas has a real size. Advancing lastTime
-      // on the way past keeps dt from accumulating into a jolt on the first
-      // frame that does render.
+      // Nothing painted until the canvas has a real size; lastTime advances
+      // anyway so dt doesn't jolt on the first real frame.
       if (!this.sized && !this.layout()) {
         this.lastTime = now;
         this.raf = requestAnimationFrame(loop);

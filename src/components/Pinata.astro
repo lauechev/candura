@@ -17,9 +17,8 @@ const t = useTranslations(getLangFromUrl(Astro.url));
 
   const canvas = document.getElementById('pinata-canvas') as HTMLCanvasElement;
 
-  // A cold Safari load can run this before the stylesheet applies, and the
-  // piñata reads its colours from CSS custom properties at construction — build
-  // too early and every surface comes out white. See whenPaletteReady.
+  // Colours come from CSS custom properties at construction; build before the
+  // stylesheet applies and every surface comes out white.
   await whenPaletteReady();
 
   const pinata = new Pinata(canvas);

@@ -94,9 +94,18 @@ const { title, columns } = Astro.props;
   }
 
   @media (max-width: 768px) {
+    .profiles {
+      // The desktop 8rem/4rem reads as dead space once the blocks stack.
+      margin: 4rem auto 2rem;
+    }
+
     .profiles-grid {
       grid-template-columns: 1fr;
       gap: 3rem;
+    }
+
+    .profile-image {
+      margin-bottom: 2.5rem;
     }
   }
 </style>

@@ -105,6 +105,18 @@ const ariaLabel = label ?? phrases.join(separator ? ` ${separator} ` : ' ');
     }
   }
 
+  @media (max-width: 768px) {
+    .marquee {
+      font-size: var(--fs-h5);
+      padding-block: 0.22em;
+    }
+
+    // Multiplied, not replaced, so every instance slows by the same factor.
+    .marquee__track {
+      animation-duration: calc(var(--marquee-duration, 100s) * 1.8);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .marquee__track {
       animation: none;

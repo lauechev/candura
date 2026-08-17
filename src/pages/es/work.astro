@@ -7,8 +7,7 @@ import Marquee from '@/components/Marquee.astro';
 import Review from '@/components/Review.astro';
 import { reviews } from '@/data/reviews';
 
-// Every frame of the órbita case study, in numbered order — the card pages
-// through them with its prev/next arrows.
+// Numbered order; the card pages through them with its arrows.
 const orbita = [
   '/orbita1.png',
   '/orbita2.png',
@@ -165,8 +164,7 @@ const typeCheckerServices = ['diseño y desarrollo web'];
   .grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    // Rows sit tighter than the columns: the 6rem gutter is load-bearing for
-    // the card width below, but the vertical run doesn't need as much air.
+    // Row gap only; the 6rem column gutter is load-bearing for the width cap.
     gap: 4rem 6rem;
     // Cap + centre the pair rather than letting it span the container: keeps
     // the cards at the smaller 456px (63rem = 2x456 + the 6rem gutter) while

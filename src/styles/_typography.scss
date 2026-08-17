@@ -45,6 +45,21 @@
   --measure: 75ch;
 }
 
+// ── Mobile scale ────────────────────────────────────────────────────────────
+// Same 1.067 ratio, rebuilt from a 14px body.
+@media (max-width: 768px) {
+  :root {
+    --fs-h1: 1.291rem; /* 20.66px */
+    --fs-h2: 1.21rem; /* 19.36px */
+    --fs-h3: 1.134rem; /* 18.14px */
+    --fs-h4: 1.063rem; /* 17.01px */
+    --fs-h5: 0.996rem; /* 15.94px */
+    --fs-h6: 0.934rem; /* 14.94px */
+    --fs-body: 0.875rem; /* 14px    */
+    --fs-small: 0.82rem; /* 13.12px */
+  }
+}
+
 // ── Base elements ───────────────────────────────────────────────────────────
 
 body {

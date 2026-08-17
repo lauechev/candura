@@ -161,8 +161,16 @@ const paragraphs = (Array.isArray(description) ? description : [description]).fi
       border-right: none;
       border-left: none;
       max-width: none;
-      padding: 2.5rem 0;
+      padding: 1.5rem 0;
       text-align: left;
+    }
+
+    // The rule above drops the container's left padding to 0, and an `outside`
+    // marker is drawn in the padding area — 1.25rem is narrower than '★  ', so
+    // the star landed outside .about-split's overflow: hidden and was clipped.
+    // In em so it tracks the smaller mobile type scale.
+    ul {
+      padding-left: 2em;
     }
   }
 
@@ -181,7 +189,7 @@ const paragraphs = (Array.isArray(description) ? description : [description]).fi
     }
 
     .split-text {
-      padding: 2rem 0;
+      padding: 1.25rem 0;
       justify-content: flex-start;
     }
 

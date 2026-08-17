@@ -23,12 +23,8 @@ const Brand = link ? 'a' : 'span';
 ---
 
 <div class:list={['work-card', { 'has-link': !!link }]}>
-  <!-- .work-media carries the aspect ratio and the radius; the images stack
-       absolutely inside it, so paging can never shift layout. The arrows are
-       siblings of it, not children: .work-media is an <a> whenever the card has
-       a link, and a <button> inside an <a> is invalid and would navigate on
-       click. data-gallery is only present on multi-image cards — single-image
-       cards get no arrows and no listeners at all. -->
+  <!-- The arrows are siblings of .work-media, not children: it's an <a> when
+       the card has a link, and a <button> inside an <a> would navigate. -->
   <div class="work-frame" data-gallery={isMulti ? '' : undefined}>
     <Media class="work-media" {...linkAttrs}>
       {
@@ -75,8 +71,7 @@ const Brand = link ? 'a' : 'span';
 
     let index = 0;
 
-    // `step` is +1 or -1; the modulo is written to stay positive so going back
-    // from the first image wraps to the last.
+    // Modulo kept positive so stepping back from the first wraps to the last.
     const go = (step: number) => {
       images[index].classList.remove('is-active');
       images[index].setAttribute('aria-hidden', 'true');
@@ -95,8 +90,7 @@ const Brand = link ? 'a' : 'span';
     width: 100%;
   }
 
-  // Positioning context for the arrows. .work-media can't serve as one — the
-  // arrows sit outside it (see the markup note).
+  // Positioning context for the arrows, which sit outside .work-media.
   .work-frame {
     position: relative;
   }
@@ -128,8 +122,7 @@ const Brand = link ? 'a' : 'span';
     }
   }
 
-  // Overlaid on the photo, vertically centred, inset from each edge. Set in the
-  // display cut like .work-brand, one step down at --fs-small.
+  // Overlaid on the photo, vertically centred, inset from each edge.
   .work-arrow {
     position: absolute;
     top: 50%;
@@ -148,10 +141,8 @@ const Brand = link ? 'a' : 'span';
     line-height: 1;
     color: var(--black);
 
-    // A disc behind the glyph so it stays legible over a busy photo — kept
-    // translucent so it sits on the image rather than punching a hole in it.
-    // The fade is on the disc alone, not the button: dropping the whole
-    // element's opacity would take the glyph down with it.
+    // Faded on the disc alone: dropping the button's opacity would dim the
+    // glyph with it.
     background-color: color-mix(in srgb, var(--white) 45%, transparent);
     border: none;
     border-radius: 50%;
@@ -176,13 +167,12 @@ const Brand = link ? 'a' : 'span';
     right: 0.75rem;
   }
 
-  // Reveal on hover — but only where hovering is possible. On touch there's no
-  // hover state to enter, so the arrows stay visible rather than becoming
-  // unreachable. Keyboard users get them back via :focus-visible.
+  // Only where hovering is possible: on touch the arrows stay visible rather
+  // than becoming unreachable.
   @media (hover: hover) {
     .work-arrow {
       opacity: 0;
-      // Hidden arrows shouldn't swallow clicks meant for the linked image.
+      // So a hidden arrow can't swallow a click meant for the linked image.
       pointer-events: none;
     }
 
@@ -236,8 +226,7 @@ const Brand = link ? 'a' : 'span';
     }
   }
 
-  // Paging is click-driven now, so the frames still change — this just makes
-  // the swap instant instead of a cross-fade.
+  // Makes the swap instant instead of a cross-fade.
   @media (prefers-reduced-motion: reduce) {
     .work-image {
       transition: none;

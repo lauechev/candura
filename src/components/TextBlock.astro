@@ -64,13 +64,8 @@ const headingTokens = headingText.split(/(\s+)/).map((token) => {
   .text-block {
     // ── About heading placement ───────────────────────────────────────────
     // The heading reads off the same left edge as the copy below it, so only
-    // its vertical spacing needs tuning. Tune it by feel with these two and
-    // nothing else — the rule below reads them and derives no geometry of its
-    // own.
-    //
-    // TextBlock is used only by /about and /es/about, so this cannot leak to
-    // another page. If it's ever reused elsewhere, gate it behind a prop
-    // rather than loosening the scope.
+    // its vertical spacing needs tuning. TextBlock is used only by /about and
+    // /es/about, so this can't leak to another page.
     --about-heading-space-top: 1rem; // clearance above
     --about-heading-space-bottom: 4rem; // gap down to the first paragraph
 
