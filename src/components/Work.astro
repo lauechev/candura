@@ -159,13 +159,13 @@ const Brand = link ? 'a' : 'span';
       display: block;
       width: 100%;
       height: 100%;
-      fill: color-mix(in srgb, var(--white) 85%, transparent);
+      fill: color-mix(in srgb, var(--white) 75%, transparent);
       transition: fill 150ms ease;
     }
 
     &:hover svg,
     &:focus-visible svg {
-      fill: var(--white);
+      fill: color-mix(in srgb, var(--white) 90%, transparent);
     }
   }
 
@@ -175,6 +175,21 @@ const Brand = link ? 'a' : 'span';
 
   .work-arrow--next {
     right: 0.75rem;
+  }
+
+  @media (max-width: 768px) {
+    .work-arrow {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    .work-arrow--prev {
+      left: 0.5rem;
+    }
+
+    .work-arrow--next {
+      right: 0.5rem;
+    }
   }
 
   // Only where hovering is possible: on touch the arrows stay visible rather
