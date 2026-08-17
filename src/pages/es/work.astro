@@ -1,0 +1,175 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+// Aliased: Astro names a page's own component after its file, so a plain
+// `Work` import collides with work.astro's generated local declaration.
+import WorkCard from '@/components/Work.astro';
+import Marquee from '@/components/Marquee.astro';
+import Review from '@/components/Review.astro';
+import { reviews } from '@/data/reviews';
+
+// Every frame of the órbita case study, in numbered order — the card pages
+// through them with its prev/next arrows.
+const orbita = ['/orbita1.png', '/orbita2.png', '/orbita3.png', '/orbita4.png', '/orbita5.png', '/orbita6.png', '/orbita7.png'];
+const orbitaServices = [
+  'investigación de mercado y tendencias',
+  'usuario y audiencia',
+  'naming',
+  'desarrollo de concepto de marca',
+  'comunicación de marca',
+  'branding',
+  'estrategia digital',
+  'diseño y desarrollo de e-commerce',
+];
+const gtanna = ['/gtanna1.png', '/gtanna2.png', '/gtanna3.png', '/gtanna4.png', '/gtanna5.png'];
+const gtannaServices = ['desarrollo de concepto de marca', 'comunicación de marca', 'diseño y desarrollo web'];
+const secondOrder = [
+  '/secondorder1.png',
+  '/secondorder2.png',
+  '/secondorder3.png',
+  '/secondorder5.png',
+  '/secondorder6.png',
+  '/secondorder4.png',
+  '/secondorder7.png',
+];
+const secondOrderServices = [
+  'investigación de mercado y tendencias',
+  'desarrollo de concepto de marca',
+  'branding',
+  'diseño de newsletter',
+  'diseño de landing page',
+];
+const manojos = ['/manojos1.png', '/manojos2.png', '/manojos3.png', '/manojos4.png'];
+const manojosServices = ['branding', 'diseño de portafolio', 'instagram starter', 'dirección creativa'];
+const mjs = ['/mjs1.png', '/mjs2.png', '/mjs3.png', '/mjs4.png', '/mjs5.png'];
+const mjsServices = ['dirección creativa', 'diseño de e-book', 'ilustración', 'fotografía'];
+const bienvenides = [
+  '/bienvenides1.png',
+  '/bienvenides2.png',
+  '/bienvenides3.png',
+  '/bienvenides4.png',
+  '/bienvenides5.png',
+  '/bienvenides6.png',
+];
+const bienvenidesServices = [
+  'investigación de mercado y tendencias',
+  'investigación de usuario y audiencia',
+  'dirección creativa',
+  'desarrollo de concepto de marca',
+  'comunicación de marca',
+  'branding',
+  'estrategia digital',
+];
+const paris = ['/paris1.png', '/paris2.png', '/paris3.png', '/paris4.png'];
+const parisServices = ['diseño y desarrollo web', 'desarrollo de visualización de datos interactiva'];
+const typeChecker = ['/type1.png', '/type2.png', '/type3.png', '/type4.png'];
+const typeCheckerServices = ['diseño y desarrollo web'];
+---
+
+<BaseLayout title="Proyectos" pageHeading="Proyectos" description="Proyectos seleccionados de Candura.">
+  <!-- The work grid and the reviews sit in identical `<div class="container">`
+       wrappers so they can't drift apart; the marquee stays outside them and
+       spans the full content column. -->
+  <main>
+    <div class="container">
+      <div class="grid">
+        <WorkCard brand="órbita" services={orbitaServices} images={orbita} />
+        <WorkCard brand="gtanna" services={gtannaServices} images={gtanna} />
+        <WorkCard brand="second order" services={secondOrderServices} images={secondOrder} />
+        <WorkCard brand="manojos" services={manojosServices} images={manojos} />
+        <WorkCard brand="from mj's kitchen" services={mjsServices} images={mjs} />
+        <WorkCard brand="bienvenides" services={bienvenidesServices} images={bienvenides} />
+        <WorkCard brand="impressionist paris" services={parisServices} images={paris} />
+        <WorkCard brand="type checker" services={typeCheckerServices} images={typeChecker} />
+      </div>
+    </div>
+
+    <div class="work-marquee">
+      <Marquee text="no solo tomes nuestra palabra" separator="★" background="var(--green)" />
+    </div>
+
+    <div class="container">
+      <div class="reviews">
+        {reviews.es.map((review) => <Review quote={review.quote} author={review.author} />)}
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style lang="scss">
+  // No top padding: the grid sits directly under .page-header-global's own
+  // 3rem bottom padding (BaseLayout), so the cards start as high as the
+  // header spacer allows.
+  main {
+    padding-top: 0;
+    padding-bottom: 6rem;
+
+    // The desktop 0 leans on .page-header-global's tall spacer; that spacer is
+    // much shorter on mobile, so match the 2rem the other pages use there.
+    @media (max-width: 1024px) {
+      padding-top: 2rem;
+    }
+  }
+
+  // A plain block inside .page-content, which already reserves the corner nav's
+  // column — so the band stops cleanly at it rather than running underneath.
+  .work-marquee {
+    // Extra air between the last row of cards and the band.
+    margin-top: 8rem;
+
+    @media (max-width: 760px) {
+      margin-top: 4rem;
+    }
+  }
+
+  // Shares .container with the work grid above, so both sit on the same
+  // gutters and 1200px cap - and well clear of the corner nav column.
+  .reviews {
+    margin-top: 6rem;
+    display: grid;
+    // minmax(0, …) not 1fr: a plain 1fr track won't shrink below its item's
+    // min-content, and the unbreakable ★★★★★ line gives each receipt one. That
+    // forced the tracks wide enough to overflow .container's 1200px cap and
+    // push the row toward the nav.
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    // The receipts fill their columns, so this gap is what sizes them.
+    gap: 3rem;
+
+    // The corner nav has collapsed by here and the column would be too narrow
+    // for a receipt, so drop to two.
+    @media (max-width: 900px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    // Matches the work grid's own single-column breakpoint.
+    @media (max-width: 760px) {
+      grid-template-columns: minmax(0, 1fr);
+      margin-top: 3rem;
+      // One receipt per row here, so cap it instead of letting it fill the
+      // phone — Review.astro sizes its type in cqi, so the card's width is what
+      // sets the lettering. Cap the grid, not the card: .review is
+      // size-contained and would collapse under its own max-width + auto
+      // margin (see the note in Review.astro).
+      max-width: 15rem;
+      margin-inline: auto;
+    }
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    // Rows sit tighter than the columns: the 6rem gutter is load-bearing for
+    // the card width below, but the vertical run doesn't need as much air.
+    gap: 4rem 6rem;
+    // Cap + centre the pair rather than letting it span the container: keeps
+    // the cards at the smaller 456px (63rem = 2x456 + the 6rem gutter) while
+    // grouping them toward the middle instead of pushing them to the edges.
+    max-width: 63rem;
+    margin-inline: auto;
+
+    // One column here, so the 6rem is pure vertical dead space.
+    @media (max-width: 760px) {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+  }
+</style>

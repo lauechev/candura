@@ -1,0 +1,113 @@
+---
+// Full-width banner that scrolls its copy continuously. Reusable: the caller
+// provides the phrase and colours (see HomeScreen.astro for the tagline use).
+interface Props {
+  // One phrase, or several that take turns around the separator.
+  text: string | string[];
+  label?: string;
+  background?: string;
+  color?: string;
+  // Punctuation between phrases, set much smaller than the copy. Omit it and
+  // the phrases repeat end to end.
+  separator?: string;
+}
+
+const { text, label, background = 'var(--purple)', color = 'var(--cream)', separator } = Astro.props;
+
+const phrases = Array.isArray(text) ? text : [text];
+
+// The track holds two identical groups and slides by exactly one of them
+// (-50%). For that to never expose a gap, ONE group must be at least as wide as
+// the band: the rightmost point ever shown is group + band, and the track is
+// only 2 x group long. Hence a generous repeat count.
+//
+// Raising REPEATS is free only because the duration below scales with it —
+// speed is (REPEATS x phraseWidth) / (REPEATS x SECONDS_PER_PHRASE), so the
+// repeat count cancels out. Bumping REPEATS alone would speed the band up.
+const REPEATS = 12;
+const SECONDS_PER_PHRASE = 25;
+const duration = REPEATS * SECONDS_PER_PHRASE;
+
+const group = Array.from({ length: REPEATS }, () => phrases).flat();
+
+// Reads to a screen reader as the sentence the band spells out.
+const ariaLabel = label ?? phrases.join(separator ? ` ${separator} ` : ' ');
+---
+
+<div
+  class="marquee"
+  aria-label={ariaLabel}
+  style={`--marquee-bg: ${background}; --marquee-fg: ${color}; --marquee-duration: ${duration}s`}
+>
+  <div class="marquee__track" aria-hidden="true">
+    {
+      [0, 1].map(() => (
+        <span class="marquee__group">
+          {group.map((phrase) => (
+            <>
+              {phrase}
+              {separator && <span class="marquee__separator">{separator}</span>}
+            </>
+          ))}
+        </span>
+      ))
+    }
+  </div>
+</div>
+
+<style lang="scss">
+  .marquee {
+    width: 100%;
+    overflow: hidden;
+    padding-block: 0.15em;
+    // Set as an h3, but deliberately not marked up as one — the band is
+    // decorative and shouldn't enter the document outline or be read out.
+    font-family: var(--font-display);
+    font-weight: var(--fw-medium);
+    font-size: var(--fs-h3);
+    line-height: var(--lh-heading);
+    background: var(--marquee-bg);
+    color: var(--marquee-fg);
+  }
+
+  .marquee__track {
+    display: flex;
+    width: max-content;
+    // -50% == one group width, since the track holds two identical groups.
+    // Duration is set per-instance so it scales with REPEATS and the scroll
+    // speed stays constant — see the note in the frontmatter.
+    animation: marquee-scroll var(--marquee-duration, 100s) linear infinite;
+    will-change: transform;
+  }
+
+  .marquee__group {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  // A tick between phrases rather than a word — much smaller than the copy,
+  // and optically centred against it rather than sitting on the baseline.
+  .marquee__separator {
+    display: inline-block;
+    font-size: 0.4em;
+    vertical-align: middle;
+    // em of its own 0.4em size, so ~1.6em of the band's type each side. The
+    // wide gap is what keeps fewer phrases on screen at a time.
+    padding-inline: 4em;
+  }
+
+  @keyframes marquee-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee__track {
+      animation: none;
+    }
+  }
+</style>

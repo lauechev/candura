@@ -7,6 +7,11 @@ export default defineConfig({
   srcDir: './src',
   site: 'https://candura.studio',
   base: '/',
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'es'],
+    routing: { prefixDefaultLocale: false },
+  },
   build: {
     assets: 'assets',
   },

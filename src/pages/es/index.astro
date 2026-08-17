@@ -1,0 +1,11 @@
+---
+import HomeScreen from '@/components/HomeScreen.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { useTranslations } from '@/i18n/ui';
+
+const t = useTranslations('es');
+---
+
+<BaseLayout title={t('site.title')} description={t('home.tagline')}>
+  <HomeScreen />
+</BaseLayout>

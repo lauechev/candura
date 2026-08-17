@@ -1,39 +1,179 @@
 ---
 interface Props {
-  title: string;
-  body: string;
+  heading: string;
+  tagline: string;
+  paragraphs: string[];
 }
 
-const { title, body } = Astro.props;
+const { heading, tagline, paragraphs } = Astro.props;
+
+// ── Wave heading ──────────────────────────────────────────────────────────
+// The heading is split into one span per character so each can carry its own
+// phase offset (--i) and ride a shared keyframe. Split at build time: no
+// client JS is involved.
+//
+// Words are grouped so the line still breaks only between them — bare
+// inline-block characters would let it wrap mid-word on phones, where the
+// heading does wrap. Whitespace stays as plain text nodes between the groups.
+// The running index counts spaces too, so the crest crosses gaps at the same
+// rate it crosses letters.
+const headingText = `(${heading})`;
+const headingTotal = Array.from(headingText).length;
+
+let charIndex = 0;
+const headingTokens = headingText.split(/(\s+)/).map((token) => {
+  if (/^\s+$/.test(token)) {
+    charIndex += Array.from(token).length;
+    return { space: token, chars: [] };
+  }
+
+  return {
+    space: null,
+    chars: Array.from(token).map((char) => ({ char, index: charIndex++ })),
+  };
+});
 ---
 
 <section class="text-block">
-  <h2>{title}</h2>
-  <p>{body}</p>
+  <div class="measure">
+    <h1 aria-label={headingText} style={`--n:${headingTotal}`}>
+      <span aria-hidden="true">
+        {
+          headingTokens.map((token) =>
+            token.space !== null ? (
+              token.space
+            ) : (
+              // Written on one line on purpose: any newline inside the span
+              // becomes whitespace in the text node, which would land in a
+              // copied selection between every character.
+              // prettier-ignore
+              <span class="word">{token.chars.map(({ char, index }) => <span class="wave-char" style={`--i:${index}`}>{char}</span>)}</span>
+            )
+          )
+        }
+      </span>
+    </h1>
+    <div class="body">
+      {paragraphs.map((paragraph: string) => <p>{paragraph}</p>)}
+    </div>
+    <p class="tagline">{tagline}</p>
+  </div>
 </section>
 
 <style lang="scss">
   .text-block {
-    max-width: 45%;
-    margin: auto;
-    margin-top: 10vh;
+    // ── About heading placement ───────────────────────────────────────────
+    // The heading reads off the same left edge as the copy below it, so only
+    // its vertical spacing needs tuning. Tune it by feel with these two and
+    // nothing else — the rule below reads them and derives no geometry of its
+    // own.
+    //
+    // TextBlock is used only by /about and /es/about, so this cannot leak to
+    // another page. If it's ever reused elsewhere, gate it behind a prop
+    // rather than loosening the scope.
+    --about-heading-space-top: 1rem; // clearance above
+    --about-heading-space-bottom: 4rem; // gap down to the first paragraph
 
-    h2 {
-      font-family: var(--font-display);
-      font-size: 3rem;
-      font-weight: 700;
-      color: var(--black);
-      margin: 0 0 1rem;
-      line-height: 1.2;
+    // ── Wave ──────────────────────────────────────────────────────────────
+    // Amplitude is in em so the travel tracks --fs-h1 across breakpoints
+    // instead of looking oversized on phones. Stagger is the phase step
+    // between neighbouring characters: larger = a tighter, faster-looking
+    // ripple; larger duration = a slower, lazier one.
+    --wave-amplitude: 0.28em;
+    --wave-duration: 2.4s;
+    --wave-stagger: 0.06s;
+
+    // Narrower than ImageText's .about-split and centred in the same column
+    // (.page-content already excludes the corner nav's --nav-width).
+    width: calc(100% - 34rem);
+    max-width: 55rem;
+    margin: 2rem auto 3rem;
+    text-wrap: pretty;
+
+    // The one box the measure is applied to, and it's centred — so the heading
+    // and the tagline centre over the same column the paragraphs occupy rather
+    // than over the wider .text-block. The global `p` rule also carries
+    // max-width: var(--measure); it's cleared below so the measure isn't
+    // applied twice (once here, once per paragraph) — which is what pulled the
+    // paragraphs left of the centred heading.
+    .measure {
+      max-width: var(--measure);
+      margin-inline: auto;
+
+      p {
+        max-width: none;
+      }
+
+      // Type comes from the base h1 rule; only colour and placement live here.
+      // Flush with the start edge of .measure, which is the same edge the
+      // paragraphs below run off. text-align only bites once the string is
+      // long enough to wrap, which it does on phones.
+      h1 {
+        margin-inline: 0;
+        margin-block-start: var(--about-heading-space-top);
+        margin-block-end: var(--about-heading-space-bottom);
+        text-align: left;
+        color: var(--green);
+
+        // Keeps a word from breaking across lines now that its characters are
+        // separate inline-block boxes.
+        .word {
+          display: inline-block;
+        }
+
+        // The all-negative delay is deliberate: every character starts partway
+        // into the cycle, so nothing sits flat waiting its turn on load, and
+        // later characters lag earlier ones — the crest travels left to right.
+        // No will-change here; Marquee promotes one track, this would promote
+        // thirty boxes for a transform the compositor already handles.
+        .wave-char {
+          display: inline-block;
+          animation: heading-wave var(--wave-duration) ease-in-out infinite;
+          animation-delay: calc((var(--i) - var(--n)) * var(--wave-stagger));
+        }
+      }
     }
 
-    p {
-      font-family: var(--font-body);
-      font-size: 1.0625rem;
-      line-height: 1.75;
+    @keyframes heading-wave {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(calc(var(--wave-amplitude) * -1));
+      }
+    }
+
+    .tagline {
       color: var(--black);
-      opacity: 0.75;
-      margin: 0;
+      text-align: center;
+      margin: 2rem 0 0;
+    }
+
+    .body p {
+      color: var(--black);
+      text-align: left;
+      margin: 0 0 1.25rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  // The nav column is gone here, so fall back to the narrower gutters
+  // ImageText uses at the same breakpoint.
+  @media (max-width: 1024px) {
+    .text-block {
+      width: calc(100% - 5rem);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .text-block .measure h1 .wave-char {
+      animation: none;
+      transform: none;
     }
   }
 </style>

@@ -1,5 +1,8 @@
 @use 'normalize';
 @use 'fonts';
+// The type system: tokens on :root plus the base h1–h6 / body / p / small
+// rules. Pulled in here so it lands ahead of every component's scoped styles.
+@use 'typography';
 
 :root {
   // Brand colors
@@ -14,6 +17,7 @@
   // Base
   --black: #0a0a0a;
   --white: #ffffff;
+  --cream: #fffdf8;
 
   // Nav border colors per page
   --nav-border-about: var(--blue);
@@ -21,12 +25,39 @@
   --nav-border-work: var(--yellow);
   --nav-border-contact: var(--red);
 
-  // Typography
-  --font-display: 'Darker Grotesque', sans-serif;
-  --font-logo: 'neue-haas-grotesk-text', sans-serif;
-  --font-body: 'neue-haas-grotesk-text', sans-serif;
-  --font-title: 'neue-haas-grotesk-text', sans-serif;
-  --font-weight-body: 400;
+  // Typography — Neue Haas Grotesk is the only typeface site-wide, split into
+  // two cuts: -display for headings, -text for running copy. Both live in
+  // _typography.scss together with the scale, weights and rhythm.
+  //
+  // The one exception to the Neue Haas rule: receipts in Review.astro are set
+  // in Tomorrow Light, loaded from Google Fonts in BaseLayout. Review is also
+  // the one component outside the type system — it sizes everything in cqi so
+  // the copy holds a fixed share of the receipt image at any card width.
+  --font-receipt: 'Tomorrow', sans-serif;
+
+  // Layout — width of the column reserved for the fixed corner nav on
+  // non-home pages: widest label "(services)" at the h6 step (--fs-h6, tops
+  // out at 25px) + panel padding + right offset + gutter. Collapses to 0
+  // below 1025px, where
+  // Nav.astro swaps to a hamburger + fullscreen overlay (see its
+  // max-width: 1024px block).
+  --nav-width: 15rem;
+
+  // Height of the header bar (logo + language toggle; + hamburger below
+  // 1025px). The bar is fixed, so BaseLayout offsets .page-content by this
+  // same token — they must never drift apart.
+  --header-height: 6rem;
+  // Horizontal padding inside that bar below 1025px, shared by the logo and
+  // the burger so they stay symmetric.
+  --mobile-header-pad: clamp(1.25rem, 5vw, 2.5rem);
+}
+
+@media (max-width: 1024px) {
+  :root {
+    // 0rem, not 0: unitless zero is invalid inside calc() subtraction.
+    --nav-width: 0rem;
+    --header-height: 4.5rem;
+  }
 }
 
 .container {
@@ -36,11 +67,6 @@
   padding: 0 2rem;
 }
 
-h1 {
-  font-size: 3em;
-}
-
-h2 {
-  font-size: 2.5em;
-  font-weight: 300;
+img {
+  border-radius: 6px;
 }

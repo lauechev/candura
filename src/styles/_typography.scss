@@ -1,0 +1,94 @@
+// The one type system for the site. Everything downstream references these
+// custom properties with var() — no component should declare a raw px/rem
+// font-size again. If a component genuinely needs a one-off, it overrides the
+// property in its own scope (see HomeScreen's .whack) rather than hardcoding.
+//
+// The html root font-size is deliberately left at the browser default; the
+// scale below is built around that (body is 1.25rem == 20px).
+
+:root {
+  // ── Families ──────────────────────────────────────────────────────────────
+  // Two cuts of Neue Haas Grotesk, both from the Adobe Fonts kit loaded in
+  // BaseLayout. The -display cut carries 100–900 and sets every heading; the
+  // -text cut is drawn for running copy and carries 400/700, which is all the
+  // body needs.
+  --font-display: 'neue-haas-grotesk-display', sans-serif;
+  --font-text: 'neue-haas-grotesk-text', sans-serif;
+
+  // ── Weights ───────────────────────────────────────────────────────────────
+  // Neue Haas Grotesk ships 400/500/700 — there is no 600 cut, so a 600
+  // request renders as 700 anyway. Ask for 700 directly.
+  --fw-medium: 500; // "65 Medium" — all headings h1–h6
+  --fw-roman: 400; // "55 Roman"  — body
+  // Reserved for the two navigation controls: the nav menu links and the
+  // en/es toggle. Nothing else on the site is bold.
+  --fw-bold: 700; // "75 Bold"
+
+  // ── Scale ─────────────────────────────────────────────────────────────────
+  // 1.067, flat. No clamp(): at this ratio the fluid range would be under 2px
+  // across the whole viewport, which isn't worth the indirection. The steps sit
+  // ~1.5px apart, so hierarchy leans on family and weight far more than size.
+  --fs-h1: 1.844rem; /* 29.51px */
+  --fs-h2: 1.729rem; /* 27.66px */
+  --fs-h3: 1.62rem; /* 25.92px */
+  --fs-h4: 1.519rem; /* 24.3px  */
+  --fs-h5: 1.423rem; /* 22.77px */
+  --fs-h6: 1.334rem; /* 21.34px */
+  --fs-body: 1.25rem; /* 20px    */
+  --fs-small: 1.171rem; /* 18.74px */
+
+  // ── Rhythm ────────────────────────────────────────────────────────────────
+  --lh-body: 1.5;
+  --lh-heading: 1.1;
+  // Line length for running copy. Applied to paragraphs only — never to layout
+  // wrappers or headings.
+  --measure: 75ch;
+}
+
+// ── Base elements ───────────────────────────────────────────────────────────
+
+body {
+  font-family: var(--font-text);
+  font-weight: var(--fw-roman);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+p {
+  line-height: var(--lh-body);
+  max-width: var(--measure);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-heading);
+}
+
+h1 {
+  font-size: var(--fs-h1);
+}
+h2 {
+  font-size: var(--fs-h2);
+}
+h3 {
+  font-size: var(--fs-h3);
+}
+h4 {
+  font-size: var(--fs-h4);
+}
+h5 {
+  font-size: var(--fs-h5);
+}
+h6 {
+  font-size: var(--fs-h6);
+}
+
+small {
+  font-size: var(--fs-small);
+}

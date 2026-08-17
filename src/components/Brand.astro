@@ -1,0 +1,70 @@
+---
+import { getLangFromUrl, localizePath } from '@/i18n/ui';
+
+interface Props {
+  /** `home` shows a large logo; `compact` is a smaller logo for other pages. */
+  variant?: 'home' | 'compact';
+}
+
+const { variant = 'compact' } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const homeHref = localizePath('/', lang);
+---
+
+<a class:list={['brand', variant]} href={homeHref} aria-label="Candura — home">
+  <img class="logo" src={`${import.meta.env.BASE_URL}greenlogo.svg`} alt="Candura" width="1301" height="330" />
+</a>
+
+<style lang="scss">
+  .brand {
+    position: absolute;
+    top: clamp(1.5rem, 4vh, 3rem);
+    left: clamp(1.5rem, 5vw, 5rem);
+    z-index: 90;
+    display: block;
+    text-decoration: none;
+    transition: opacity 200ms ease;
+
+    &:hover,
+    &:focus-visible {
+      opacity: 0.75;
+    }
+  }
+
+  .logo {
+    height: auto;
+    display: block;
+  }
+
+  .home .logo {
+    width: clamp(9rem, 18vw, 15rem);
+  }
+
+  // Smaller on every page other than home.
+  .compact .logo {
+    width: clamp(5.5rem, 9vw, 7.5rem);
+  }
+
+  // Pages with the header bar (every page but home — the flag is set on
+  // <body> in BaseLayout): the logo sits inside the bar, vertically centred
+  // and fixed, instead of scrolling away with the content.
+  :global(body.has-header) .brand {
+    position: fixed;
+    top: 0;
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+  }
+
+  @media (max-width: 1024px) {
+    :global(body.has-header) .brand {
+      left: var(--mobile-header-pad);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand {
+      transition: none;
+    }
+  }
+</style>

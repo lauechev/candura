@@ -1,0 +1,102 @@
+---
+import type { Profile } from '@/data/about';
+
+interface Props {
+  // Unset for now — nothing renders until a title is decided on.
+  title?: string;
+  columns: Profile[];
+}
+
+const { title, columns } = Astro.props;
+---
+
+<section class="profiles">
+  {title && <h2 class="profiles-title">{title}</h2>}
+  <div class="profiles-grid">
+    {
+      columns.map((column: Profile) => (
+        <article class="profile">
+          {/* First in source order: the portrait heads its column, centred. */}
+          <img class="profile-image" src={column.image} alt={column.imageAlt} loading="lazy" decoding="async" />
+          <h3 class="profile-name">({column.name})</h3>
+          <p class="profile-tagline">{column.tagline}</p>
+          {column.paragraphs.map((paragraph: string) => (
+            <p class="profile-body">{paragraph}</p>
+          ))}
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style lang="scss">
+  .profiles {
+    // Narrow measure, matching TextBlock above it rather than the full-width
+    // .about-split blocks below. The generous top margin sets this section
+    // apart from TextBlock.
+    width: calc(100% - 20rem + 15px);
+    max-width: calc(65rem + 15px);
+    margin: 8rem auto 4rem;
+    text-wrap: pretty;
+  }
+
+  .profiles-title {
+    color: var(--black);
+    margin: 0 0 2rem;
+  }
+
+  .profiles-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10rem;
+  }
+
+  .profile {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .profile-name {
+    color: var(--black);
+    text-transform: lowercase;
+    margin: 0 0 0.5rem;
+  }
+
+  // Mirrors TextBlock's .tagline: a lead-in line under the name.
+  .profile-tagline {
+    color: var(--black);
+    margin: 0 0 1.5rem;
+  }
+
+  .profile-body {
+    color: var(--black);
+    text-align: left;
+    margin: 0 0 1.25rem;
+  }
+
+  .profile-image {
+    width: 100%;
+    // A small portrait, not a column-wide card.
+    max-width: 11rem;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    display: block;
+    // Centred over the text it heads.
+    margin: 0 auto 4.5rem;
+  }
+
+  // The nav column is gone here; match the narrower gutters ImageText uses.
+  @media (max-width: 1024px) {
+    .profiles {
+      width: calc(100% - 5rem);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .profiles-grid {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+  }
+</style>

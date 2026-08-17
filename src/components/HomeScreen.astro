@@ -1,0 +1,76 @@
+---
+import Pinata from '@/components/Pinata.astro';
+import Marquee from '@/components/Marquee.astro';
+---
+
+<!-- The logo comes from Brand.astro, rendered site-wide in BaseLayout. -->
+<section class="home">
+  <!-- Scrolling tagline banner, sits full-width just below the corner logo. -->
+  <div class="home__marquee">
+    <Marquee text={['a creative technology studio & consultancy', 'we make boring fun']} separator="★" />
+  </div>
+
+  <!-- Centerpiece. See Pinata.astro — swap the image for an animation there. -->
+  <Pinata />
+  <h2 class="whack">(whack me!)</h2>
+</section>
+
+<style lang="scss">
+  .home__marquee {
+    position: absolute;
+    // Clears the corner logo so the band sits just beneath it.
+    top: clamp(7rem, 13vh, 10rem);
+    left: 0;
+    right: 0;
+    z-index: 1;
+  }
+
+  .home {
+    position: relative;
+    min-height: 100dvh;
+    background: var(--cream);
+    display: grid;
+    // `place-content` (not `place-items`) — the row is content-sized, so the
+    // free space is distributed by align-content, which defaults to `start`.
+    place-content: center;
+    // Symmetric padding so the piñata lands on the true vertical center.
+    padding: clamp(2rem, 6vh, 4.5rem) clamp(1.5rem, 5vw, 5rem);
+    box-sizing: border-box;
+  }
+
+  .whack {
+    position: absolute;
+    top: calc(50% + 25dvh);
+    left: max(1.5rem, calc(50% - 34dvh));
+    margin: 0;
+    color: var(--green);
+    // A prompt pinned beside the piñata, not a section heading — the h2 step
+    // would swamp the graphic it labels. Overriding the property rather than
+    // the font-size keeps it on the scale.
+    --fs-h2: var(--fs-h6);
+  }
+
+  // ── Small screens: the camera zooms the piñata out (see pinata.ts), so pull
+  // the label in toward the smaller star — rightward and a touch lower ────────
+  @media (max-width: 590px) {
+    // --pinata-raise is published by pinata.ts's layout() (in px), so tuning
+    // SMALL_SCREEN_RAISE there moves the label with the star automatically.
+    .whack {
+      top: calc(50% + 26dvh - var(--pinata-raise, 0px));
+      left: max(1.5rem, calc(70% - 27dvh));
+    }
+
+    // Sits closer under the corner logo on phones than the desktop clamp puts
+    // it, giving the piñata below more room.
+    .home__marquee {
+      top: clamp(6.5rem, 11vh, 8.5rem);
+    }
+  }
+
+  // ── Mobile: nav moves to a bottom row, so reserve space for it ─────────────
+  @media (max-width: 500px) {
+    .home {
+      padding-bottom: 7rem;
+    }
+  }
+</style>

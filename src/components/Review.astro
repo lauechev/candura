@@ -1,0 +1,79 @@
+---
+// A testimonial printed on a receipt. The paper is a background image sized to
+// `contain`, and the card's aspect ratio matches the asset exactly — that's what
+// keeps the slip at its true proportions instead of stretching or letterboxing.
+interface Props {
+  quote: string;
+  // Omit (or pass an empty string) and the attribution line is skipped.
+  author?: string;
+}
+
+const { quote, author } = Astro.props;
+---
+
+<figure class="review">
+  <span class="review-stars" role="img" aria-label="5 out of 5 stars">★★★★★</span>
+
+  {quote && <blockquote class="review-quote">{quote}</blockquote>}
+  {author && <figcaption class="review-author">- {author}</figcaption>}
+</figure>
+
+<style lang="scss">
+  .review {
+    // = the trimmed receipt.png (393x577). Locked to the asset so `contain`
+    // fills the card edge to edge with no distortion and no empty band.
+    aspect-ratio: 393 / 577;
+    background: url('/receipt.png') center / contain no-repeat;
+    // Fills its grid column, so the first and last slips sit flush with the
+    // container edges — the same line the work cards above run on. The column
+    // width (i.e. the grid's gap) is what sets the receipt size.
+    // Keep this definite: `container-type` below tells the browser to ignore
+    // the contents when sizing, so a shrink-to-fit box (auto margins,
+    // justify-self other than stretch) would collapse to nothing.
+    width: 100%;
+    // Guards the same overflow from the item side that minmax(0, 1fr) guards
+    // from the track side: without it the ★★★★★ line sets a min-content floor.
+    min-width: 0;
+    // Makes cqi below resolve against this card's width. Since the height is
+    // locked to that width by the aspect ratio, type sized in cqi keeps a fixed
+    // proportion of the paper at every card size — so it can't outgrow it.
+    container-type: inline-size;
+    // Percentages so the text inset tracks the paper as the card scales. The
+    // extra room at the bottom keeps copy off the serrated edge.
+    padding: 10% 12% 13%;
+    // All four sides: <figure> carries a UA default of `margin: 1em 40px`, and
+    // that 40px inline margin pushes the card off its grid track.
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    // The one place the site leaves Neue Haas — see --font-receipt.
+    font-family: var(--font-receipt);
+    font-weight: 300;
+    color: var(--black);
+  }
+
+  // All three sized in cqi — a share of the card's width — so the longest quote
+  // occupies the same portion of the paper no matter how big the card renders.
+  // No breakpoint overrides needed as a result.
+  .review-stars {
+    font-size: 8.5cqi;
+    letter-spacing: 0.1em;
+    text-align: center;
+    // Cancels the letter-spacing's trailing gap so the row reads truly centred.
+    text-indent: 0.1em;
+    margin-bottom: 1.1em;
+  }
+
+  .review-quote {
+    margin: 0;
+    font-size: 6.2cqi;
+    line-height: 1.5;
+  }
+
+  .review-author {
+    // Two lines below the quote, per the line-height above.
+    margin-top: 1.8em;
+    font-size: 6.2cqi;
+    line-height: 1.5;
+  }
+</style>

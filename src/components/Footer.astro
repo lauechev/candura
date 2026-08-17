@@ -1,18 +1,18 @@
 <footer>
   <div class="left">
-    <span class="wordmark">Candura</span>
-    <span class="descriptor">Creative technology studio & consultancy</span>
+    <span class="wordmark" role="img" aria-label="Candura"></span>
+    <span class="descriptor">a creative technology studio & consultancy</span>
   </div>
   <div class="right">
-    <a href="https://instagram.com/candura__" target="_blank" rel="noopener noreferrer">@candura__</a>
+    <a href="https://instagram.com/candura.studio" target="_blank" rel="noopener noreferrer">@candura.studio</a>
     <div class="copy">&copy; 2026 Candura</div>
   </div>
 </footer>
 
 <style lang="scss">
   footer {
-    background-color: var(--black);
-    color: var(--white);
+    background-color: var(--green);
+    color: var(--cream);
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
@@ -22,34 +22,38 @@
   .left {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.55rem;
   }
 
+  // The Candura logo, recoloured cream via a mask over a cream fill.
   .wordmark {
-    font-family: var(--font-logo);
-    font-size: 1.3rem;
-    font-weight: 500;
+    display: block;
+    height: 1.5rem;
+    aspect-ratio: 1301 / 330;
+    background-color: var(--cream);
+    -webkit-mask: url('/greenlogo.svg') no-repeat left center / contain;
+    mask: url('/greenlogo.svg') no-repeat left center / contain;
   }
 
+  // The footer is deliberately outside the type scale: these sizes are fine
+  // print, optically matched to a wordmark that drops to 1rem tall on phones.
+  // --fs-small (a fixed 16px) would render the text larger than the logo.
   .descriptor {
-    font-family: var(--font-display);
     font-size: 0.95rem;
-    opacity: 0.6;
+    opacity: 0.85;
   }
 
   .copy {
-    font-family: var(--font-body);
     font-size: 0.85rem;
-    opacity: 0.4;
+    opacity: 0.6;
     margin-top: 0.5rem;
     padding-top: 0.3rem;
   }
 
   .right a {
-    font-family: var(--font-body);
     font-size: 0.95rem;
-    color: var(--white);
-    opacity: 0.7;
+    color: var(--cream);
+    opacity: 0.85;
     transition: opacity 150ms ease;
 
     &:hover {
@@ -64,8 +68,7 @@
     }
 
     .wordmark {
-      font-size: 1.1rem;
-      font-weight: 400;
+      height: 1.3rem;
     }
 
     .descriptor {
@@ -88,8 +91,7 @@
     }
 
     .wordmark {
-      font-size: 1rem;
-      font-weight: 400;
+      height: 1.15rem;
     }
 
     .descriptor {
@@ -115,8 +117,7 @@
     }
 
     .wordmark {
-      font-size: 0.9rem;
-      font-weight: 400;
+      height: 1rem;
     }
 
     .descriptor {

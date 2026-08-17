@@ -1,0 +1,246 @@
+---
+import { getLangFromUrl, useTranslations } from '@/i18n/ui';
+
+interface Props {
+  brand: string;
+  services: string[];
+  // At least one path. More than one renders the prev/next arrows below.
+  images: string[];
+  link?: string;
+}
+
+const { brand, services, images, link } = Astro.props;
+
+const t = useTranslations(getLangFromUrl(Astro.url));
+const isMulti = images.length > 1;
+const alt = `${brand} — ${services.join(', ')}`;
+// Only spread when a link exists, so the no-link branch never emits a bare <a>.
+const linkAttrs = link ? { href: link, target: '_blank', rel: 'noopener noreferrer' } : {};
+// The media block and the brand line are anchors when there's a link, plain
+// elements otherwise.
+const Media = link ? 'a' : 'div';
+const Brand = link ? 'a' : 'span';
+---
+
+<div class:list={['work-card', { 'has-link': !!link }]}>
+  <!-- .work-media carries the aspect ratio and the radius; the images stack
+       absolutely inside it, so paging can never shift layout. The arrows are
+       siblings of it, not children: .work-media is an <a> whenever the card has
+       a link, and a <button> inside an <a> is invalid and would navigate on
+       click. data-gallery is only present on multi-image cards — single-image
+       cards get no arrows and no listeners at all. -->
+  <div class="work-frame" data-gallery={isMulti ? '' : undefined}>
+    <Media class="work-media" {...linkAttrs}>
+      {
+        images.map((src: string, i: number) => (
+          <img
+            src={src}
+            alt={i === 0 ? alt : ''}
+            aria-hidden={i === 0 ? undefined : 'true'}
+            class:list={['work-image', { 'is-active': i === 0 }]}
+            loading="eager"
+            decoding="async"
+          />
+        ))
+      }
+    </Media>
+
+    {
+      isMulti && (
+        <>
+          <button type="button" class="work-arrow work-arrow--prev" aria-label={t('work.prevImage')}>
+            &lt;
+          </button>
+          <button type="button" class="work-arrow work-arrow--next" aria-label={t('work.nextImage')}>
+            &gt;
+          </button>
+        </>
+      )
+    }
+  </div>
+
+  <div class="work-meta">
+    <Brand class="work-brand" {...linkAttrs}>({brand})</Brand>
+    <span class="work-services">{services.join(', ')}</span>
+  </div>
+</div>
+
+<script>
+  // Each gallery closes over its own images and index, so cards never sync.
+  document.querySelectorAll<HTMLElement>('.work-frame[data-gallery]').forEach((frame) => {
+    const images = [...frame.querySelectorAll<HTMLElement>('.work-image')];
+    const prev = frame.querySelector<HTMLButtonElement>('.work-arrow--prev');
+    const next = frame.querySelector<HTMLButtonElement>('.work-arrow--next');
+    if (images.length < 2 || !prev || !next) return;
+
+    let index = 0;
+
+    // `step` is +1 or -1; the modulo is written to stay positive so going back
+    // from the first image wraps to the last.
+    const go = (step: number) => {
+      images[index].classList.remove('is-active');
+      images[index].setAttribute('aria-hidden', 'true');
+      index = (index + step + images.length) % images.length;
+      images[index].classList.add('is-active');
+      images[index].removeAttribute('aria-hidden');
+    };
+
+    prev.addEventListener('click', () => go(-1));
+    next.addEventListener('click', () => go(1));
+  });
+</script>
+
+<style lang="scss">
+  .work-card {
+    width: 100%;
+  }
+
+  // Positioning context for the arrows. .work-media can't serve as one — the
+  // arrows sit outside it (see the markup note).
+  .work-frame {
+    position: relative;
+  }
+
+  .work-media {
+    position: relative;
+    display: block;
+    aspect-ratio: 3 / 2;
+    background-color: var(--white);
+    border-radius: 15px;
+    // Clips the stacked images to the radius.
+    overflow: hidden;
+  }
+
+  // Stacked one on top of another; only .is-active is visible, so the swap is
+  // a cross-fade rather than a display toggle.
+  .work-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0;
+    transition: opacity 250ms ease;
+
+    &.is-active {
+      opacity: 1;
+    }
+  }
+
+  // Overlaid on the photo, vertically centred, inset from each edge. Set in the
+  // display cut like .work-brand, one step down at --fs-small.
+  .work-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+
+    font-family: var(--font-display);
+    font-weight: var(--fw-medium);
+    font-size: var(--fs-small);
+    line-height: 1;
+    color: var(--black);
+
+    // A disc behind the glyph so it stays legible over a busy photo — kept
+    // translucent so it sits on the image rather than punching a hole in it.
+    // The fade is on the disc alone, not the button: dropping the whole
+    // element's opacity would take the glyph down with it.
+    background-color: color-mix(in srgb, var(--white) 45%, transparent);
+    border: none;
+    border-radius: 50%;
+    padding: 0;
+    cursor: pointer;
+
+    transition:
+      background-color 150ms ease,
+      opacity 150ms ease;
+
+    &:hover,
+    &:focus-visible {
+      background-color: color-mix(in srgb, var(--white) 80%, transparent);
+    }
+  }
+
+  .work-arrow--prev {
+    left: 0.75rem;
+  }
+
+  .work-arrow--next {
+    right: 0.75rem;
+  }
+
+  // Reveal on hover — but only where hovering is possible. On touch there's no
+  // hover state to enter, so the arrows stay visible rather than becoming
+  // unreachable. Keyboard users get them back via :focus-visible.
+  @media (hover: hover) {
+    .work-arrow {
+      opacity: 0;
+      // Hidden arrows shouldn't swallow clicks meant for the linked image.
+      pointer-events: none;
+    }
+
+    .work-frame:hover .work-arrow,
+    .work-arrow:focus-visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  .work-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: 0.75rem;
+  }
+
+  // A step below the h6 rung the nav sits on — it's a card label, not a
+  // heading — and set in the display cut at medium so it reads as the title
+  // of the card without leaning on weight.
+  .work-brand {
+    font-family: var(--font-display);
+    font-weight: var(--fw-medium);
+    font-size: var(--fs-body);
+    line-height: var(--lh-heading);
+    color: var(--black);
+  }
+
+  .work-services {
+    font-size: var(--fs-small);
+    line-height: var(--lh-body);
+    color: var(--black);
+    opacity: 0.75;
+  }
+
+  // Link affordance — same opacity fade as .right a in Footer.astro.
+  .has-link {
+    .work-media,
+    .work-brand {
+      cursor: pointer;
+    }
+
+    .work-brand {
+      opacity: 0.85;
+      transition: opacity 150ms ease;
+
+      &:hover,
+      &:focus-visible {
+        opacity: 1;
+      }
+    }
+  }
+
+  // Paging is click-driven now, so the frames still change — this just makes
+  // the swap instant instead of a cross-fade.
+  @media (prefers-reduced-motion: reduce) {
+    .work-image {
+      transition: none;
+    }
+  }
+</style>

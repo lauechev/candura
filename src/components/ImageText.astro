@@ -2,19 +2,31 @@
 interface Props {
   color: string;
   title: string;
-  description: string;
+  description: string | string[];
   image: string;
+  bullets?: string[];
   reverse?: boolean;
   imageSize?: string;
 }
 
-const { color, title, description, image, reverse = false, imageSize = '80%' } = Astro.props;
+const { color, title, description, image, bullets, reverse = false, imageSize = '80%' } = Astro.props;
+
+const paragraphs = (Array.isArray(description) ? description : [description]).filter(Boolean);
 ---
 
 <div class:list={['about-split', { 'about-split--reverse': reverse }]}>
   <div class="split-text">
-    <h2>{title}</h2>
-    {description && <p>{description}</p>}
+    <h2>({title})</h2>
+    {paragraphs.map((paragraph: string) => <p>{paragraph}</p>)}
+    {
+      bullets && bullets.length > 0 && (
+        <ul>
+          {bullets.map((bullet: string) => (
+            <li>{bullet}</li>
+          ))}
+        </ul>
+      )
+    }
     <slot />
   </div>
   <div class="split-image" style={`--square-color: ${color}`}>
@@ -25,13 +37,15 @@ const { color, title, description, image, reverse = false, imageSize = '80%' } =
 <style lang="scss">
   .about-split {
     display: grid;
-    grid-template-columns: 1fr 60vh;
+    grid-template-columns: 1fr 50vh;
     grid-template-areas: 'text image';
-    border: 2px solid var(--black);
     border-radius: 15px;
     overflow: hidden;
-    height: 50vh;
-    width: calc(100vw - 5rem);
+    // min-, not a fixed height: blocks with long copy (the bulleted "who we
+    // work with") grow instead of being clipped by the overflow above.
+    min-height: 50vh;
+
+    width: calc(100% - 10rem);
     margin: 0 auto 1rem;
   }
 
@@ -42,27 +56,27 @@ const { color, title, description, image, reverse = false, imageSize = '80%' } =
 
   .split-text {
     grid-area: text;
-    background: var(--white);
-    padding: 3.5rem 4rem;
+    max-width: 48rem;
+    padding: 3.5rem 1.5rem 3.5rem 4rem;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    border-right: 2px solid var(--black);
 
+    // Only the image/text columns swap sides — the copy itself stays
+    // left-aligned so every block on the page reads off the same edge.
     .about-split--reverse & {
       border-right: none;
-      border-left: 2px solid var(--black);
-      text-align: right;
+      padding: 3.5rem 4rem 3.5rem 1.5rem;
+      margin-left: auto;
     }
   }
 
   .split-image {
     grid-area: image;
-    background-color: var(--square-color);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 5rem;
+    padding: 2rem;
     overflow: hidden;
 
     img {
@@ -76,20 +90,42 @@ const { color, title, description, image, reverse = false, imageSize = '80%' } =
   }
 
   h2 {
-    font-family: var(--font-display);
-    font-size: clamp(1.8rem, 3.8vw, 3.8rem);
-    font-weight: 500;
     color: var(--black);
     margin: 0 0 1.25rem;
-    letter-spacing: 0;
   }
 
-  p {
-    font-family: var(--font-body);
-    font-size: 1.2rem;
-    line-height: 1.75;
+  // Shared so list items can never drift from the body copy above them.
+  p,
+  li {
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
     color: var(--black);
+    // Ragged right, matching TextBlock and Profiles.
+    text-align: left;
     margin: 0;
+    text-wrap: pretty;
+  }
+
+  // Only bites when `description` is an array; single-string blocks render one
+  // <p> and are unaffected.
+  p + p {
+    margin-top: 1.25rem;
+  }
+
+  ul {
+    list-style-type: '★  ';
+    // Room for the marker; same 1.25rem rhythm as p + p above.
+    padding-left: 1.25rem;
+    margin: 1.25rem 0 0;
+  }
+
+  li + li {
+    margin-top: 0.75rem;
+  }
+
+  .about-split--reverse ul {
+    list-style-position: inside;
+    padding-left: 0;
   }
 
   /* ── Below 1500px ──────────────────────────────────────────────────── */
@@ -99,13 +135,14 @@ const { color, title, description, image, reverse = false, imageSize = '80%' } =
       display: flex;
       flex-direction: column;
       height: auto;
+      width: calc(100% - 20rem);
+      max-width: 55rem;
     }
 
     .split-image {
-      order: -1;
       height: 40vw;
       padding: 1.5rem;
-      border-bottom: 2px solid var(--black);
+      justify-content: flex-end;
 
       img {
         width: auto;
@@ -115,17 +152,25 @@ const { color, title, description, image, reverse = false, imageSize = '80%' } =
       }
     }
 
-    .split-text,
-    .about-split--reverse .split-text {
-      order: 0;
-      border-right: none;
-      border-left: none;
-      padding: 2.5rem;
-      text-align: left;
+    .about-split--reverse .split-image {
+      justify-content: flex-start;
     }
 
-    h2 {
-      font-size: clamp(1.8rem, 6vw, 3rem);
+    .split-text,
+    .about-split--reverse .split-text {
+      border-right: none;
+      border-left: none;
+      max-width: none;
+      padding: 2.5rem 0;
+      text-align: left;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .about-split {
+      // The nav column is gone here; match the intro card's 2.5rem gutters.
+      // (The old 100vw - 25rem went negative on phones.)
+      width: calc(100% - 5rem);
     }
   }
 
@@ -136,18 +181,12 @@ const { color, title, description, image, reverse = false, imageSize = '80%' } =
     }
 
     .split-text {
-      padding: 2rem 1.5rem;
+      padding: 2rem 0;
       justify-content: flex-start;
     }
 
     h2 {
-      font-size: 2.3rem;
       margin-bottom: 0.75rem;
-      font-weight: 500;
-    }
-
-    p {
-      font-size: 1rem;
     }
 
     img {

@@ -2,6 +2,8 @@
 import Nav from '@/components/Nav.astro';
 import Footer from '@/components/Footer.astro';
 import Divider2 from '@/components/Divider2.astro';
+import Brand from '@/components/Brand.astro';
+import { getLangFromUrl, stripLang } from '@/i18n/ui';
 
 interface Props {
   title?: string;
@@ -15,7 +17,13 @@ const { title, pageHeading, description, image } = Astro.props;
 const projectName = 'Candura';
 const defaultDescription = 'Candura';
 const { pathname } = Astro.url;
+const lang = getLangFromUrl(Astro.url);
+const isHome = (stripLang(pathname).replace(/\/$/, '') || '/') === '/';
 const seoTitle = title || projectName;
+// The browser tab is lowercased site-wide, matching the nav and the card
+// labels. Only the tab: og:title and twitter:title below keep the cased
+// string, since those are read outside the site's own typography.
+const tabTitle = seoTitle.toLowerCase();
 const seoDescription = description || defaultDescription;
 const baseUrl = new URL(import.meta.env.BASE_URL, Astro.site);
 const pageUrl = new URL(pathname, Astro.site);
@@ -24,24 +32,22 @@ const imgAlt = image ? image.alt : projectName;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.svg`} sizes="32x32" />
-    <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.svg`} type="image/png" />
-    <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.png`} sizes="32x32" />
+    <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.png`} type="image/png" />
+    <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}favicon.png`} />
     <meta name="generator" content={Astro.generator} />
     <link rel="canonical" href={pageUrl} />
+    <link rel="stylesheet" href="https://use.typekit.net/lda1qyz.css" />
+    <!-- Tomorrow Light, used only by Review.astro's receipts. Requested at
+         wght@300 alone since that's the single weight in use. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@300..900&family=Goudy+Bookletter+1911&display=swap"
-    />
-    <link rel="stylesheet" href="https://use.typekit.net/lda1qyz.css" />
-
-    <title>{seoTitle}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tomorrow:wght@300&display=swap" rel="stylesheet" />
+    <title>{tabTitle}</title>
     <meta name="description" content={seoDescription} />
     <!-- OpenGraph -->
     <meta property="og:locale" content="en_US" />
@@ -63,18 +69,18 @@ const imgAlt = image ? image.alt : projectName;
     <meta name="twitter:image:alt" content={imgAlt} />
   </head>
 
-  <body>
+  <body
+    class:list={{ 'has-header': !isHome }}
+    style={`--brand-h: calc(${isHome ? 'clamp(9rem, 18vw, 15rem)' : 'clamp(5.5rem, 9vw, 7.5rem)'} * 0.2537)`}
+  >
+    {!isHome && <div class="header-bar" aria-hidden="true" />}
+    <Brand variant={isHome ? 'home' : 'compact'} />
+
     <Nav />
-    {
-      pageHeading && (
-        <div class="page-header-global">
-          <h1 class="page-title">{pageHeading}</h1>
-          <div class="page-rule" />
-        </div>
-      )
-    }
-    <slot />
-    <Divider2 />
+    <div class:list={['page-content', { 'with-side-nav': !isHome }]}>
+      {pageHeading && <div class="page-header-global" />}
+      <slot />
+    </div>
     <Footer />
   </body>
 </html>
@@ -82,35 +88,60 @@ const imgAlt = image ? image.alt : projectName;
 <style lang="scss" is:global>
   @use '@/styles/styles.scss';
 
-  .page-header-global {
-    padding: 8rem 5vw 3rem;
+  body {
+    background: var(--cream);
+    // Anchors the absolutely-positioned Brand in the top-left corner.
+    position: relative;
+    // Footer sits at the viewport bottom even on short pages: the content
+    // column grows to fill the gap. svh keeps mobile URL bars from causing
+    // overflow; vh is the fallback for browsers without svh.
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
   }
 
-  .page-title {
-    font-family: var(--font-logo) !important;
-    font-size: clamp(4.5rem, 8vw, 6rem) !important;
-    font-weight: 400 !important;
-    color: var(--black);
-    margin: 0 0 0.1em !important;
-    line-height: 1 !important;
-    letter-spacing: -0.02em !important;
-  }
-
-  @media (max-width: 1024px) {
-    .page-header-global {
-      padding-top: 12rem;
-    }
+  .page-content {
+    flex: 1 0 auto;
+    // Air between the last block on any page and the footer. Lives here so
+    // every page gets the same gap rather than each one setting its own.
+    padding-bottom: 10rem;
   }
 
   @media (max-width: 768px) {
-    .page-header-global {
-      padding-top: 12rem;
+    .page-content {
+      padding-bottom: 6rem;
     }
   }
 
-  @media (max-width: 500px) {
+  .page-content.with-side-nav {
+    padding-right: var(--nav-width);
+
+    padding-top: var(--header-height);
+  }
+
+  .header-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--header-height);
+    background: var(--cream);
+    z-index: 80;
+  }
+
+  .page-header-global {
+    // .page-content already reserves --header-height above this.
+    padding: 1rem 5vw 3rem;
+  }
+
+  // The 6rem here used to clear the logo, but on mobile the logo and burger
+  // both sit inside the fixed .header-bar and .page-content already reserves
+  // exactly that height — so it was doubling up. This is the one dial for the
+  // gap under the header on every non-home page.
+  @media (max-width: 1024px) {
     .page-header-global {
-      padding-top: 14rem;
+      padding: 0.5rem 5vw 2rem;
     }
   }
 

@@ -1,0 +1,129 @@
+---
+import { getLangFromUrl, hasTranslation, localizePath, useTranslations, type Lang } from '@/i18n/ui';
+
+const { pathname } = Astro.url;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+// Only render where a translated counterpart actually exists, otherwise the
+// inactive link would 404. See `translatedRoutes` in @/i18n/ui.
+const show = hasTranslation(pathname);
+const other: Lang = lang === 'en' ? 'es' : 'en';
+const otherHref = localizePath(pathname, other);
+---
+
+{
+  show && (
+    <div class="lang-toggle">
+      {lang === 'en' ? (
+        <span class="lang is-active" aria-current="true">
+          en
+        </span>
+      ) : (
+        <a class="lang" href={localizePath(pathname, 'en')} hreflang="en" aria-label={t('lang.switch')}>
+          en
+        </a>
+      )}
+      <span class="sep" aria-hidden="true">
+        /
+      </span>
+      {lang === 'es' ? (
+        <span class="lang is-active" aria-current="true">
+          es
+        </span>
+      ) : (
+        <a class="lang" href={otherHref} hreflang="es" aria-label={t('lang.switch')}>
+          es
+        </a>
+      )}
+    </div>
+  )
+}
+
+<style lang="scss">
+  .lang-toggle {
+    // Pinned top-right on desktop. Below 1024px the hamburger takes this
+    // corner and the toggle sits inside the overlay instead — see the media
+    // query at the end of this block, and Nav.astro which renders it.
+    position: fixed;
+    top: clamp(1.25rem, 3vw, 2.5rem);
+    // Lines the text up with .nav-link: Nav's own right offset, plus the
+    // horizontal padding on .nav-menu, less this element's own .lang padding.
+    right: calc(clamp(1.25rem, 3vw, 2.75rem) + clamp(1.25rem, 2.2vw, 1.75rem) - 0.15rem);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    // Same step as .nav-link — the toggle reads as part of the nav.
+    font-family: var(--font-display);
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-h6);
+    color: var(--green);
+  }
+
+  // Non-home pages: centred in the header bar alongside the logo.
+  :global(body.has-header) .lang-toggle {
+    top: 0;
+    height: var(--header-height);
+  }
+
+  .lang {
+    color: var(--green);
+    text-decoration: none;
+    // Keeps the toggle a comfortable tap target without visually padding it.
+    padding: 0.5rem 0.15rem;
+  }
+
+  a.lang {
+    opacity: 0.55;
+    cursor: pointer;
+    transition:
+      opacity 200ms ease,
+      text-decoration-color 200ms ease;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 0.25em;
+    text-decoration-thickness: 2px;
+
+    &:hover,
+    &:focus-visible {
+      opacity: 1;
+      text-decoration-color: currentColor;
+    }
+  }
+
+  .is-active {
+    opacity: 1;
+  }
+
+  .sep {
+    opacity: 0.55;
+  }
+
+  // ── Phones + tablets: sits in the flow of the fullscreen menu, under the
+  // links, so it only appears once the menu is open.
+  @media (max-width: 1024px) {
+    // At this size the toggle only ever appears inside Nav's green fullscreen
+    // overlay, so cream replaces the desktop blue for contrast.
+    .lang-toggle,
+    :global(body.has-header) .lang-toggle {
+      position: static;
+      height: auto;
+      // Steps up inside the fullscreen overlay like .nav-link does, but one
+      // rung below it so the links stay the dominant thing on screen.
+      --fs-h6: var(--fs-h5);
+      color: var(--cream);
+    }
+
+    .lang {
+      color: var(--cream);
+      // Comfortable tap target.
+      padding: 0.6rem 0.4rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    a.lang {
+      transition: none;
+    }
+  }
+</style>

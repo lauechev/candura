@@ -1,0 +1,39 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import TextBlock from '@/components/TextBlock.astro';
+import Profiles from '@/components/Profiles.astro';
+import ImageText from '@/components/ImageText.astro';
+import { aboutIntro, aboutProfiles, aboutSections } from '@/data/about';
+
+// Spanish twin of /about — same structure, the .es slice of the same copy.
+const intro = aboutIntro.es;
+const profiles = aboutProfiles.es;
+const sections = aboutSections.es;
+
+const michael = '/michael.jpg';
+const office = '/office.jpg';
+---
+
+<BaseLayout title="somos" pageHeading="somos" description="Conoce a Candura — quiénes somos y cómo trabajamos.">
+  <TextBlock heading={intro.heading} tagline={intro.tagline} paragraphs={intro.paragraphs} />
+
+  <div class="about-sections">
+    <Profiles columns={profiles} />
+    <ImageText
+      title={sections[0].title}
+      description={sections[0].paragraphs}
+      image={office}
+      color="var(--pink)"
+      reverse
+      imageSize="65%"
+    />
+    <ImageText
+      title={sections[1].title}
+      description={sections[1].paragraphs}
+      bullets={sections[1].bullets}
+      image={michael}
+      color="var(--yellow)"
+      imageSize="60%"
+    />
+  </div>
+</BaseLayout>
