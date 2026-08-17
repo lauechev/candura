@@ -80,13 +80,13 @@ const typeCheckerServices = ['diseño y desarrollo web'];
     <div class="container">
       <div class="grid">
         <WorkCard brand="órbita" services={orbitaServices} images={orbita} />
-        <WorkCard brand="gtanna" services={gtannaServices} images={gtanna} />
         <WorkCard brand="second order" services={secondOrderServices} images={secondOrder} />
+        <WorkCard brand="type checker" services={typeCheckerServices} images={typeChecker} />
+        <WorkCard brand="gtanna" services={gtannaServices} images={gtanna} />
         <WorkCard brand="manojos" services={manojosServices} images={manojos} />
         <WorkCard brand="from mj's kitchen" services={mjsServices} images={mjs} />
         <WorkCard brand="bienvenides" services={bienvenidesServices} images={bienvenides} />
         <WorkCard brand="impressionist paris" services={parisServices} images={paris} />
-        <WorkCard brand="type checker" services={typeCheckerServices} images={typeChecker} />
       </div>
     </div>
 
@@ -137,7 +137,7 @@ const typeCheckerServices = ['diseño y desarrollo web'];
     // min-content, and the unbreakable ★★★★★ line gives each receipt one. That
     // forced the tracks wide enough to overflow .container's 1200px cap and
     // push the row toward the nav.
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     // The receipts fill their columns, so this gap is what sizes them.
     gap: 3rem;
 

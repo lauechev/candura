@@ -8,10 +8,10 @@ export interface Review {
 }
 
 /**
- * Four per locale, same order in both. The Spanish entries are the originals as
- * the clients wrote them; the English ones are translations of those. The last
- * two are placeholders until more come in — fill the strings and the row
- * renders them with no other changes needed.
+ * Same count and order in both locales. The Spanish entries are the originals
+ * as the clients wrote them; the English ones are translations of those. Add a
+ * matching entry to each list as more come in — the row renders them with no
+ * other changes needed.
  */
 export const reviews: Record<Lang, Review[]> = {
   en: [
@@ -25,8 +25,10 @@ export const reviews: Record<Lang, Review[]> = {
         'I really liked that they took the time to understand my brand, my goals and my values, and that they used design strategically and practically to help me reach them.',
       author: 'sebastian, second order',
     },
-    { quote: '', author: '' },
-    { quote: '', author: '' },
+    {
+      quote: 'Amazing. A very personalized process, with timelines tailored to our needs. Very attentive to detail.',
+      author: 'isabel, gtanna',
+    },
   ],
   es: [
     {
@@ -39,7 +41,9 @@ export const reviews: Record<Lang, Review[]> = {
         'Me gustó mucho que se tomaran el tiempo de entender mi marca, mis objetivos y mis valores, y que utilizaran el diseño de forma estratégica y práctica para ayudarme a alcanzarlos.',
       author: 'sebastian, second order',
     },
-    { quote: '', author: '' },
-    { quote: '', author: '' },
+    {
+      quote: 'Amazing. Un proceso muyy personalizado y cumpliendo con los tiempos a necesidad. Muy atentas al detalle.',
+      author: 'isabel, gtanna',
+    },
   ],
 };
