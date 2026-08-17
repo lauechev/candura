@@ -8,6 +8,10 @@ interface Props {
 }
 
 const { title, items, align = 'left' } = Astro.props;
+
+// The mirrored variant lays the items out on a grid rather than in multicol
+// columns, so it needs the row count up front to fill column by column.
+const rows = Math.ceil(items.length / 2);
 ---
 
 <div class:list={['service-pillar', { 'is-right': align === 'right' }]}>
@@ -35,7 +39,7 @@ const { title, items, align = 'left' } = Astro.props;
     </button>
   </h3>
   <div class="service-content">
-    <ul class="service-items">
+    <ul class="service-items" style={`--rows:${rows}`}>
       {items.map((item: string) => <li>{item}</li>)}
     </ul>
   </div>
@@ -174,11 +178,21 @@ const { title, items, align = 'left' } = Astro.props;
       transform: translateX(-6px);
     }
 
-    // rtl makes the two columns fill right-to-left, so reading order follows
-    // the alignment; each item restores ltr so its own text renders normally.
+    // Grid instead of multicol: multicol columns are always equal halves of
+    // the group, which would drag the left column's text out to the group's
+    // left edge. Auto tracks are only as wide as their longest item, so the
+    // pair sits against the right edge — items left-aligned within a column,
+    // the block as a whole still reading flush right.
+    // rtl puts the first items in the right-hand column (so reading order
+    // follows the alignment) and makes justify-content: start the right edge;
+    // each item restores ltr so its own text renders normally.
     .service-items {
+      display: grid;
+      grid-auto-flow: column;
+      grid-template-rows: repeat(var(--rows, 1), auto);
+      justify-content: start;
       direction: rtl;
-      text-align: right;
+      text-align: left;
 
       li {
         direction: ltr;
@@ -189,6 +203,12 @@ const { title, items, align = 'left' } = Astro.props;
   @media (max-width: 768px) {
     .service-items {
       columns: 1;
+    }
+
+    // One column here too: the items stack in order, still flush right.
+    .is-right .service-items {
+      grid-auto-flow: row;
+      grid-template-rows: none;
     }
   }
 
