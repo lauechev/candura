@@ -317,6 +317,14 @@ const links = [
     }
   }
 
+  // The mobile type scale is a step below the desktop one, which left the
+  // fullscreen links too small; take them to the top rung here.
+  @media (max-width: 768px) {
+    .nav-link {
+      --fs-h6: var(--fs-h1);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .nav-links,
     .nav-link,

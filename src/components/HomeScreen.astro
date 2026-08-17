@@ -67,6 +67,13 @@ import Marquee from '@/components/Marquee.astro';
     }
   }
 
+  // The mobile scale left the label smaller than it reads on desktop.
+  @media (max-width: 768px) {
+    .whack {
+      --fs-h2: var(--fs-h4);
+    }
+  }
+
   // ── Mobile: nav moves to a bottom row, so reserve space for it ─────────────
   @media (max-width: 500px) {
     .home {

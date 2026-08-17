@@ -44,11 +44,24 @@ const Brand = link ? 'a' : 'span';
     {
       isMulti && (
         <>
+          {/* One path per arrow: the disc and the chevron are a single shape,
+              and fill-rule="evenodd" turns the chevron into a hole, so the
+              photo shows through it rather than a glyph sitting on top. */}
           <button type="button" class="work-arrow work-arrow--prev" aria-label={t('work.prevImage')}>
-            &lt;
+            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+              <path
+                fill-rule="evenodd"
+                d="M16 0A16 16 0 1 1 16 32A16 16 0 1 1 16 0Z M21.02 10.1L14.7 16L21.02 21.9L18.98 24.1L10.3 16L18.98 7.9Z"
+              />
+            </svg>
           </button>
           <button type="button" class="work-arrow work-arrow--next" aria-label={t('work.nextImage')}>
-            &gt;
+            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+              <path
+                fill-rule="evenodd"
+                d="M16 0A16 16 0 1 1 16 32A16 16 0 1 1 16 0Z M10.98 10.1L17.3 16L10.98 21.9L13.02 24.1L21.7 16L13.02 7.9Z"
+              />
+            </svg>
           </button>
         </>
       )
@@ -129,33 +142,30 @@ const Brand = link ? 'a' : 'span';
     transform: translateY(-50%);
     z-index: 1;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: block;
     width: 2rem;
     height: 2rem;
 
-    font-family: var(--font-display);
-    font-weight: var(--fw-medium);
-    font-size: var(--fs-small);
-    line-height: 1;
-    color: var(--black);
-
-    // Faded on the disc alone: dropping the button's opacity would dim the
-    // glyph with it.
-    background-color: color-mix(in srgb, var(--white) 45%, transparent);
+    // The disc is the SVG's fill, not a background: the chevron is a hole in
+    // that same shape, so anything painted here would show through it.
+    background: none;
     border: none;
-    border-radius: 50%;
     padding: 0;
     cursor: pointer;
 
-    transition:
-      background-color 150ms ease,
-      opacity 150ms ease;
+    transition: opacity 150ms ease;
 
-    &:hover,
-    &:focus-visible {
-      background-color: color-mix(in srgb, var(--white) 80%, transparent);
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      fill: color-mix(in srgb, var(--white) 85%, transparent);
+      transition: fill 150ms ease;
+    }
+
+    &:hover svg,
+    &:focus-visible svg {
+      fill: var(--white);
     }
   }
 

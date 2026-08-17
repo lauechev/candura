@@ -121,6 +121,14 @@ const otherHref = localizePath(pathname, other);
     }
   }
 
+  // Tracks the links' bump on the mobile scale, staying one rung below them.
+  @media (max-width: 768px) {
+    .lang-toggle,
+    :global(body.has-header) .lang-toggle {
+      --fs-h6: var(--fs-h2);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     a.lang {
       transition: none;
