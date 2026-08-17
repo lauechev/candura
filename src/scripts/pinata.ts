@@ -91,6 +91,36 @@ const CONE_TIP_R = CONE_R * 0.13; // rounded-tip sphere blunting the apex
 // source for the body bands, the cones, and confetti.
 const PALETTE = ['--blue', '--purple', '--yellow', '--orange', '--pink', '--green', '--red'];
 
+/**
+ * Resolves once the palette custom properties are live.
+ *
+ * On a cold Safari load this module can run before the stylesheet has been
+ * applied. An unresolved var reads as '', three.js's Color.setStyle warns
+ * "Unknown color" and leaves the colour at its default — which is white — so
+ * every surface builds white and only a refresh (warm stylesheet) looks right.
+ *
+ * Bounded on purpose: after the timeout we resolve anyway, so a genuine styling
+ * problem degrades to wrong colours rather than to no piñata at all.
+ */
+export function whenPaletteReady(timeoutMs = 1000): Promise<void> {
+  const resolved = () => getComputedStyle(document.documentElement).getPropertyValue(PALETTE[0]).trim() !== '';
+
+  return new Promise((resolve) => {
+    if (resolved()) return resolve();
+
+    const deadline = performance.now() + timeoutMs;
+    const poll = () => {
+      if (resolved()) return resolve();
+      if (performance.now() >= deadline) {
+        console.warn(`Pinata: ${PALETTE[0]} never resolved; colours will fall back to white.`);
+        return resolve();
+      }
+      requestAnimationFrame(poll);
+    };
+    requestAnimationFrame(poll);
+  });
+}
+
 // One colour per cone, ordered by cone position (0 = up, then 162°/234°/306°/18°,
 // then front +z, back −z). Each is a distinct palette entry — no two cones share.
 const CONE_COLORS = ['--blue', '--purple', '--orange', '--pink', '--green', '--red', '--yellow'];
@@ -224,8 +254,19 @@ export class Pinata {
   private pointer = new Vector2();
 
   // Bound handlers so they can be removed in destroy().
+  // False until layout() has measured a non-zero canvas; the loop refuses to
+  // render before then, so the first painted frame is never a stretched 1×1.
+  private sized = false;
+  private resizeObserver: ResizeObserver;
+
   private onResize = () => this.layout();
   private onPointerDown = (e: PointerEvent) => this.handlePointer(e);
+  // preventDefault is what makes the context eligible for restoration at all.
+  private onContextLost = (e: Event) => e.preventDefault();
+  private onContextRestored = () => {
+    this.sized = false;
+    this.layout();
+  };
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
@@ -247,7 +288,8 @@ export class Pinata {
     this.grainSmall.needsUpdate = true;
 
     this.renderer = new WebGLRenderer({ canvas, alpha: true, antialias: true });
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio ?? 1, 2));
+    // setPixelRatio lives in layout() now — it has to be re-applied whenever the
+    // canvas is resized or the window moves to a display with a different DPR.
     // Tone mapping gives a single, well-behaved exposure control and stops the
     // lit colours from clipping to white.
     this.renderer.toneMapping = ACESFilmicToneMapping;
@@ -302,8 +344,18 @@ export class Pinata {
 
     this.layout();
     this.pinata.getWorldPosition(this.prevWorldPos); // so frame one's velocity is 0
+
+    // The container, not the window: the canvas is sized off a `dvh` box
+    // (.home in HomeScreen.astro), which can still measure 0 on a cold load
+    // long after the window has stopped firing resize events.
+    this.resizeObserver = new ResizeObserver(() => this.layout());
+    this.resizeObserver.observe(this.canvas);
+    // Still needed alongside the observer: a DPR change from dragging to
+    // another display doesn't alter the element's box, so it wouldn't fire.
     window.addEventListener('resize', this.onResize);
     this.canvas.addEventListener('pointerdown', this.onPointerDown);
+    this.canvas.addEventListener('webglcontextlost', this.onContextLost);
+    this.canvas.addEventListener('webglcontextrestored', this.onContextRestored);
   }
 
   /** Matte clay with a tight clearcoat glint — every piñata surface uses this. */
@@ -812,9 +864,18 @@ export class Pinata {
   }
 
   // ── Layout / camera framing ───────────────────────────────────────────────
-  private layout(): void {
-    const w = this.canvas.clientWidth || this.canvas.offsetWidth || 1;
-    const h = this.canvas.clientHeight || this.canvas.offsetHeight || 1;
+  private layout(): boolean {
+    const w = this.canvas.clientWidth;
+    const h = this.canvas.clientHeight;
+    // No silent 1×1 fallback here. A zero-sized canvas means layout hasn't
+    // settled yet, and baking that into the drawing buffer is what left Safari
+    // showing one stretched pixel. The ResizeObserver calls us back the moment
+    // there are real dimensions.
+    if (w === 0 || h === 0) return false;
+
+    // Re-applied on every layout, not once at construction: DPR changes when
+    // the window moves between displays, and it must be set before setSize.
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio ?? 1, 2));
     this.renderer.setSize(w, h, false);
 
     const aspect = w / h;
@@ -845,12 +906,24 @@ export class Pinata {
     // h/2 spans topY world units, which converts world units to px.
     const raisePx = (centerY - CENTER_Y) * (h / 2 / topY);
     document.documentElement.style.setProperty('--pinata-raise', `${raisePx}px`);
+
+    this.sized = true;
+    return true;
   }
 
   // ── Loop ──────────────────────────────────────────────────────────────────
   start(): void {
     this.lastTime = performance.now();
     const loop = (now: number) => {
+      // Nothing is painted until the canvas has a real size. Advancing lastTime
+      // on the way past keeps dt from accumulating into a jolt on the first
+      // frame that does render.
+      if (!this.sized && !this.layout()) {
+        this.lastTime = now;
+        this.raf = requestAnimationFrame(loop);
+        return;
+      }
+
       const dt = Math.min((now - this.lastTime) / 1000, 0.05);
       this.lastTime = now;
       this.t += dt;
@@ -888,8 +961,11 @@ export class Pinata {
       cancelAnimationFrame(this.raf);
       this.raf = null;
     }
+    this.resizeObserver.disconnect();
     window.removeEventListener('resize', this.onResize);
     this.canvas.removeEventListener('pointerdown', this.onPointerDown);
+    this.canvas.removeEventListener('webglcontextlost', this.onContextLost);
+    this.canvas.removeEventListener('webglcontextrestored', this.onContextRestored);
 
     this.scene.traverse((obj) => {
       const mesh = obj as Mesh | Points;
