@@ -107,8 +107,14 @@ const ariaLabel = label ?? phrases.join(separator ? ` ${separator} ` : ' ');
 
   @media (max-width: 768px) {
     .marquee {
-      font-size: var(--fs-h5);
-      padding-block: 0.22em;
+      // Still derived from the scale, minus a flat 4px.
+      font-size: calc(var(--fs-h5) - 4px);
+      padding-block: 0.4em;
+    }
+
+    // The tick is em-based, so it shrank with the band; nudge it back up.
+    .marquee__separator {
+      font-size: 0.5em;
     }
 
     // Multiplied, not replaced, so every instance slows by the same factor.

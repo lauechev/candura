@@ -1,11 +1,3 @@
-// The one type system for the site. Everything downstream references these
-// custom properties with var() — no component should declare a raw px/rem
-// font-size again. If a component genuinely needs a one-off, it overrides the
-// property in its own scope (see HomeScreen's .whack) rather than hardcoding.
-//
-// The html root font-size is deliberately left at the browser default; the
-// scale below is built around that (body is 1.25rem == 20px).
-
 :root {
   // ── Families ──────────────────────────────────────────────────────────────
   // Two cuts of Neue Haas Grotesk, both from the Adobe Fonts kit loaded in

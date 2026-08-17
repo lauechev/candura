@@ -44,9 +44,6 @@ import Marquee from '@/components/Marquee.astro';
     left: max(1.5rem, calc(50% - 34dvh));
     margin: 0;
     color: var(--green);
-    // A prompt pinned beside the piñata, not a section heading — the h2 step
-    // would swamp the graphic it labels. Overriding the property rather than
-    // the font-size keeps it on the scale.
     --fs-h2: var(--fs-h6);
   }
 
@@ -58,6 +55,7 @@ import Marquee from '@/components/Marquee.astro';
     .whack {
       top: calc(50% + 26dvh - var(--pinata-raise, 0px));
       left: max(1.5rem, calc(70% - 27dvh));
+      font-weight: var(--fw-bold);
     }
 
     // Sits closer under the corner logo on phones than the desktop clamp puts
