@@ -25,11 +25,7 @@ import { programCategories, serviceCategories } from '@/data/services';
       <p class="programs-intro">
         nuestros (programas) combinan algunos servicios que se complementan según las necesidades de cada cliente.
       </p>
-      {
-        programCategories.es.map((program) => (
-          <Service title={program.title} items={program.items} align="right" />
-        ))
-      }
+      {programCategories.es.map((program) => <Service title={program.title} items={program.items} align="right" />)}
     </div>
 
     <img class="cat cat--bottom" src="/controls.jpeg" alt="" />

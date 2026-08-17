@@ -11,10 +11,12 @@ const { title, items, align = 'left' } = Astro.props;
 ---
 
 <div class:list={['service-pillar', { 'is-right': align === 'right' }]}>
-  {/* The heading wraps the button rather than the other way round: a button
+  {
+    /* The heading wraps the button rather than the other way round: a button
       takes phrasing content only, so a heading child would be invalid. This is
       the standard accordion pattern — the category name is a real heading and
-      the control it toggles is the button within. */}
+      the control it toggles is the button within. */
+  }
   <h3 class="service-heading">
     <button class="service-banner" aria-expanded="false">
       <span class="banner-title">{title}</span>
