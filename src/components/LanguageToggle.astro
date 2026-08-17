@@ -106,7 +106,15 @@ const otherHref = localizePath(pathname, other);
     // overlay, so cream replaces the desktop blue for contrast.
     .lang-toggle,
     :global(body.has-header) .lang-toggle {
-      position: static;
+      // Pinned to the bottom of the overlay and out of the flex flow, so the
+      // links centre against the full height rather than against what's left
+      // over. .nav-menu is the positioning context (fixed, inset 0).
+      position: absolute;
+      top: auto;
+      bottom: clamp(2rem, 6vh, 4rem);
+      left: 50%;
+      transform: translateX(-50%);
+      right: auto;
       height: auto;
       // Steps up inside the fullscreen overlay like .nav-link does, but one
       // rung below it so the links stay the dominant thing on screen.

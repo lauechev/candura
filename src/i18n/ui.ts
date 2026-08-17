@@ -10,7 +10,7 @@ export const defaultLang: Lang = 'en';
 // Routes that have a translated version for every locale. The language toggle
 // only renders on these — anything else would link to a page that doesn't
 // exist yet. Add a path here once you author its `/es/` counterpart.
-export const translatedRoutes = ['/', '/about', '/services', '/work'];
+export const translatedRoutes = ['/', '/about', '/services', '/work', '/contact'];
 
 export const ui = {
   en: {

@@ -58,7 +58,7 @@ const links = [
       }
     </ul>
 
-    <!-- Fixed top-right on desktop; drops into the overlay below the links on
+    <!-- Fixed top-right on desktop; pinned to the bottom of the overlay on
          phones and tablets. See LanguageToggle.astro. -->
     <LanguageToggle />
   </div>
@@ -321,7 +321,9 @@ const links = [
   // fullscreen links too small; take them to the top rung here.
   @media (max-width: 768px) {
     .nav-link {
-      --fs-h6: var(--fs-h1);
+      // Past the top rung of the scale — the fullscreen menu is the one place
+      // that wants more than --fs-h1 gives on a phone.
+      --fs-h6: calc(var(--fs-h1) + 4px);
     }
   }
 
