@@ -72,6 +72,10 @@ img {
 }
 
 html {
-  cursor: url('/cursor.png') 0 0, auto;
-  cursor: url('/cursor.svg') 0 0, auto;
+  cursor:
+    url('/cursor.png') 0 0,
+    auto;
+  cursor:
+    url('/cursor.svg') 0 0,
+    auto;
 }

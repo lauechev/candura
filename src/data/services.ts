@@ -137,12 +137,7 @@ export const programCategories: Record<Lang, ServiceCategory[]> = {
     },
     {
       title: 'brand development 4 artists',
-      items: [
-        'brand concept development',
-        'brand communication',
-        'social media diagnostic',
-        'digital strategy',
-      ],
+      items: ['brand concept development', 'brand communication', 'social media diagnostic', 'digital strategy'],
     },
     {
       title: 'brand refresh',
