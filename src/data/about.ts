@@ -35,10 +35,10 @@ export const aboutIntro: Record<Lang, AboutIntro> = {
     heading: 'creativity + tech = candura',
     tagline: 'Ideas, made real.',
     paragraphs: [
-      'Candura is a Creative Tech studio where strategy, creativity, and execution work in sync to transform ideas into systems, brands, and meaningful experiences.',
-      'We partner with ambitious projects from strategy to launch, shaping every stage with intention, structure, and thoughtful execution. From brand development and creative direction to digital design, content production, and web experiences, every decision serves a clear vision.',
-      "We believe technology expands the creative process. That's why we build processes where ideas don't stay on paper—they're designed, built, and brought to life.",
-      "Candura was born from a simple belief: good taste alone isn't enough. Lasting ideas require structure, strategy, and the right people to make them real.",
+      'Candura is a Creative Tech studio where strategy, creativity, and execution work in sync to turn ideas into real systems, brands, and experiences.',
+      'We support projects from conception to launch, building each stage with intention, structure, and thoughtful judgment. From brand development and creative direction to digital design, content production, and web experiences, every decision follows a clear direction.',
+      "We believe technology expands the creative process. That's why we build processes where ideas don't stay on paper.",
+      'Candura was born from a simple conviction: good taste alone is not enough. Ideas that stand the test of time need structure, strategy, and the right people to bring them to life.',
     ],
   },
   es: {
@@ -46,8 +46,8 @@ export const aboutIntro: Record<Lang, AboutIntro> = {
     tagline: 'Ideas, made real.',
     paragraphs: [
       'Candura es un estudio de Creative Tech donde la estrategia, la creatividad y la ejecución trabajan en sincronía para convertir ideas en sistemas, marcas y experiencias reales.',
-      'Acompañamos proyectos desde la estrategia hasta el lanzamiento, construyendo cada etapa con intención, estructura y criterio. Desde el desarrollo de marca y la dirección creativa hasta el diseño digital, la producción de contenido y las experiencias web, cada decisión responde a una visión clara.',
-      'Creemos que la tecnología expande los procesos creativos. Por eso desarrollamos procesos donde las ideas no se quedan en el papel: se diseñan, se construyen y se hacen existir.',
+      'Acompañamos proyectos desde la concepción hasta el lanzamiento, construyendo cada etapa con intención, estructura y criterio. Desde el desarrollo de marca y la dirección creativa hasta el diseño digital, la producción de contenido y las experiencias web, cada decisión sigue una dirección clara.',
+      'Creemos que la tecnología expande los procesos creativos. Por eso desarrollamos procesos donde las ideas no se quedan solo en el papel.',
       'Candura nace de una convicción sencilla: el buen gusto, por sí solo, no es suficiente. Las ideas que perduran necesitan estructura, estrategia y las personas adecuadas para convertirlas en realidad.',
     ],
   },
@@ -59,8 +59,8 @@ export const aboutSections: Record<Lang, AboutSection[]> = {
       title: 'what we do',
       paragraphs: [
         'We practice digital craftsmanship.',
-        'In an industry moving faster than ever, where everything risks looking the same, we champion thoughtful processes, strategic thinking, and exceptional execution. We believe the difference lies in intention, precision, and the care behind every decision.',
-        'We build brands that feel consistent across every touchpoint. From strategy and storytelling to visual identity, creative direction, content, web experiences, and digital presence, every element speaks the same language and reflects the essence of the project.',
+        'In an industry moving faster than ever, where everything basically looks the same, we defend thoughtful unique processes, strategic thinking, and exceptional execution. We believe the difference lies in the intentionality behind every decision.',
+        'We build and transform brands into ones that feel consistent across every touchpoint. From strategy and storytelling to visual identity, creative direction, content, web experiences, and digital presence, every element speaks the same language and reflects the universe the brand was builted in.',
         "We hold ourselves to the highest standards because trust is built through quality. That's why many of our clients continue growing with us long after the first project.",
       ],
     },

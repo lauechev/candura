@@ -22,9 +22,7 @@ import { programCategories, serviceCategories } from '@/data/services';
 
     <div class="programs">
       <h2 class="group-label">(programas)</h2>
-      <p class="programs-intro">
-        nuestros (programas) combinan algunos servicios que se complementan según las necesidades de cada cliente.
-      </p>
+      <p class="programs-intro">*todos nuestros programas son personalizables</p>
       {programCategories.es.map((program) => <Service title={program.title} items={program.items} align="right" />)}
     </div>
 
@@ -156,6 +154,7 @@ import { programCategories, serviceCategories } from '@/data/services';
 
   .programs-intro {
     color: var(--black);
+    font-style: italic;
     margin: 0 0 2rem;
   }
 

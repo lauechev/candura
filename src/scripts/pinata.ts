@@ -70,7 +70,7 @@ const SMALL_SCREEN_ZOOM_OUT = 1.4; // camera distance multiplier (≈17% smaller
 // ...and lift it, so it sits nearer the marquee instead of low in the viewport.
 // World units — one unit is ~58px at 390x844. Tune freely: layout() publishes
 // the lift as --pinata-raise, and the "(whack me!)" label follows on its own.
-const SMALL_SCREEN_RAISE = 0.1;
+const SMALL_SCREEN_RAISE = -0.5;
 
 // ── Piñata proportions ──────────────────────────────────────────────────────
 const PINATA_SCALE = 0.7; // overall size of the hanging star
@@ -154,10 +154,7 @@ const CONFETTI_MAX = 320;
 const CONFETTI_PER_BURST = 130;
 const CONFETTI_GRAVITY = 12;
 const CONFETTI_LIFE = 2.6;
-// Fraction of the piñata's own velocity the confetti inherits at emission, so
-// a mid-swing burst travels with the piñata instead of hanging where it was
-// clicked (which reads as bursting from empty space once the piñata swings
-// on). Partial, not 1: paper confetti sheds speed to drag almost immediately.
+
 const CONFETTI_INHERIT = 0.6;
 
 // ── Value noise (for the dents) ─────────────────────────────────────────────
@@ -278,9 +275,7 @@ export class Pinata {
     this.grainSmall.needsUpdate = true;
 
     this.renderer = new WebGLRenderer({ canvas, alpha: true, antialias: true });
-    // setPixelRatio lives in layout(), which re-applies it on every resize.
-    // Tone mapping gives a single, well-behaved exposure control and stops the
-    // lit colours from clipping to white.
+
     this.renderer.toneMapping = ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = EXPOSURE;
     this.renderer.outputColorSpace = SRGBColorSpace;
@@ -308,8 +303,6 @@ export class Pinata {
     key.shadow.bias = -0.0004;
     this.scene.add(key);
 
-    // One strong, high, off-to-the-side light whose only visible job is the
-    // tight clearcoat glint; it casts no shadows so it can't wash the scene.
     const glint = new DirectionalLight(0xffffff, GLINT_INTENSITY);
     glint.position.copy(GLINT_POS);
     this.scene.add(glint);
@@ -383,12 +376,6 @@ export class Pinata {
     return mat;
   }
 
-  /**
-   * Per-vertex wiggle inputs for one strand piece. `along` fixes aAlong for
-   * the whole geometry (the end cap rides the tip at 1); when null it is read
-   * from uv.x, which TubeGeometry already writes as i / tubularSegments — the
-   * normalized distance along the strand.
-   */
   private static addWiggleAttributes(geo: BufferGeometry, phase: number, swing: Vector3, along: number | null): void {
     const count = geo.getAttribute('position').count;
     const uv = geo.getAttribute('uv') as BufferAttribute;
@@ -407,14 +394,6 @@ export class Pinata {
     geo.setAttribute('aSwing', new BufferAttribute(aSwing, 3));
   }
 
-  /**
-   * Handmade dents: displace vertices along their normals with low-frequency
-   * noise, then rebuild normals. `size` scales dent depth to the part; `seed`
-   * de-correlates parts so no two dent identically. `apexFade` eases the
-   * amplitude to zero between two local-y values — used near a cone's apex,
-   * whose coincident vertices carry per-face normals and would split apart if
-   * displaced undamped.
-   */
   private dentGeometry(geo: BufferGeometry, size: number, seed: number, apexFade?: { from: number; to: number }): void {
     const pos = geo.getAttribute('position') as BufferAttribute;
     const nor = geo.getAttribute('normal') as BufferAttribute;

@@ -26,8 +26,9 @@ export const reviews: Record<Lang, Review[]> = {
       author: 'sebastian, second order',
     },
     {
-      quote: 'Amazing. A very personalized process, with timelines tailored to our needs. Very attentive to detail.',
-      author: 'isabel, gtanna',
+      quote:
+        'Very creative, efficient and fast. They easily grasp the idea we bring them and shape it into what we want to say. Always on time, and they present several alternatives — I really like that.',
+      author: 'ana maria, manojos',
     },
   ],
   es: [
@@ -42,8 +43,9 @@ export const reviews: Record<Lang, Review[]> = {
       author: 'sebastian, second order',
     },
     {
-      quote: 'Amazing. Un proceso muyy personalizado y cumpliendo con los tiempos a necesidad. Muy atentas al detalle.',
-      author: 'isabel, gtanna',
+      quote:
+        'Muy creativas, eficientes, rápidas, interpretan fácilmente la idea que les damos para proponer lo que queremos decir, cumplidas, presentan varias alternativas y eso me gusta.',
+      author: 'ana maria, manojos',
     },
   ],
 };

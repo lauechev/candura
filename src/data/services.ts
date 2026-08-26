@@ -136,6 +136,15 @@ export const programCategories: Record<Lang, ServiceCategory[]> = {
       ],
     },
     {
+      title: 'brand development 4 artists',
+      items: [
+        'brand concept development',
+        'brand communication',
+        'social media diagnostic',
+        'digital strategy',
+      ],
+    },
+    {
       title: 'brand refresh',
       items: [
         'brand research and diagnostic',
@@ -164,6 +173,15 @@ export const programCategories: Record<Lang, ServiceCategory[]> = {
         'desarrollo de concepto de marca',
         'comunicación de marca',
         'branding',
+      ],
+    },
+    {
+      title: 'brand development 4 artists',
+      items: [
+        'desarrollo de concepto de marca',
+        'comunicación de marca',
+        'diagnóstico de redes sociales',
+        'estrategia digital',
       ],
     },
     {
